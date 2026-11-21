@@ -478,11 +478,11 @@
         .backgroundColor("rgba(255,255,255,0)")
         .showGlobe(true)
         .globeMaterial(
-          new THREE.MeshPhongMaterial({
-            color: 0xffffff,
-            shininess: 0
-          })
-        )
+  new THREE.MeshBasicMaterial({
+    color: 0xffffff
+  })
+)
+         
         .showAtmosphere(false)
         .showGraticules(false)
         .polygonAltitude(0.006)
