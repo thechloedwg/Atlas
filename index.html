@@ -17,23 +17,28 @@
   --line: #DCEAF2;
   --sea: #DCEAF2;
   --sage: #B5C6B0;
-  --white: #ffffff;
+  --pale: #F3F7FA;
+  --white: #FFFFFF;
+  --grey-tile: #C9D3DC;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--white);
+  background: #F1F3F5;
   color: var(--ink);
   font-family: "Courier New", Courier, monospace;
-  font-size: 13px;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -41,30 +46,87 @@ a {
   text-decoration: none;
 }
 
+button { cursor: pointer; }
+
 .page {
-  max-width: 1440px;
+  max-width: 1500px;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 12px 42px 70px;
+  padding: 22px;
+  background: white;
 }
+
+/* GENERAL */
+
+.view {
+  display: none;
+  animation: appear .25s ease;
+}
+
+.view.active { display: block; }
+
+@keyframes appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.eyebrow {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--muted);
+}
+
+.small-button {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+  padding: 11px 15px;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.small-button:hover {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+
+.page-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding: 4px 0 14px;
+  margin-bottom: 18px;
+}
+
+.brand {
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.back-link {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.back-link:hover { color: var(--ink); }
 
 /* GLOBE */
 
-.hero {
-  width: 100%;
-  min-height: 660px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  overflow: hidden;
-}
-
 .globe-frame {
-  width: min(100%, 760px);
-  height: 660px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 #globeViz {
@@ -73,249 +135,484 @@ a {
   cursor: grab;
 }
 
-#globeViz:active {
-  cursor: grabbing;
-}
+#globeViz:active { cursor: grabbing; }
 
-/* NAVIGATION */
+/* HOME HERO */
 
-.navigation {
+.home-hero {
+  min-height: 540px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line);
+  grid-template-columns: minmax(0, 1fr);
+  position: relative;
   border-bottom: 1px solid var(--line);
-  margin: 0 auto 45px;
 }
 
-.navigation a {
-  text-align: center;
-  padding: 17px 10px;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-right: 1px solid var(--line);
-  transition: background 0.2s, color 0.2s;
+.home-globe {
+  width: 100%;
+  height: 540px;
 }
 
-.navigation a:last-child {
-  border-right: none;
-}
-
-.navigation a:hover {
-  background: var(--sea);
-}
-
-/* COUNTRY PROFILE */
-
-#countryProfile {
-  display: none;
-  border: 1px solid var(--line);
-  padding: 25px;
-  margin: 30px auto 55px;
-  max-width: 900px;
-}
-
-#countryProfile h2 {
-  font-size: 20px;
-  font-weight: normal;
-  margin: 8px 0 12px;
-}
-
-#countryProfile p {
-  color: var(--muted);
+.home-instructions {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+  max-width: 230px;
+  background: rgba(255,255,255,.88);
+  padding: 12px 15px;
+  font-size: 10px;
   line-height: 1.8;
+}
+
+.home-instructions strong {
+  display: block;
+  font-weight: normal;
+  letter-spacing: .12em;
   font-size: 12px;
 }
 
-.close-profile {
-  float: right;
-  border: none;
-  background: transparent;
-  color: var(--ink);
-  font-size: 20px;
-  cursor: pointer;
+.home-instructions ul {
+  padding-left: 15px;
+  margin: 6px 0 0;
 }
 
-/* EXPERIENCE GALLERY */
-
-#experiences {
-  max-width: 1200px;
-  margin: 0 auto 90px;
-}
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin: 0 0 20px;
-  border-bottom: 1px solid var(--line);
-}
-
-.filter-button {
+.home-title {
+  position: absolute;
+  top: 22px;
+  right: 0;
+  z-index: 2;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
   background: white;
-  border: none;
-  border-bottom: 2px solid transparent;
+  padding: 10px 12px;
+}
+
+/* HOME NAV */
+
+.home-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 30px;
+}
+
+.home-nav button {
+  padding: 15px 8px;
+  background: white;
+  border: 0;
+  border-right: 1px solid var(--line);
   color: var(--muted);
-  padding: 12px 16px;
   font-family: inherit;
   font-size: 10px;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  cursor: pointer;
 }
 
-.filter-button:hover,
-.filter-button.active {
+.home-nav button:last-child { border-right: 0; }
+
+.home-nav button:hover {
+  background: var(--pale);
   color: var(--ink);
-  border-bottom-color: var(--ink);
 }
 
-.gallery {
+/* HOME PROTOCOL GALLERY */
+
+.home-section {
+  margin: 0 auto 35px;
+  max-width: 1200px;
+}
+
+.section-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+.section-topline h2 {
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.text-link {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.text-link:hover { color: var(--ink); }
+
+.protocol-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
-.experience-card {
+.protocol-tile {
+  min-height: 125px;
+  padding: 14px;
+  border: 1px solid transparent;
+  background: var(--grey-tile);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
-  min-height: 205px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  background: white;
-  transition: background 0.2s, border-color 0.2s;
-  cursor: pointer;
+  justify-content: space-between;
+  text-align: left;
+  transition: background .2s, border-color .2s;
 }
 
-.experience-card:hover {
-  background: #F7FAFC;
+.protocol-tile:hover {
+  background: var(--sea);
   border-color: var(--ink);
 }
 
-.card-type {
-  color: var(--muted);
+.protocol-tile .tile-country {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.protocol-tile .tile-meta {
   font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 24px;
+  color: #59677A;
+  line-height: 1.6;
 }
 
-.experience-card .country {
-  color: var(--ink);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
+.protocol-tile.add-tile {
+  background: white;
+  border: 1px solid var(--line);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
 }
 
-.experience-card h3 {
-  color: var(--ink);
-  font-family: inherit;
-  font-weight: normal;
-  font-size: 15px;
-  line-height: 1.5;
-  margin: 0 0 10px;
+.add-tile .plus {
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  line-height: 1;
 }
 
-.experience-card p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
-  margin: 0 0 18px;
+.add-tile:hover {
+  background: var(--pale);
 }
 
-.card-bottom {
-  margin-top: auto;
-  padding-top: 12px;
+/* HOME EXPERIENCES */
+
+.home-experiences {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.contribute-block {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--grey-tile);
+  color: var(--ink);
+  text-align: center;
+  transition: background .2s;
+}
+
+.contribute-block:hover { background: var(--sea); }
+
+.contribute-block span:first-child {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.contribute-block strong {
+  font-family: Arial, sans-serif;
+  font-size: 34px;
+  font-weight: normal;
+  margin-top: 12px;
+}
+
+.experience-preview {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.experience-preview-item {
+  flex: 1;
+  min-height: 55px;
+  background: var(--grey-tile);
+  padding: 12px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+}
+
+.experience-preview-item span:last-child {
+  color: #59677A;
+  font-size: 9px;
+}
+
+.experience-preview-item:hover { background: var(--sea); }
+
+.experience-add {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+  min-height: 48px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.experience-add:hover { background: var(--pale); }
+
+/* ABOUT TILE */
+
+.about-tile {
+  display: block;
+  background: var(--grey-tile);
+  color: var(--ink);
+  padding: 28px;
+  margin-top: 14px;
+  min-height: 125px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.about-tile:hover { background: var(--sea); }
+
+/* PROTOCOL GALLERY PAGE */
+
+.gallery-header {
+  padding: 25px 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+}
+
+.gallery-header h1 {
+  font-size: 20px;
+  font-weight: normal;
+  letter-spacing: .05em;
+  margin: 8px 0 0;
+}
+
+.gallery-header p {
   color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0;
+  text-align: right;
+}
+
+.gallery-page-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 15px 0 35px;
+}
+
+.gallery-page-grid .protocol-tile {
+  min-height: 175px;
+}
+
+/* COUNTRY PROFILE */
+
+.country-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 30%) minmax(300px, 1fr) minmax(190px, 23%);
+  gap: 18px;
+  min-height: 520px;
+  margin-top: 15px;
+}
+
+.country-map {
+  min-height: 500px;
+  overflow: hidden;
+  position: relative;
+  background: white;
+}
+
+.country-map #globeViz {
+  width: 100%;
+  height: 500px;
+}
+
+.country-map-label {
+  position: absolute;
+  bottom: 15px;
+  left: 10px;
+  z-index: 2;
+  background: rgba(255,255,255,.9);
+  padding: 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  pointer-events: none;
+}
+
+.protocol-explainer {
+  background: var(--grey-tile);
+  padding: 30px;
+  min-height: 500px;
+  color: var(--ink);
+}
+
+.protocol-explainer h1 {
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: normal;
+  margin: 10px 0 25px;
+}
+
+.protocol-explainer h2 {
+  font-size: 11px;
+  font-weight: normal;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 25px 0 10px;
+  border-bottom: 1px solid rgba(38,59,143,.2);
+  padding-bottom: 8px;
+}
+
+.protocol-explainer p,
+.protocol-explainer li {
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.protocol-explainer ul {
+  padding-left: 18px;
+}
+
+.protocol-status {
+  display: inline-block;
+  border: 1px solid rgba(38,59,143,.35);
+  padding: 6px 9px;
   font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: .08em;
 }
 
-.read-more {
-  border: none;
-  background: transparent;
-  color: var(--ink);
-  padding: 0;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 10px;
+.country-experiences {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
 }
 
-.empty-state {
-  grid-column: 1 / -1;
-  padding: 40px;
-  text-align: center;
-  color: var(--muted);
+.experience-list-heading {
   font-size: 11px;
-  border: 1px solid var(--line);
-}
-
-.profile-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 20px;
-}
-
-/* FORM AND ABOUT */
-
-section:not(#experiences) {
-  margin: 0 auto 80px;
-  max-width: 900px;
-}
-
-.section-heading {
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 10px 0;
   border-bottom: 1px solid var(--line);
-  padding-bottom: 12px;
-  margin-bottom: 20px;
 }
 
-h2 {
-  font-family: inherit;
-  font-weight: normal;
-  font-size: 17px;
-  letter-spacing: 0.02em;
-  margin: 0;
+.experience-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
 }
 
-.section-note {
-  color: var(--muted);
+.experience-list-card {
+  border: 1px solid var(--line);
+  padding: 12px;
+  background: white;
+  text-align: left;
+  color: var(--ink);
+}
+
+.experience-list-card:hover { background: var(--pale); }
+
+.experience-list-card strong {
+  display: block;
   font-size: 10px;
+  font-weight: normal;
+  margin-bottom: 7px;
 }
 
-.section-intro,
-.about-copy {
-  max-width: 720px;
+.experience-list-card span {
+  display: block;
   color: var(--muted);
-  font-size: 12px;
-  line-height: 1.9;
-  margin: 0 0 25px;
+  font-size: 9px;
+  line-height: 1.6;
 }
 
-.form-container {
-  max-width: 760px;
+.country-add-button {
+  border: 1px solid var(--ink);
+  background: white;
+  color: var(--ink);
+  padding: 16px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-top: 8px;
 }
 
-.form-intro {
+.country-add-button:hover {
+  background: var(--ink);
+  color: white;
+}
+
+/* CONTRIBUTION PAGE */
+
+.form-page {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 25px 0 60px;
+}
+
+.form-page h1 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 10px 0;
+}
+
+.form-page > p {
   color: var(--muted);
   font-size: 11px;
-  line-height: 1.7;
+  line-height: 1.8;
+  margin-bottom: 30px;
 }
 
-.form-group {
-  margin-bottom: 20px;
+.form-subheading {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink);
+  margin: 35px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
 }
+
+.form-group { margin-bottom: 19px; }
 
 .form-group label {
   display: block;
   font-size: 11px;
-  margin: 0 0 8px;
-  color: var(--ink);
+  margin-bottom: 8px;
 }
 
 input, select, textarea {
@@ -325,7 +622,7 @@ input, select, textarea {
   background: white;
   color: var(--ink);
   font-family: inherit;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 textarea {
@@ -333,34 +630,15 @@ textarea {
   resize: vertical;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+input:focus, select:focus, textarea:focus {
   outline: 1px solid var(--ink);
-}
-
-.field-hint {
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.6;
-  margin-top: 7px;
-}
-
-.form-subheading {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--ink);
-  margin: 35px 0 18px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
 }
 
 .consent-row {
   display: flex;
-  align-items: flex-start;
   gap: 10px;
-  margin-top: 25px;
+  align-items: flex-start;
+  margin: 25px 0;
 }
 
 .consent-row input {
@@ -369,21 +647,18 @@ textarea:focus {
 }
 
 .consent-row label {
-  font-size: 11px;
-  line-height: 1.6;
+  font-size: 10px;
+  line-height: 1.7;
 }
 
 .submit-button {
-  margin-top: 22px;
-  padding: 12px 22px;
+  border: 1px solid var(--ink);
   background: var(--ink);
   color: white;
-  border: 1px solid var(--ink);
-  cursor: pointer;
+  padding: 13px 20px;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .submit-button:hover {
@@ -394,20 +669,27 @@ textarea:focus {
 .form-message {
   color: var(--muted);
   font-size: 10px;
-  line-height: 1.6;
+  line-height: 1.7;
   margin-top: 15px;
 }
 
-/* FOOTER */
+/* ABOUT PAGE */
 
-footer {
-  border-top: 1px solid var(--line);
-  padding-top: 20px;
+.about-page {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.about-page h1 {
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.about-page p {
   color: var(--muted);
-  font-size: 10px;
-  text-align: center;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 2;
 }
 
 /* MODAL */
@@ -416,395 +698,721 @@ footer {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 10;
-  background: rgba(25,35,65,0.45);
-  padding: 25px;
-  overflow-y: auto;
+  z-index: 20;
+  background: rgba(20,30,55,.45);
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
-.modal.visible {
-  display: flex;
-}
+.modal.visible { display: flex; }
 
 .modal-content {
   background: white;
   width: 100%;
-  max-width: 720px;
-  padding: 38px;
+  max-width: 650px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 30px;
   position: relative;
-  border: 1px solid var(--line);
 }
 
 .modal-close {
   position: absolute;
-  right: 20px;
-  top: 15px;
+  right: 15px;
+  top: 12px;
   border: 0;
   background: none;
-  font-size: 24px;
   color: var(--ink);
-  cursor: pointer;
+  font-size: 22px;
 }
 
 .modal-content h2 {
+  font-size: 17px;
+  font-weight: normal;
   margin: 12px 0;
-  line-height: 1.5;
 }
 
 .modal-content p {
-  font-size: 12px;
-  line-height: 1.9;
   color: var(--muted);
+  font-size: 11px;
+  line-height: 1.9;
   white-space: pre-line;
 }
 
-@media (max-width: 950px) {
-  .gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* FOOTER */
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 30px;
+  padding: 18px 0 5px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .country-layout {
+    grid-template-columns: 1fr 1.5fr;
+  }
+
+  .country-experiences {
+    grid-column: 1 / -1;
+    min-height: 250px;
+  }
+
+  .experience-list {
+    max-height: 220px;
   }
 }
 
-@media (max-width: 700px) {
-  .page {
-    padding: 5px 15px 45px;
-  }
+@media (max-width: 650px) {
+  .page { padding: 10px; }
 
-  .hero {
+  .home-hero,
+  .home-globe {
     min-height: 430px;
-  }
-
-  .globe-frame {
     height: 430px;
   }
 
-  .navigation {
-    margin-bottom: 35px;
-  }
-
-  .navigation a {
-    font-size: 9px;
-    padding: 14px 5px;
-  }
-
-  .gallery,
-  .profile-gallery {
-    grid-template-columns: 1fr;
-  }
-
-  .filters {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .filter-button {
-    padding: 12px 10px;
+  .home-instructions {
+    top: 10px;
+    left: 5px;
+    max-width: 180px;
     font-size: 9px;
   }
 
-  #countryProfile {
-    padding: 20px;
+  .home-title {
+    top: 10px;
+    right: 5px;
+    font-size: 9px;
   }
 
-  .modal-content {
-    padding: 28px 22px;
+  .home-nav button {
+    font-size: 8px;
+    padding: 13px 3px;
   }
+
+  .protocol-grid,
+  .gallery-page-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .protocol-tile { min-height: 110px; }
+
+  .home-experiences {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .contribute-block { min-height: 210px; }
+
+  .experience-preview { min-height: 210px; }
+
+  .gallery-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .gallery-header p { text-align: left; }
+
+  .country-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .country-map {
+    min-height: 300px;
+    height: 300px;
+  }
+
+  .country-map #globeViz { height: 300px; }
+
+  .protocol-explainer { min-height: 400px; }
+
+  .country-experiences { min-height: 280px; }
+
+  .experience-list { max-height: 230px; }
 }
 </style>
 </head>
 
 <body>
-
 <main class="page">
 
-  <div class="hero">
-    <div class="globe-frame">
-      <div id="globeViz"></div>
+<!-- HOME VIEW -->
+<div id="homeView" class="view active">
+
+  <div class="home-hero">
+    <div class="home-globe">
+      <div class="globe-frame">
+        <div id="globeViz"></div>
+      </div>
+    </div>
+
+    <div class="home-title">Fieldwork Atlas / Global research index</div>
+
+    <div class="home-instructions">
+      <strong>THE ATLAS</strong>
+      <ul>
+        <li>Click a country to view its protocol profile</li>
+        <li>Use the navigation to explore the Atlas</li>
+        <li>Contribute your own research experience</li>
+      </ul>
     </div>
   </div>
 
-  <nav class="navigation">
-    <a href="#contribute">Contribute</a>
-    <a href="#experiences">Explore experiences</a>
-    <a href="#about">About the Atlas</a>
+  <nav class="home-nav">
+    <button onclick="showView('contributeView')">Contribute</button>
+    <button onclick="showView('galleryView')">Protocol gallery</button>
+    <button onclick="showView('aboutView')">About the Atlas</button>
   </nav>
 
-  <div id="countryProfile">
-    <button class="close-profile" onclick="closeProfile()">×</button>
-    <div class="card-type">Country profile / Atlas record</div>
-    <h2 id="profileTitle"></h2>
-    <p id="profileText"></p>
-    <div id="profileExperiences" class="profile-gallery"></div>
+  <section class="home-section">
+    <div class="section-topline">
+      <h2>Recent protocols / 01–14</h2>
+      <button class="text-link" onclick="showView('galleryView')">View all protocols →</button>
+    </div>
+
+    <div class="protocol-grid" id="homeProtocolGrid"></div>
+  </section>
+
+  <section class="home-section">
+    <div class="section-topline">
+      <h2>Fieldwork experiences</h2>
+      <button class="text-link" onclick="showView('galleryView')">Explore →</button>
+    </div>
+
+    <div class="home-experiences">
+      <button class="contribute-block" onclick="showView('contributeView')">
+        <span>Contribute</span>
+        <strong>+</strong>
+      </button>
+
+      <div class="experience-preview" id="homeExperienceList">
+        <button class="experience-preview-item" onclick="openExperience('sample')">
+          <span>Malawi / Research in practice</span>
+          <span>OPEN →</span>
+        </button>
+        <button class="experience-preview-item" onclick="showView('galleryView')">
+          <span>Explore researcher accounts</span>
+          <span>MORE →</span>
+        </button>
+        <button class="experience-add" onclick="showView('contributeView')">
+          Add your experience +
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section">
+    <button class="about-tile" onclick="showView('aboutView')">
+      ABOUT THE ATLAS<br>
+      Why it exists, how it works, research rules and a place to share feedback.
+    </button>
+  </section>
+
+</div>
+
+
+<!-- PROTOCOL GALLERY VIEW -->
+<div id="galleryView" class="view">
+
+  <div class="page-topline">
+    <span class="brand">Fieldwork Atlas</span>
+    <button class="back-link" onclick="showView('homeView')">← Back to atlas</button>
   </div>
 
-  <section id="experiences">
+  <div class="gallery-header">
+    <div>
+      <div class="eyebrow">Global research index / Protocols</div>
+      <h1>Protocol gallery</h1>
+    </div>
+    <p>
+      Browse country-level information about research permissions,
+      institutional requirements and formal processes.
+    </p>
+  </div>
 
-    <div class="filters">
-      <button class="filter-button active" data-filter="all">All records</button>
-      <button class="filter-button" data-filter="permission">Permissions</button>
-      <button class="filter-button" data-filter="experience">Fieldwork</button>
-      <button class="filter-button" data-filter="advice">Advice</button>
-      <button class="filter-button" data-filter="resource">Resources</button>
+  <div class="gallery-page-grid" id="fullProtocolGrid"></div>
+
+  <div class="section-topline">
+    <span class="eyebrow">Have information to add?</span>
+    <button class="small-button" onclick="showView('contributeView')">Add a protocol +</button>
+  </div>
+
+</div>
+
+
+<!-- COUNTRY PROFILE VIEW -->
+<div id="countryView" class="view">
+
+  <div class="page-topline">
+    <span class="brand">Fieldwork Atlas / Country profile</span>
+    <button class="back-link" onclick="showView('galleryView')">← Protocol gallery</button>
+  </div>
+
+  <div class="country-layout">
+
+    <div class="country-map">
+      <div id="globeViz"></div>
+      <div class="country-map-label" id="countryMapLabel">Selected country</div>
     </div>
 
-    <div class="gallery" id="experienceGallery">
+    <div class="protocol-explainer">
+      <div class="eyebrow" id="countryEyebrow">Country protocol / 001</div>
+      <h1 id="countryTitle">Protocol made easy</h1>
+      <span class="protocol-status" id="countryStatus">Demonstration record</span>
 
-      <article class="experience-card" data-type="experience" onclick="openExperience('sample')">
-        <span class="card-type">EXP / 001</span>
-        <div class="country">Malawi</div>
-        <h3>Research in Malawi</h3>
-        <p>
-          Experiences and information about conducting research in Malawi.
-        </p>
-        <div class="card-bottom">
-          <span>Fieldwork record</span>
-          <button class="read-more" onclick="event.stopPropagation(); openExperience('sample')">Open →</button>
-        </div>
-      </article>
+      <h2>Overview</h2>
+      <p id="countryOverview">
+        A plain-language introduction to the research permission process.
+      </p>
 
-      <div class="empty-state" style="display:none" id="emptyGallery">
-        No records in this category yet.
+      <h2>What you need to do</h2>
+      <ul id="countrySteps">
+        <li>Check the relevant research requirements.</li>
+        <li>Identify the responsible authorities.</li>
+        <li>Confirm current procedures before applying.</li>
+      </ul>
+
+      <h2>Institutions and permissions</h2>
+      <p id="countryInstitutions">
+        Institutional information will be added as records are contributed and reviewed.
+      </p>
+
+      <h2>Important notes</h2>
+      <p id="countryNotes">
+        Requirements can change. Check with the relevant authorities before making plans.
+      </p>
+
+      <button class="small-button" onclick="showView('contributeView')">
+        Update this protocol +
+      </button>
+    </div>
+
+    <aside class="country-experiences">
+      <div class="experience-list-heading">Experiences / Field notes</div>
+
+      <div class="experience-list" id="countryExperienceList">
+        <button class="experience-list-card" onclick="openExperience('sample')">
+          <strong>Research in Malawi</strong>
+          <span>First-hand fieldwork account / Demonstration entry</span>
+        </button>
       </div>
 
-    </div>
-  </section>
+      <button class="country-add-button" onclick="showView('contributeView')">
+        Add your experience +
+      </button>
+    </aside>
 
-  <section id="contribute">
+  </div>
 
-    <div class="section-heading">
-      <h2>Contribute to the Atlas</h2>
-      <span class="section-note">/ Submit a fieldwork record</span>
-    </div>
+</div>
 
-    <p class="section-intro">
-      Share the formal details of your research process, or tell a longer
-      story about what happened along the way. You don't need to complete
-      every field to make a useful contribution.
+
+<!-- CONTRIBUTION VIEW -->
+<div id="contributeView" class="view">
+
+  <div class="page-topline">
+    <span class="brand">Fieldwork Atlas / Contribution</span>
+    <button class="back-link" onclick="showView('homeView')">← Back to atlas</button>
+  </div>
+
+  <div class="form-page">
+    <div class="eyebrow">Add to the global research index</div>
+    <h1>Contribute to the Atlas</h1>
+    <p>
+      Share formal information about research permissions, or tell a longer
+      story about what happened during your fieldwork. You do not need to
+      complete every field to make a useful contribution.
     </p>
 
-    <div class="form-container">
-      <form id="contributionForm">
+    <form id="contributionForm">
 
-        <div class="form-subheading">01 / Research details</div>
+      <div class="form-subheading">01 / Contribution type</div>
 
-        <div class="form-group">
-          <label for="contributionType">Contribution type</label>
-          <select id="contributionType" required>
-            <option value="">Choose a contribution type</option>
-            <option value="permission">Research permission information</option>
-            <option value="experience">Personal research experience</option>
-            <option value="advice">Advice for other researchers</option>
-            <option value="resource">Useful resource or document</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="contributionType">What would you like to contribute?</label>
+        <select id="contributionType" required>
+          <option value="">Choose a contribution type</option>
+          <option value="protocol">Research protocol information</option>
+          <option value="experience">Personal research experience</option>
+          <option value="advice">Advice for other researchers</option>
+          <option value="resource">Useful resource or document</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <label for="country">Country</label>
-          <input id="country" type="text" placeholder="Enter country" required>
-        </div>
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input id="country" type="text" placeholder="Enter country" required>
+      </div>
 
-        <div class="form-group">
-          <label for="researchYear">Year of research</label>
-          <input id="researchYear" type="number" min="1900" max="2100" placeholder="e.g. 2026">
-        </div>
+      <div class="form-group">
+        <label for="researchYear">Year of research</label>
+        <input id="researchYear" type="number" min="1900" max="2100" placeholder="e.g. 2026">
+      </div>
 
-        <div class="form-group">
-          <label for="discipline">Research discipline</label>
-          <input id="discipline" type="text" placeholder="e.g. Geography, anthropology, public health">
-        </div>
+      <div class="form-group">
+        <label for="discipline">Research discipline</label>
+        <input id="discipline" type="text" placeholder="e.g. Geography, anthropology, public health">
+      </div>
 
-        <div class="form-group">
-          <label for="researchType">Type of research</label>
-          <input id="researchType" type="text" placeholder="e.g. PhD fieldwork, clinical research, consultancy">
-        </div>
+      <div class="form-group">
+        <label for="researchType">Type of research</label>
+        <input id="researchType" type="text" placeholder="e.g. PhD fieldwork, clinical research, consultancy">
+      </div>
 
-        <div class="form-subheading">02 / Permission process</div>
+      <div class="form-subheading">02 / Formal protocol information</div>
 
-        <div class="form-group">
-          <label for="authority">Authority or institution</label>
-          <textarea id="authority" placeholder="List the relevant institutions, authorities or committees."></textarea>
-        </div>
+      <div class="form-group">
+        <label for="authority">Which authorities or institutions were involved?</label>
+        <textarea id="authority" placeholder="List relevant institutions, authorities or committees."></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="permissionDuration">Duration of process</label>
-          <input id="permissionDuration" type="text" placeholder="e.g. 3 months">
-        </div>
+      <div class="form-group">
+        <label for="permissionDuration">How long did the process take?</label>
+        <input id="permissionDuration" type="text" placeholder="e.g. 3 months">
+      </div>
 
-        <div class="form-group">
-          <label for="permissionOutcome">Outcome</label>
-          <select id="permissionOutcome">
-            <option value="">Select an outcome</option>
-            <option>Approved</option>
-            <option>Approved with conditions</option>
-            <option>Rejected</option>
-            <option>Still waiting</option>
-            <option>Withdrawn</option>
-            <option>Other / not applicable</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label for="permissionOutcome">What was the outcome?</label>
+        <select id="permissionOutcome">
+          <option value="">Select an outcome</option>
+          <option>Approved</option>
+          <option>Approved with conditions</option>
+          <option>Rejected</option>
+          <option>Still waiting</option>
+          <option>Withdrawn</option>
+          <option>Other / not applicable</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <label for="permissionCost">Costs (optional)</label>
-          <input id="permissionCost" type="text" placeholder="Include currency if known">
-        </div>
+      <div class="form-group">
+        <label for="permissionCost">Costs (optional)</label>
+        <input id="permissionCost" type="text" placeholder="Include currency if known">
+      </div>
 
-        <div class="form-subheading">03 / Fieldwork account</div>
+      <div class="form-group">
+        <label for="protocolSummary">Explain the protocol in plain language</label>
+        <textarea id="protocolSummary" placeholder="What does another researcher need to know?"></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="title">Record title</label>
-          <input id="title" type="text" placeholder="e.g. Getting research approval in Malawi" required>
-        </div>
+      <div class="form-subheading">03 / Personal fieldwork experience</div>
 
-        <div class="form-group">
-          <label for="summary">Short introduction</label>
-          <textarea id="summary" placeholder="What is your contribution about?" required></textarea>
-        </div>
+      <div class="form-group">
+        <label for="title">Title of your contribution</label>
+        <input id="title" type="text" placeholder="Give your contribution a title" required>
+      </div>
 
-        <div class="form-group">
-          <label for="experience">Full account</label>
-          <textarea id="experience" style="min-height:240px" placeholder="What happened? What surprised you? What was difficult? Who helped? What would you want another researcher to know?"></textarea>
-          <div class="field-hint">
-            A few paragraphs or a more detailed account are both welcome.
-          </div>
-        </div>
+      <div class="form-group">
+        <label for="summary">Short introduction</label>
+        <textarea id="summary" placeholder="What is your contribution about?" required></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="advice">Advice for other researchers</label>
-          <textarea id="advice" placeholder="Anything you wish you had known beforehand?"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="experience">Your full account</label>
+        <textarea id="experience" style="min-height:220px" placeholder="What happened? What surprised you? What was difficult? What would you want another researcher to know?"></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="source">Useful links or documents</label>
-          <textarea id="source" placeholder="Add links to publicly shareable resources."></textarea>
-        </div>
+      <div class="form-group">
+        <label for="advice">Advice for other researchers</label>
+        <textarea id="advice" placeholder="Anything you wish you had known beforehand?"></textarea>
+      </div>
 
-        <div class="form-subheading">04 / Contributor details</div>
+      <div class="form-group">
+        <label for="source">Useful links or documents</label>
+        <textarea id="source" placeholder="Add publicly shareable resources."></textarea>
+      </div>
 
-        <div class="form-group">
-          <label for="contributorName">Name (optional)</label>
-          <input id="contributorName" type="text" placeholder="Leave blank to contribute anonymously">
-        </div>
+      <div class="form-subheading">04 / Contributor details</div>
 
-        <div class="form-group">
-          <label for="email">Email (optional, kept private)</label>
-          <input id="email" type="email" placeholder="Your email address">
-        </div>
+      <div class="form-group">
+        <label for="contributorName">Name (optional)</label>
+        <input id="contributorName" type="text" placeholder="Leave blank to contribute anonymously">
+      </div>
 
-        <div class="consent-row">
-          <input id="consent" type="checkbox" required>
-          <label for="consent">
-            I consent to this contribution being reviewed for possible publication
-            on the Atlas. I understand that identifying or sensitive information
-            may be removed before publication.
-          </label>
-        </div>
+      <div class="form-group">
+        <label for="email">Email (optional, kept private)</label>
+        <input id="email" type="email" placeholder="Your email address">
+      </div>
 
-        <button class="submit-button" type="submit">Submit record →</button>
+      <div class="consent-row">
+        <input id="consent" type="checkbox" required>
+        <label for="consent">
+          I consent to this contribution being reviewed for possible publication
+          on the Atlas. I understand identifying or sensitive information may
+          be removed before publication.
+        </label>
+      </div>
 
-        <p class="form-message" id="formMessage">
-          Prototype form / Not yet connected to the Atlas database.
-          Please do not submit confidential or sensitive information.
-        </p>
+      <button class="submit-button" type="submit">Submit contribution →</button>
 
-      </form>
-    </div>
-  </section>
-
-  <section id="about">
-    <div class="section-heading">
-      <h2>About the Atlas</h2>
-    </div>
-
-    <div class="about-copy">
-      <p>
-        The Fieldwork Atlas is a collaborative resource bringing together
-        information and experiences about conducting research around the world.
+      <p class="form-message" id="formMessage">
+        Prototype form / Not connected to the database yet.
+        Please do not submit confidential or sensitive information.
       </p>
 
-      <p>
-        It aims to make research processes more transparent by sharing
-        knowledge about permissions, institutions, practical experiences
-        and the realities of fieldwork.
-      </p>
+    </form>
+  </div>
 
-      <p>
-        The Atlas combines structured information about research requirements
-        with first-hand accounts from people who have undertaken research.
-        Because knowing what the rules say is not always the same as knowing
-        what happens in practice.
-      </p>
-    </div>
-  </section>
+</div>
 
-  <footer>
-    Fieldwork Atlas / A collaborative research resource
-  </footer>
+
+<!-- ABOUT VIEW -->
+<div id="aboutView" class="view">
+
+  <div class="page-topline">
+    <span class="brand">Fieldwork Atlas / About</span>
+    <button class="back-link" onclick="showView('homeView')">← Back to atlas</button>
+  </div>
+
+  <div class="about-page">
+    <div class="eyebrow">About this project</div>
+    <h1>The Fieldwork Atlas</h1>
+
+    <p>
+      The Fieldwork Atlas is a collaborative resource bringing together
+      information and experiences about conducting research around the world.
+    </p>
+
+    <p>
+      Research permissions can be difficult to navigate. Requirements may be
+      spread across multiple institutions, processes can change, and the
+      experience of applying does not always match the official guidance.
+    </p>
+
+    <p>
+      The Atlas brings together two kinds of knowledge: structured information
+      about formal research protocols, and first-hand accounts from researchers
+      who have gone through those processes.
+    </p>
+
+    <p>
+      The aim is to make research processes more transparent, accessible and
+      easier to navigate.
+    </p>
+
+    <p>
+      This is a collaborative resource. Contributions are reviewed before
+      publication, and personal or sensitive information should not be shared.
+    </p>
+
+    <button class="small-button" onclick="showView('contributeView')">
+      Contribute to the Atlas +
+    </button>
+  </div>
+
+</div>
+
+<footer>Fieldwork Atlas / A collaborative research resource</footer>
 
 </main>
 
+
+<!-- EXPERIENCE MODAL -->
 <div class="modal" id="experienceModal" onclick="closeModalOutside(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeExperience()">×</button>
-    <div class="country" id="modalCountry"></div>
+    <div class="eyebrow" id="modalCountry"></div>
     <h2 id="modalTitle"></h2>
     <p id="modalBody"></p>
   </div>
 </div>
 
+
 <script>
 
-/* COUNTRY PROFILES */
+/* --------------------------------------------------
+   SAMPLE ATLAS CONTENT
+   Add approved protocol records here as the Atlas grows.
+-------------------------------------------------- */
 
-const profiles = {
-  "Malawi": {
-    title: "Malawi",
-    text: "Explore research permissions, institutional processes and fieldwork experiences in Malawi."
+const protocols = [
+  {
+    id: "malawi",
+    country: "Malawi",
+    code: "MW",
+    title: "Research in Malawi",
+    updated: "Demonstration record",
+    status: "Demonstration record",
+    overview: "This is a demonstration country profile. It will provide a plain-language guide to the formal requirements and institutional processes involved in conducting research in Malawi.",
+    steps: [
+      "Identify the relevant national research approval requirements.",
+      "Check whether institutional or sector-specific permissions are also required.",
+      "Confirm current application procedures and fees with the relevant authorities.",
+      "Allow time for local review and any additional clearances."
+    ],
+    institutions: "Institutional names, application details and links will be added when the information has been verified and reviewed.",
+    notes: "This is a placeholder, not official guidance. Always confirm current requirements with the relevant authorities."
   }
-};
+];
 
-/* SAMPLE EXPERIENCE */
-
-const experienceEntries = {
+const experiences = {
   sample: {
     country: "Malawi",
     title: "Research in Malawi",
-    text: "This is a placeholder entry. As researchers contribute to the Atlas, longer first-hand accounts will appear here alongside practical information about research permissions and fieldwork."
+    text: "This is a demonstration fieldwork account. The Atlas will host longer first-hand accounts alongside formal information about research permissions. Researchers will be able to describe what happened in practice, what surprised them, what was difficult and what they would recommend to others."
   }
 };
 
-function openProfile(countryName) {
-  const profile = profiles[countryName];
-  const panel = document.getElementById("countryProfile");
 
-  document.getElementById("profileTitle").textContent =
-    profile ? profile.title : countryName;
+/* --------------------------------------------------
+   VIEW NAVIGATION
+-------------------------------------------------- */
 
-  document.getElementById("profileText").textContent =
-    profile
-      ? profile.text
-      : "There is not yet a published profile for this country. You can contribute your experience to help build the Atlas.";
+function showView(viewId) {
+  document.querySelectorAll(".view").forEach(view => {
+    view.classList.remove("active");
+  });
 
-  document.getElementById("profileExperiences").innerHTML =
-    "<p>Experiences from this country will appear here as contributions are approved.</p>";
+  document.getElementById(viewId).classList.add("active");
 
-  panel.style.display = "block";
-  panel.scrollIntoView({ behavior: "smooth", block: "center" });
+  window.scrollTo({ top: 0, behavior: "instant" });
+
+  if (world) {
+    setTimeout(resizeGlobe, 100);
+  }
 }
 
-function closeProfile() {
-  document.getElementById("countryProfile").style.display = "none";
+
+/* --------------------------------------------------
+   PROTOCOL TILES
+-------------------------------------------------- */
+
+function makeProtocolTile(protocol) {
+  const button = document.createElement("button");
+  button.className = "protocol-tile";
+
+  button.innerHTML = `
+    <span class="eyebrow">${protocol.code || "ATLAS"}</span>
+    <span class="tile-country">${protocol.country}</span>
+    <span class="tile-meta">${protocol.updated || "Protocol record"}<br>Open country profile →</span>
+  `;
+
+  button.addEventListener("click", () => openCountry(protocol.id));
+  return button;
 }
 
-/* EXPERIENCE READING WINDOW */
+function renderProtocolGrids() {
+  const homeGrid = document.getElementById("homeProtocolGrid");
+  const fullGrid = document.getElementById("fullProtocolGrid");
+
+  homeGrid.innerHTML = "";
+  fullGrid.innerHTML = "";
+
+  const recent = protocols.slice(0, 14);
+
+  recent.forEach(protocol => {
+    homeGrid.appendChild(makeProtocolTile(protocol));
+    fullGrid.appendChild(makeProtocolTile(protocol));
+  });
+
+  const addTile = document.createElement("button");
+  addTile.className = "protocol-tile add-tile";
+  addTile.innerHTML = `
+    <span>CONTRIBUTE</span>
+    <span class="plus">+</span>
+  `;
+  addTile.addEventListener("click", () => showView("contributeView"));
+
+  homeGrid.appendChild(addTile.cloneNode(true));
+  homeGrid.lastElementChild.addEventListener("click", () => showView("contributeView"));
+
+  fullGrid.appendChild(addTile);
+}
+
+
+/* --------------------------------------------------
+   COUNTRY PROFILES
+-------------------------------------------------- */
+
+function openCountry(countryId) {
+  const protocol = protocols.find(item => item.id === countryId);
+
+  if (!protocol) return;
+
+  document.getElementById("countryTitle").textContent =
+    protocol.title || protocol.country;
+
+  document.getElementById("countryEyebrow").textContent =
+    "Country protocol / " + (protocol.code || "Atlas");
+
+  document.getElementById("countryStatus").textContent =
+    protocol.status || "Information record";
+
+  document.getElementById("countryOverview").textContent =
+    protocol.overview || "No overview has been added yet.";
+
+  document.getElementById("countryInstitutions").textContent =
+    protocol.institutions || "No institutional information has been added yet.";
+
+  document.getElementById("countryNotes").textContent =
+    protocol.notes || "Check current requirements with the relevant authorities.";
+
+  const steps = document.getElementById("countrySteps");
+  steps.innerHTML = "";
+
+  (protocol.steps || []).forEach(step => {
+    const li = document.createElement("li");
+    li.textContent = step;
+    steps.appendChild(li);
+  });
+
+  document.getElementById("countryMapLabel").textContent =
+    protocol.country;
+
+  const list = document.getElementById("countryExperienceList");
+  list.innerHTML = "";
+
+  const matchingExperiences = Object.entries(experiences)
+    .filter(([id, item]) => item.country === protocol.country);
+
+  if (matchingExperiences.length === 0) {
+    list.innerHTML = '<div class="eyebrow">No experiences published yet.</div>';
+  } else {
+    matchingExperiences.forEach(([id, item]) => {
+      const card = document.createElement("button");
+      card.className = "experience-list-card";
+
+      const title = document.createElement("strong");
+      title.textContent = item.title;
+
+      const description = document.createElement("span");
+      description.textContent = "First-hand fieldwork account";
+
+      card.append(title, description);
+      card.addEventListener("click", () => openExperience(id));
+      list.appendChild(card);
+    });
+  }
+
+  showView("countryView");
+  rotateGlobeToCountry(protocol.country);
+}
+
+
+/* --------------------------------------------------
+   EXPERIENCE MODAL
+-------------------------------------------------- */
 
 function openExperience(id) {
-  const entry = experienceEntries[id];
+  const entry = experiences[id];
   if (!entry) return;
 
-  document.getElementById("modalCountry").textContent = entry.country;
-  document.getElementById("modalTitle").textContent = entry.title;
-  document.getElementById("modalBody").textContent = entry.text;
+  document.getElementById("modalCountry").textContent =
+    entry.country + " / Fieldwork experience";
+
+  document.getElementById("modalTitle").textContent =
+    entry.title;
+
+  document.getElementById("modalBody").textContent =
+    entry.text;
 
   document.getElementById("experienceModal").classList.add("visible");
 }
@@ -819,45 +1427,13 @@ function closeModalOutside(event) {
   }
 }
 
-/* GALLERY FILTERS */
 
-document.querySelectorAll(".filter-button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter-button").forEach(item => {
-      item.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    const filter = button.dataset.filter;
-    const cards = document.querySelectorAll("#experienceGallery .experience-card");
-    let visible = 0;
-
-    cards.forEach(card => {
-      const type = card.dataset.type || "experience";
-      const show = filter === "all" || type === filter;
-      card.style.display = show ? "flex" : "none";
-      if (show) visible++;
-    });
-
-    document.getElementById("emptyGallery").style.display =
-      visible === 0 ? "block" : "none";
-  });
-});
-
-/* CONTRIBUTION FORM */
+/* --------------------------------------------------
+   CONTRIBUTION FORM
+-------------------------------------------------- */
 
 document.getElementById("contributionForm").addEventListener("submit", event => {
   event.preventDefault();
-
-  const consent = document.getElementById("consent").checked;
-  const message = document.getElementById("formMessage");
-
-  if (!consent) {
-    message.textContent =
-      "Please confirm that you consent to your contribution being reviewed.";
-    return;
-  }
 
   const submission = {
     type: document.getElementById("contributionType").value,
@@ -869,6 +1445,7 @@ document.getElementById("contributionForm").addEventListener("submit", event => 
     duration: document.getElementById("permissionDuration").value,
     outcome: document.getElementById("permissionOutcome").value,
     cost: document.getElementById("permissionCost").value,
+    protocolSummary: document.getElementById("protocolSummary").value,
     title: document.getElementById("title").value,
     summary: document.getElementById("summary").value,
     experience: document.getElementById("experience").value,
@@ -880,17 +1457,93 @@ document.getElementById("contributionForm").addEventListener("submit", event => 
 
   console.log("Atlas submission prototype:", submission);
 
-  message.textContent =
-    "Thank you for contributing. The form is not connected to the database yet, so your information has not been saved.";
+  document.getElementById("formMessage").textContent =
+    "Thank you. This prototype is not connected to the database, so your contribution has not been saved.";
 });
 
-/* GLOBE: KEEPING THE WORKING IMPLEMENTATION */
+
+/* --------------------------------------------------
+   GLOBE
+-------------------------------------------------- */
+
+let world = null;
+let countryFeatures = [];
+
+function getCountryCentre(feature) {
+  const coordinates = [];
+
+  function collect(coords) {
+    if (!Array.isArray(coords)) return;
+
+    if (
+      coords.length >= 2 &&
+      typeof coords[0] === "number" &&
+      typeof coords[1] === "number"
+    ) {
+      coordinates.push(coords);
+    } else {
+      coords.forEach(collect);
+    }
+  }
+
+  collect(feature.geometry.coordinates);
+
+  if (!coordinates.length) return { lat: 0, lng: 0 };
+
+  let lng = 0;
+  let lat = 0;
+
+  coordinates.forEach(point => {
+    lng += point[0];
+    lat += point[1];
+  });
+
+  return {
+    lat: lat / coordinates.length,
+    lng: lng / coordinates.length
+  };
+}
+
+function rotateGlobeToCountry(countryName) {
+  if (!world) return;
+
+  const feature = countryFeatures.find(item =>
+    item.properties.name.toLowerCase() === countryName.toLowerCase()
+  );
+
+  if (!feature) return;
+
+  const centre = getCountryCentre(feature);
+
+  world.pointOfView({
+    lat: centre.lat,
+    lng: centre.lng,
+    altitude: 1.7
+  }, 1000);
+
+  world.polygonCapColor(featureItem => {
+    if (featureItem.properties.name === countryName) {
+      return "rgba(181,198,176,0.98)";
+    }
+    return "#ffffff";
+  });
+}
+
+function resizeGlobe() {
+  if (!world) return;
+
+  const element = document.getElementById("globeViz");
+  if (!element || !element.clientWidth || !element.clientHeight) return;
+
+  world
+    .width(element.clientWidth)
+    .height(element.clientHeight);
+}
 
 window.addEventListener("load", async () => {
-
   const globeElement = document.getElementById("globeViz");
 
-  const world = Globe()(globeElement)
+  world = Globe()(globeElement)
     .width(globeElement.clientWidth)
     .height(globeElement.clientHeight)
     .backgroundColor("rgba(255,255,255,0)")
@@ -905,37 +1558,41 @@ window.addEventListener("load", async () => {
     .showGraticules(false)
     .polygonAltitude(0.006)
     .polygonCapColor(feature => {
-      const name = feature.properties.name;
-
-      return name === "Malawi"
-        ? "rgba(181,198,176,0.95)"
+      return feature.properties.name === "Malawi"
+        ? "rgba(181,198,176,0.98)"
         : "#ffffff";
     })
     .polygonSideColor(() => "rgba(255,255,255,0)")
     .polygonStrokeColor(() => "#DCEAF2")
     .polygonLabel(feature => feature.properties.name)
     .onPolygonClick(feature => {
-      openProfile(feature.properties.name);
+      const countryName = feature.properties.name;
+      const match = protocols.find(item =>
+        item.country.toLowerCase() === countryName.toLowerCase()
+      );
+
+      if (match) {
+        openCountry(match.id);
+      } else {
+        createCountryProfile(countryName);
+      }
     });
 
   try {
-
     const response = await fetch(
       "https://unpkg.com/world-atlas@2/countries-110m.json"
     );
 
-    if (!response.ok) {
-      throw new Error("Could not load country data");
-    }
+    if (!response.ok) throw new Error("Country data unavailable");
 
     const worldData = await response.json();
 
-    const countries = topojson.feature(
+    countryFeatures = topojson.feature(
       worldData,
       worldData.objects.countries
     ).features;
 
-    world.polygonsData(countries);
+    world.polygonsData(countryFeatures);
 
     world.pointOfView({
       lat: -3,
@@ -944,16 +1601,58 @@ window.addEventListener("load", async () => {
     });
 
   } catch (error) {
-    console.error("Globe country data could not be loaded:", error);
+    console.error("Could not load country data:", error);
   }
 
-  window.addEventListener("resize", () => {
-    world
-      .width(globeElement.clientWidth)
-      .height(globeElement.clientHeight);
-  });
+  renderProtocolGrids();
 
+  window.addEventListener("resize", resizeGlobe);
 });
+
+
+/* --------------------------------------------------
+   COUNTRY WITHOUT A PROTOCOL RECORD
+-------------------------------------------------- */
+
+function createCountryProfile(countryName) {
+  const existing = protocols.find(item =>
+    item.country.toLowerCase() === countryName.toLowerCase()
+  );
+
+  if (existing) {
+    openCountry(existing.id);
+    return;
+  }
+
+  document.getElementById("countryTitle").textContent =
+    countryName + " / Protocol profile";
+
+  document.getElementById("countryEyebrow").textContent =
+    "Country profile / No published protocol";
+
+  document.getElementById("countryStatus").textContent =
+    "Awaiting contribution";
+
+  document.getElementById("countryOverview").textContent =
+    "There is not yet a published research protocol for " + countryName + ". This profile can be developed through contributions from researchers who have undertaken research here.";
+
+  document.getElementById("countrySteps").innerHTML =
+    "<li>No verified steps have been added yet.</li>";
+
+  document.getElementById("countryInstitutions").textContent =
+    "Institutional information has not yet been contributed or reviewed.";
+
+  document.getElementById("countryNotes").textContent =
+    "Do not treat this empty profile as an indication that no permissions are required. Check with the relevant authorities.";
+
+  document.getElementById("countryMapLabel").textContent = countryName;
+
+  document.getElementById("countryExperienceList").innerHTML =
+    '<div class="eyebrow">No experiences published yet.</div>';
+
+  showView("countryView");
+  rotateGlobeToCountry(countryName);
+}
 
 </script>
 
