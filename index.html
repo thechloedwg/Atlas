@@ -24,6 +24,10 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       background: var(--white);
@@ -39,22 +43,37 @@
     .page {
       max-width: 1440px;
       margin: 0 auto;
-      padding: 20px 42px 80px;
+      padding: 0 42px 80px;
     }
 
-    /* GLOBE */
+    /* HERO AND GLOBE */
 
     .hero {
-      width: 100%;
+      position: relative;
+      width: calc(100% + 84px);
+      margin-left: -42px;
       min-height: 660px;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
+
+      background-color: #f0f3f8;
+
+      background-image:
+        repeating-radial-gradient(
+          ellipse at 50% 50%,
+          transparent 0,
+          transparent 35px,
+          rgba(38,59,143,0.035) 36px,
+          transparent 37px,
+          transparent 65px
+        );
     }
 
     .globe-frame {
       position: relative;
+      z-index: 1;
       width: min(100%, 760px);
       height: 660px;
       display: flex;
@@ -81,7 +100,7 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin: 0 auto 55px;
+      margin: 0 auto 75px;
       padding: 26px 0;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
@@ -101,7 +120,7 @@
       color: white;
     }
 
-    /* SECTIONS */
+    /* GENERAL SECTIONS */
 
     section {
       margin: 0 auto 90px;
@@ -268,12 +287,16 @@
       text-align: center;
     }
 
+    /* MOBILE */
+
     @media (max-width: 700px) {
       .page {
-        padding: 10px 18px 50px;
+        padding: 0 18px 50px;
       }
 
       .hero {
+        width: calc(100% + 36px);
+        margin-left: -18px;
         min-height: 430px;
       }
 
@@ -282,8 +305,9 @@
       }
 
       .navigation {
-        margin-bottom: 45px;
+        margin-bottom: 55px;
         gap: 8px;
+        padding: 20px 0;
       }
 
       .navigation a {
@@ -310,24 +334,28 @@
 <body>
   <main class="page">
 
+    <!-- HERO GLOBE -->
     <div class="hero">
       <div class="globe-frame">
         <div id="globeViz"></div>
       </div>
     </div>
 
+    <!-- NAVIGATION -->
     <nav class="navigation">
       <a href="#contribute">+ Contribute</a>
       <a href="#experiences">Explore experiences</a>
       <a href="#about">About the Atlas</a>
     </nav>
 
+    <!-- COUNTRY PROFILE -->
     <div id="countryProfile">
       <button class="close-profile" onclick="closeProfile()">×</button>
       <h2 id="profileTitle"></h2>
       <p id="profileText"></p>
     </div>
 
+    <!-- EXPERIENCES -->
     <section id="experiences">
       <div class="section-heading">
         <h2>Fieldwork experiences</h2>
@@ -343,6 +371,7 @@
       </div>
     </section>
 
+    <!-- CONTRIBUTION FORM -->
     <section id="contribute">
       <div class="section-heading">
         <h2>Contribute to the Atlas</h2>
@@ -373,11 +402,17 @@
         <input id="email" type="email" placeholder="Your email address">
 
         <label>
-          <input id="consent" type="checkbox" style="width:auto; margin-right:8px;">
+          <input
+            id="consent"
+            type="checkbox"
+            style="width:auto; margin-right:8px;"
+          >
           I consent to this contribution being reviewed for possible publication on the Atlas.
         </label>
 
-        <button class="submit-button" onclick="submitContribution()">Submit contribution</button>
+        <button class="submit-button" onclick="submitContribution()">
+          Submit contribution
+        </button>
 
         <p class="form-message" id="formMessage">
           This is a demonstration form and is not yet connected to the Atlas database.
@@ -386,6 +421,7 @@
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about">
       <div class="section-heading">
         <h2>About the Atlas</h2>
@@ -431,7 +467,10 @@
           : "There is not yet a published profile for this country. You can contribute your experience to help build the Atlas.";
 
       panel.style.display = "block";
-      panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      panel.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     }
 
     function closeProfile() {
@@ -461,15 +500,18 @@
         .width(globeElement.clientWidth)
         .height(globeElement.clientHeight)
 
-        // White ocean surface
+        // Transparent scene background
         .backgroundColor("rgba(255,255,255,0)")
+
+        // White texture across the entire globe
         .globeImageUrl(
           "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2048' height='1024'%3E%3Crect width='2048' height='1024' fill='white'/%3E%3C/svg%3E"
         )
+
         .showGlobe(true)
         .showAtmosphere(false)
 
-        // Latitude and longitude linework
+        // Latitude and longitude lines
         .showGraticules(true)
         .graticulesMaterial(
           new THREE.LineBasicMaterial({
@@ -484,16 +526,18 @@
           feature === hoveredCountry ? 0.012 : 0.006
         )
 
+        // Malawi highlight and white land elsewhere
         .polygonCapColor(feature => {
           if (feature.properties.name === "Malawi") {
             return "rgba(181,198,176,0.95)";
           }
+
           return "rgba(255,255,255,0.95)";
         })
 
         .polygonSideColor(() => "rgba(255,255,255,0)")
 
-        // Blue country borders, stronger on hover
+        // Blue linework, stronger on hover
         .polygonStrokeColor(feature =>
           feature === hoveredCountry ? "#263B8F" : "#aebbd5"
         )
@@ -502,7 +546,8 @@
 
         .onPolygonHover(feature => {
           hoveredCountry = feature || null;
-          document.body.style.cursor = feature ? "pointer" : "default";
+          document.body.style.cursor =
+            feature ? "pointer" : "default";
         })
 
         .onPolygonClick(feature => {
@@ -534,7 +579,10 @@
         });
 
       } catch (error) {
-        console.error("Globe country data could not be loaded:", error);
+        console.error(
+          "Globe country data could not be loaded:",
+          error
+        );
       }
 
       window.addEventListener("resize", () => {
