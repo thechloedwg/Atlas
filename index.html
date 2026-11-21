@@ -1339,12 +1339,15 @@ function closeModalOutside(event) {
   }
 }
 
+
 /* CONTRIBUTION FORM — GOOGLE SHEETS */
+
+const ATLAS_API_URL = "https://script.google.com/macros/s/AKfycbwlbNgi_qXZTueXo2vT133RcE9iotf95LrTwyVL_LHuic-vRBKYja-jaMjnsFgZUigN/exec";
 
 const contributionForm = document.getElementById("contributionForm");
 
 if (contributionForm) {
-  contributionForm.addEventListener("submit", event => {
+  contributionForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
     const formMessage = document.getElementById("formMessage");
@@ -1352,9 +1355,11 @@ if (contributionForm) {
       'button[type="submit"]'
     );
 
+    if (!contributionForm.reportValidity()) return;
+
     const submission = {
       type: document.getElementById("contributionType").value,
-      country: document.getElementById("country").value,
+      country: document.getElementById("country").value.trim(),
       year: document.getElementById("researchYear").value,
       discipline: document.getElementById("discipline").value,
       researchType: document.getElementById("researchType").value,
@@ -1363,8 +1368,8 @@ if (contributionForm) {
       outcome: document.getElementById("permissionOutcome").value,
       cost: document.getElementById("permissionCost").value,
       protocolSummary: document.getElementById("protocolSummary").value,
-      title: document.getElementById("title").value,
-      summary: document.getElementById("summary").value,
+      title: document.getElementById("title").value.trim(),
+      summary: document.getElementById("summary").value.trim(),
       experience: document.getElementById("experience").value,
       advice: document.getElementById("advice").value,
       source: document.getElementById("source").value,
@@ -1374,57 +1379,72 @@ if (contributionForm) {
 
     if (submitButton) submitButton.disabled = true;
 
-    if (formMessage) {
-      formMessage.textContent = "Submitting your contribution...";
+    formMessage.textContent = "Sending your contribution...";
+
+    const iframeName = "atlasSubmissionFrame_" + Date.now();
+
+    const iframe = document.createElement("iframe");
+    iframe.name = iframeName;
+    iframe.style.display = "none";
+
+    const postForm = document.createElement("form");
+    postForm.method = "POST";
+    postForm.action = ATLAS_API_URL;
+    postForm.target = iframeName;
+    postForm.style.display = "none";
+
+    const payloadInput = document.createElement("input");
+    payloadInput.type = "hidden";
+    payloadInput.name = "payload";
+    payloadInput.value = JSON.stringify(submission);
+
+    postForm.appendChild(payloadInput);
+
+    let completed = false;
+    let timeout;
+
+    function cleanup() {
+      if (completed) return;
+      completed = true;
+
+      clearTimeout(timeout);
+
+      if (iframe.parentNode) iframe.remove();
+      if (postForm.parentNode) postForm.remove();
+
+      if (submitButton) submitButton.disabled = false;
     }
 
-    const callbackName =
-      "atlasSubmit_" + Date.now() + "_" +
-      Math.random().toString(36).slice(2);
-
-    const script = document.createElement("script");
-
-    const cleanup = () => {
-      delete window[callbackName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-      if (submitButton) submitButton.disabled = false;
-    };
-
-    window[callbackName] = response => {
+    function handleResponse() {
       cleanup();
 
-      if (response && response.success) {
-        if (formMessage) {
-          formMessage.textContent =
-            "Thank you! Your contribution has been submitted for review.";
-        }
+      formMessage.textContent =
+        "Your contribution has been sent to the Atlas. It should appear in the Submissions sheet with Pending status, ready for review.";
 
-        contributionForm.reset();
-      } else {
-        if (formMessage) {
-          formMessage.textContent =
-            "Sorry, your contribution could not be submitted. Please try again.";
-        }
-      }
-    };
+      contributionForm.reset();
+    }
 
-    script.onerror = () => {
+    // Wait for the iframe to load before sending the POST.
+    iframe.addEventListener("load", function initialLoad() {
+      iframe.removeEventListener("load", initialLoad);
+
+      iframe.addEventListener("load", handleResponse, { once: true });
+
+      postForm.submit();
+    });
+
+    document.body.appendChild(iframe);
+    document.body.appendChild(postForm);
+
+    // Avoid leaving the form stuck indefinitely.
+    timeout = setTimeout(function() {
+      if (completed) return;
+
       cleanup();
 
-      if (formMessage) {
-        formMessage.textContent =
-          "There was a connection problem. Please try again.";
-      }
-    };
-
-    const payload = encodeURIComponent(JSON.stringify(submission));
-
-    script.src =
-      ATLAS_API_URL +
-      "?action=submit&data=" + payload +
-      "&callback=" + callbackName;
-
-    document.body.appendChild(script);
+      formMessage.textContent =
+        "We could not confirm the submission. Please check the Submissions sheet before trying again, to avoid sending a duplicate.";
+    }, 25000);
   });
 }
 
