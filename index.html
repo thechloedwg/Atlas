@@ -1,21 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Fieldwork Atlas</title>
 
-  <!-- Leaflet map styling -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  >
+  <!-- Globe libraries -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
 
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -31,7 +36,7 @@
       margin: 0 auto;
     }
 
-    /* Header */
+    /* HEADER */
 
     header {
       padding: 22px 0;
@@ -56,10 +61,10 @@
       font-size: 14px;
     }
 
-    /* Map hero */
+    /* HERO AND GLOBE */
 
     .hero {
-      padding: 45px 0 35px;
+      padding: 35px 0 25px;
     }
 
     .hero h1 {
@@ -70,19 +75,48 @@
 
     .hero p {
       color: #666666;
-      margin-bottom: 24px;
+      margin-bottom: 10px;
       font-size: 15px;
     }
 
     #map {
       width: 100%;
-      height: 380px;
-      border-radius: 8px;
-      background: #eeeeee;
-      z-index: 1;
+      height: 480px;
+      background: #ffffff;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Action row */
+    .globe-legend {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      padding: 5px 0 20px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: #777777;
+    }
+
+    .legend-colour {
+      width: 11px;
+      height: 11px;
+      border-radius: 2px;
+      background: #A8C5B3;
+    }
+
+    .legend-outline {
+      width: 11px;
+      height: 11px;
+      border: 1px solid #C7CEC9;
+      border-radius: 2px;
+    }
+
+    /* ACTION ROW */
 
     .actions {
       display: grid;
@@ -121,7 +155,7 @@
       font-size: 13px;
     }
 
-    /* Experience gallery */
+    /* EXPERIENCE GALLERY */
 
     .section-heading {
       display: flex;
@@ -152,15 +186,22 @@
       border-radius: 7px;
       overflow: hidden;
       background: #ffffff;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .experience-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 18px rgba(0,0,0,0.06);
     }
 
     .card-image {
       height: 165px;
-      background: #f0f0f0;
+      background: #f5f5f5;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 44px;
+      font-size: 48px;
     }
 
     .card-content {
@@ -194,7 +235,7 @@
       padding-top: 12px;
     }
 
-    /* Submission form */
+    /* SUBMISSION FORM */
 
     #submit-section {
       display: none;
@@ -241,7 +282,9 @@
       font-weight: 600;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 11px;
       border: 1px solid #dddddd;
@@ -254,6 +297,18 @@
     textarea {
       min-height: 110px;
       resize: vertical;
+    }
+
+    .consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-weight: 400;
+    }
+
+    .consent-label input {
+      width: auto;
+      margin-top: 4px;
     }
 
     .submit-button {
@@ -277,7 +332,25 @@
       color: #8a4b32;
     }
 
-    /* Footer */
+    /* ABOUT */
+
+    #about {
+      max-width: 650px;
+      margin-bottom: 65px;
+    }
+
+    #about h2 {
+      font-size: 25px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    #about p {
+      color: #666666;
+      font-size: 14px;
+    }
+
+    /* FOOTER */
 
     footer {
       border-top: 1px solid #eeeeee;
@@ -286,7 +359,7 @@
       font-size: 13px;
     }
 
-    /* Mobile */
+    /* MOBILE */
 
     @media (max-width: 700px) {
       .hero {
@@ -294,7 +367,7 @@
       }
 
       #map {
-        height: 300px;
+        height: 340px;
       }
 
       .actions {
@@ -336,7 +409,8 @@
 
 <body>
 
-  <!-- Header -->
+  <!-- HEADER -->
+
   <header>
     <div class="container header-content">
       <div class="logo">FIELDWORK ATLAS</div>
@@ -346,18 +420,34 @@
 
   <main class="container">
 
-    <!-- Map hero -->
+    <!-- GLOBE HERO -->
+
     <section class="hero">
       <h1>Research, across borders.</h1>
+
       <p>
         Explore research permissions and fieldwork experiences from around the world.
       </p>
 
       <div id="map"></div>
+
+      <div class="globe-legend">
+        <div class="legend-item">
+          <div class="legend-colour"></div>
+          Countries with profiles
+        </div>
+
+        <div class="legend-item">
+          <div class="legend-outline"></div>
+          Other countries
+        </div>
+      </div>
     </section>
 
-    <!-- Action row -->
+    <!-- ACTION ROW -->
+
     <nav class="actions">
+
       <a class="action" href="#submit-section" onclick="showForm()">
         <strong>＋ Share an experience</strong>
         <span>Contribute to the Atlas</span>
@@ -372,21 +462,27 @@
         <strong>About the Atlas</strong>
         <span>What this project is about</span>
       </a>
+
     </nav>
 
-    <!-- Submission form -->
+    <!-- SUBMISSION FORM -->
+
     <section id="submit-section">
+
       <h2>Share your experience</h2>
+
       <p>
         Help other researchers understand the permissions process
         and what to expect when conducting fieldwork.
       </p>
 
       <form id="experience-form">
+
         <div class="form-grid">
 
           <div class="form-field">
             <label for="country">Country *</label>
+
             <input
               id="country"
               name="country"
@@ -398,6 +494,7 @@
 
           <div class="form-field">
             <label for="contribution">What are you sharing? *</label>
+
             <select id="contribution" name="contribution" required>
               <option value="">Select one</option>
               <option>Research permission information</option>
@@ -408,6 +505,7 @@
 
           <div class="form-field">
             <label for="research-type">Research type</label>
+
             <select id="research-type" name="researchType">
               <option value="">Select one</option>
               <option>Social sciences</option>
@@ -425,6 +523,7 @@
 
           <div class="form-field">
             <label for="methodology">Methodology</label>
+
             <select id="methodology" name="methodology">
               <option value="">Select one</option>
               <option>Qualitative</option>
@@ -440,6 +539,7 @@
 
           <div class="form-field">
             <label for="year">Year of application / fieldwork</label>
+
             <input
               id="year"
               name="year"
@@ -452,6 +552,7 @@
 
           <div class="form-field">
             <label for="outcome">Application outcome</label>
+
             <select id="outcome" name="outcome">
               <option value="">Select one</option>
               <option>Approved</option>
@@ -464,6 +565,7 @@
 
           <div class="form-field full">
             <label for="experience">Tell us about your experience *</label>
+
             <textarea
               id="experience"
               name="experience"
@@ -474,6 +576,7 @@
 
           <div class="form-field full">
             <label for="advice">What advice would you give another researcher?</label>
+
             <textarea
               id="advice"
               name="advice"
@@ -483,6 +586,7 @@
 
           <div class="form-field full">
             <label for="links">Useful links or documents</label>
+
             <input
               id="links"
               name="links"
@@ -493,6 +597,7 @@
 
           <div class="form-field">
             <label for="name">Your name (optional)</label>
+
             <input
               id="name"
               name="name"
@@ -503,6 +608,7 @@
 
           <div class="form-field">
             <label for="email">Email (optional, kept private)</label>
+
             <input
               id="email"
               name="email"
@@ -512,13 +618,13 @@
           </div>
 
           <div class="form-field full">
-            <label>
+            <label class="consent-label">
               <input
                 type="checkbox"
                 id="consent"
                 required
-                style="width:auto; margin-right:8px;"
               >
+
               I agree that this contribution may be reviewed for publication
               on the Fieldwork Atlas. *
             </label>
@@ -531,11 +637,14 @@
         </button>
 
         <div id="form-message" role="status"></div>
+
       </form>
     </section>
 
-    <!-- Experience gallery -->
+    <!-- EXPERIENCE GALLERY -->
+
     <section id="experiences">
+
       <div class="section-heading">
         <h2>Fieldwork experiences</h2>
         <p>Explore contributions from researchers</p>
@@ -544,39 +653,48 @@
       <div class="gallery">
 
         <article class="experience-card">
+
           <div class="card-image">🇲🇼</div>
+
           <div class="card-content">
+
             <div class="card-location">Malawi · Africa</div>
+
             <h3>Research permissions in Malawi</h3>
+
             <p>
               A PhD researcher's experience navigating university ethics,
               local research clearance and site permissions.
             </p>
+
             <div class="card-meta">
               Social sciences · Qualitative · 2026
             </div>
+
           </div>
         </article>
-
-        <!-- New approved experiences will appear here later -->
 
       </div>
     </section>
 
-    <!-- About -->
-    <section id="about" style="max-width:650px; margin-bottom:65px;">
-      <h2 style="font-size:25px; font-weight:500; margin-bottom:10px;">
-        About the Atlas
-      </h2>
-      <p style="color:#666666; font-size:14px;">
+    <!-- ABOUT -->
+
+    <section id="about">
+
+      <h2>About the Atlas</h2>
+
+      <p>
         The Fieldwork Atlas is a collaborative resource documenting
         research permissions, approval processes and fieldwork experiences
         around the world. It aims to make the practical realities of
         conducting international research easier to understand.
       </p>
+
     </section>
 
   </main>
+
+  <!-- FOOTER -->
 
   <footer>
     <div class="container">
@@ -584,38 +702,147 @@
     </div>
   </footer>
 
-  <!-- Leaflet map script -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- GLOBE AND PAGE FUNCTIONALITY -->
 
   <script>
-    // Create the world map
-    const map = L.map('map').setView([10, 15], 2);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 18
-    }).addTo(map);
+    // COUNTRIES WITH APPROVED PROFILES
+    // Malawi is currently an example.
+    // Later this list will come from Google Sheets.
 
-    // Example country marker: Malawi
-    const malawi = L.marker([-13.2543, 34.3015]).addTo(map);
+    const profileCountries = ["Malawi"];
 
-    malawi.bindPopup(
-      '<strong>Malawi</strong><br>1 example fieldwork record<br><a href="#experiences" onclick="map.closePopup()">View experience</a>'
-    );
+    // CREATE GLOBE
 
-    // Show the contribution form
-    function showForm() {
-      document.getElementById('submit-section').classList.add('visible');
+    const globeElement = document.getElementById("map");
+
+    const globe = Globe()(globeElement)
+      .backgroundColor("#ffffff")
+      .showAtmosphere(false)
+      .showGraticules(false)
+      .showGlobe(true)
+      .globeMaterial(
+        new THREE.MeshPhongMaterial({
+          color: "#ffffff",
+          shininess: 0
+        })
+      )
+
+      // Country shape height
+      .polygonAltitude(country =>
+        profileCountries.includes(country.properties.name)
+          ? 0.015
+          : 0.001
+      )
+
+      // Country fill
+      .polygonCapColor(country =>
+        profileCountries.includes(country.properties.name)
+          ? "#A8C5B3"
+          : "#FFFFFF"
+      )
+
+      // Country sides
+      .polygonSideColor(() => "#FFFFFF")
+
+      // Country borders
+      .polygonStrokeColor(() => "#C7CEC9")
+
+      .polygonsTransitionDuration(300)
+
+      // Hover colour
+      .onPolygonHover(country => {
+        globe.polygonCapColor(d => {
+          if (d === country) {
+            return "#D5E3DA";
+          }
+
+          return profileCountries.includes(d.properties.name)
+            ? "#A8C5B3"
+            : "#FFFFFF";
+        });
+      });
+
+
+    // LOAD COUNTRY SHAPES
+
+    fetch("https://unpkg.com/world-atlas@2/countries-110m.json")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Could not load map data");
+        }
+
+        return response.json();
+      })
+
+      .then(world => {
+
+        const countries = topojson.feature(
+          world,
+          world.objects.countries
+        ).features;
+
+        globe.polygonsData(countries);
+
+        // Initial view focused on Africa
+        globe.pointOfView(
+          {
+            lat: -3,
+            lng: 20,
+            altitude: 2.2
+          },
+          1000
+        );
+
+      })
+
+      .catch(error => {
+        console.error("Could not load country boundaries:", error);
+      });
+
+
+    // RESPONSIVE GLOBE SIZE
+
+    function resizeGlobe() {
+      globe
+        .width(globeElement.clientWidth)
+        .height(globeElement.clientHeight);
     }
 
-    // Temporary form behaviour until Google Sheets is connected
-    document.getElementById('experience-form').addEventListener('submit', function(event) {
-      event.preventDefault();
+    window.addEventListener("resize", resizeGlobe);
 
-      document.getElementById('form-message').textContent =
-        'The form is ready for testing, but it is not connected to the Atlas database yet. Your contribution has not been sent or saved.';
+    resizeGlobe();
 
-    });
+
+    // SHOW SUBMISSION FORM
+
+    function showForm() {
+
+      const form = document.getElementById("submit-section");
+
+      form.classList.add("visible");
+
+      form.scrollIntoView({
+        behavior: "smooth"
+      });
+
+    }
+
+
+    // TEMPORARY FORM SUBMISSION
+
+    document
+      .getElementById("experience-form")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        document.getElementById("form-message").textContent =
+          "The form is ready for testing, but it is not connected to the database yet. Your contribution has not been sent or saved.";
+
+      });
+
   </script>
 
 </body>
