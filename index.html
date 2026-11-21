@@ -26,7 +26,7 @@
     body {
       font-family: Arial, sans-serif;
       background: #ffffff;
-      color: #222222;
+      color: #252525;
       line-height: 1.5;
     }
 
@@ -39,7 +39,7 @@
     /* HEADER */
 
     header {
-      padding: 19px 0;
+      padding: 20px 0;
       border-bottom: 1px solid #eeeeee;
     }
 
@@ -50,59 +50,58 @@
     }
 
     .logo {
-      font-size: 17px;
-      font-weight: 700;
+      font-family: Georgia, serif;
+      font-size: 21px;
+      font-weight: normal;
       letter-spacing: 1.5px;
+      color: #263B8F;
     }
 
     header a {
-      color: #555555;
+      color: #263B8F;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    /* GLOBE HERO */
+    /* HERO GLOBE */
 
     .hero {
-      padding: 5px 0 0;
+      padding: 12px 0 10px;
     }
 
     #map {
       width: 100%;
-      height: 620px;
+      height: 560px;
       background: #ffffff;
       overflow: hidden;
       position: relative;
     }
 
-    .globe-legend {
-      display: flex;
-      justify-content: center;
-      gap: 22px;
-      padding: 0 0 22px;
+    /* Circular outline */
+
+    #map::after {
+      content: "";
+      position: absolute;
+      width: min(560px, 90%);
+      aspect-ratio: 1 / 1;
+      border: 1px solid #263B8F;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 2;
     }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 11px;
-      color: #777777;
-    }
-
-    .legend-colour {
-      width: 10px;
-      height: 10px;
-      border-radius: 2px;
-      background: #A8C5B3;
-    }
-
-    .legend-outline {
-      width: 10px;
-      height: 10px;
-      border: 1px solid #dddddd;
-      border-radius: 2px;
-      background: #ffffff;
+    .globe-instruction {
+      text-align: center;
+      color: #263B8F;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 22px;
     }
 
     /* NAVIGATION */
@@ -111,61 +110,66 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-wrap: wrap;
       gap: 12px;
+      padding: 18px 0;
       border-top: 1px solid #eeeeee;
       border-bottom: 1px solid #eeeeee;
-      padding: 12px 0;
-      margin-bottom: 55px;
+      margin: 0 0 65px;
     }
 
     .action {
       display: inline-block;
-      padding: 7px 17px;
-      text-decoration: none;
-      color: #444444;
-      font-size: 12px;
-      border: 1px solid #e8e8e8;
+      padding: 8px 18px;
+      border: 1px solid #263B8F;
       border-radius: 30px;
-      transition: all 0.2s;
+      color: #263B8F;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
     }
 
     .action:hover {
-      background: #f3f6f3;
-      border-color: #b8c9bd;
-      color: #285D52;
+      background: #263B8F;
+      color: #ffffff;
     }
 
-    /* GALLERY */
+    /* SECTION HEADINGS */
 
     .section-heading {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .section-heading h2 {
-      font-size: 24px;
-      font-weight: 500;
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: normal;
+      color: #263B8F;
     }
 
     .section-heading p {
       font-size: 12px;
-      color: #888888;
+      color: #777777;
     }
+
+    /* EXPERIENCE GALLERY */
 
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
-      margin-bottom: 65px;
+      margin-bottom: 75px;
     }
 
     .experience-card {
       border: 1px solid #eeeeee;
-      border-radius: 6px;
-      overflow: hidden;
       background: #ffffff;
+      overflow: hidden;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -176,41 +180,42 @@
     }
 
     .card-image {
-      height: 155px;
-      background: #f5f6f4;
+      height: 175px;
+      background: #F4F4F0;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 45px;
+      font-size: 52px;
     }
 
     .card-content {
-      padding: 17px;
+      padding: 19px;
     }
 
     .card-location {
-      color: #888888;
-      font-size: 11px;
+      color: #263B8F;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 7px;
+      letter-spacing: 1.3px;
+      margin-bottom: 8px;
     }
 
     .card-content h3 {
-      font-size: 17px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-family: Georgia, serif;
+      font-size: 21px;
+      font-weight: normal;
+      margin-bottom: 9px;
     }
 
     .card-content p {
       font-size: 13px;
-      color: #777777;
-      margin-bottom: 14px;
+      color: #666666;
+      margin-bottom: 17px;
     }
 
     .card-meta {
       font-size: 11px;
-      color: #999999;
+      color: #888888;
       border-top: 1px solid #eeeeee;
       padding-top: 12px;
     }
@@ -219,75 +224,43 @@
 
     #country-profile {
       display: none;
-      margin-bottom: 65px;
+      padding: 28px;
+      border: 1px solid #263B8F;
+      margin: 0 0 65px;
     }
 
     #country-profile.visible {
       display: block;
     }
 
-    .back-link {
-      display: inline-block;
-      margin-bottom: 25px;
-      font-size: 13px;
-      color: #777777;
-      text-decoration: none;
+    #country-profile h2 {
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: normal;
+      color: #263B8F;
+      margin-bottom: 12px;
     }
 
-    .back-link:hover {
-      color: #285D52;
-    }
-
-    .profile-header {
-      padding: 30px 0;
-      border-bottom: 1px solid #eeeeee;
-      margin-bottom: 25px;
-    }
-
-    .profile-header h2 {
-      font-size: 36px;
-      font-weight: 500;
-      margin-bottom: 5px;
-    }
-
-    .profile-header p {
-      color: #888888;
-      font-size: 13px;
-    }
-
-    .profile-content {
-      max-width: 760px;
-    }
-
-    .profile-content h3 {
-      font-size: 19px;
-      font-weight: 600;
-      margin: 25px 0 10px;
-    }
-
-    .profile-content p {
+    #country-profile p {
       font-size: 14px;
       color: #666666;
       margin-bottom: 12px;
     }
 
-    .profile-status {
-      display: inline-block;
-      background: #edf3ee;
-      color: #476b53;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      margin-top: 12px;
+    .profile-link {
+      color: #263B8F;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
     }
 
-    /* FORM */
+    /* SUBMISSION FORM */
 
     #submit-section {
       display: none;
-      padding: 30px;
-      background: #f8f8f8;
-      border-radius: 7px;
+      padding: 35px;
+      background: #fafafa;
       margin-bottom: 65px;
     }
 
@@ -296,15 +269,17 @@
     }
 
     #submit-section h2 {
-      font-size: 24px;
-      font-weight: 500;
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: normal;
+      color: #263B8F;
       margin-bottom: 8px;
     }
 
     #submit-section > p {
-      color: #777777;
+      color: #666666;
       margin-bottom: 25px;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .form-grid {
@@ -334,10 +309,10 @@
       width: 100%;
       padding: 11px;
       border: 1px solid #dddddd;
-      border-radius: 4px;
+      border-radius: 3px;
       background: #ffffff;
       font: inherit;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     textarea {
@@ -349,7 +324,7 @@
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      font-weight: 400;
+      font-weight: normal;
     }
 
     .consent-label input {
@@ -358,18 +333,20 @@
     }
 
     .submit-button {
-      border: none;
-      border-radius: 4px;
-      background: #222222;
+      border: 1px solid #263B8F;
+      background: #263B8F;
       color: #ffffff;
       padding: 11px 22px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       margin-top: 20px;
     }
 
     .submit-button:hover {
-      background: #444444;
+      background: #ffffff;
+      color: #263B8F;
     }
 
     #form-message {
@@ -381,46 +358,56 @@
     /* ABOUT */
 
     #about {
-      max-width: 650px;
-      margin-bottom: 65px;
+      max-width: 700px;
+      margin-bottom: 75px;
     }
 
     #about h2 {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 10px;
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: normal;
+      color: #263B8F;
+      margin-bottom: 12px;
     }
 
     #about p {
-      color: #777777;
-      font-size: 13px;
+      color: #666666;
+      font-size: 14px;
     }
 
     /* FOOTER */
 
     footer {
       border-top: 1px solid #eeeeee;
-      padding: 22px 0;
-      color: #999999;
-      font-size: 12px;
+      padding: 25px 0;
+      color: #888888;
+      font-size: 11px;
+      letter-spacing: 0.5px;
     }
 
     /* MOBILE */
 
     @media (max-width: 700px) {
+      .hero {
+        padding-top: 5px;
+      }
+
       #map {
-        height: 420px;
+        height: 390px;
+      }
+
+      #map::after {
+        width: min(370px, 95%);
       }
 
       .actions {
-        gap: 6px;
+        gap: 8px;
+        margin-bottom: 45px;
       }
 
       .action {
-        padding: 7px 10px;
-        font-size: 11px;
-        text-align: center;
-        flex: 1;
+        padding: 8px 12px;
+        font-size: 10px;
       }
 
       .gallery {
@@ -446,11 +433,8 @@
       .section-heading p {
         margin-top: 5px;
       }
-
-      .profile-header h2 {
-        font-size: 29px;
-      }
     }
+
   </style>
 </head>
 
@@ -465,38 +449,32 @@
     </div>
   </header>
 
+
   <main class="container">
 
-    <!-- GLOBE -->
+    <!-- GLOBE HERO -->
 
     <section class="hero">
 
       <div id="map"></div>
 
-      <div class="globe-legend">
-        <div class="legend-item">
-          <div class="legend-colour"></div>
-          Countries with profiles
-        </div>
-
-        <div class="legend-item">
-          <div class="legend-outline"></div>
-          Other countries
-        </div>
-      </div>
+      <p class="globe-instruction">
+        Select a highlighted country to explore its profile
+      </p>
 
     </section>
+
 
     <!-- NAVIGATION -->
 
     <nav class="actions">
 
       <a class="action" href="#submit-section" onclick="showForm()">
-        + Share an experience
+        + Contribute
       </a>
 
       <a class="action" href="#experiences">
-        Browse experiences
+        Explore experiences
       </a>
 
       <a class="action" href="#about">
@@ -505,54 +483,24 @@
 
     </nav>
 
-    <!-- COUNTRY PROFILE VIEW -->
+
+    <!-- COUNTRY PROFILE PANEL -->
 
     <section id="country-profile">
 
-      <a class="back-link" href="#experiences" onclick="closeProfile()">
-        ← Back to the Atlas
+      <h2 id="profile-country-name">Malawi</h2>
+
+      <p id="profile-country-description">
+        Explore research permissions and fieldwork experiences contributed
+        by researchers working in Malawi.
+      </p>
+
+      <a class="profile-link" href="#experiences">
+        View fieldwork experiences →
       </a>
 
-      <div class="profile-header">
-        <h2 id="profile-country-name">Malawi</h2>
-        <p id="profile-country-region">Africa · Research permissions and fieldwork</p>
-        <span class="profile-status">Research profile</span>
-      </div>
-
-      <div class="profile-content">
-
-        <h3>About this profile</h3>
-
-        <p>
-          This country profile brings together information about research
-          permissions, approval processes and researcher experiences.
-        </p>
-
-        <h3>Research permissions</h3>
-
-        <p>
-          Information about the relevant research authorities, ethics
-          committees, institutional approvals and site permissions will
-          appear here.
-        </p>
-
-        <h3>Researcher experiences</h3>
-
-        <p>
-          Individual accounts of applying for research permission and
-          conducting fieldwork will be collected here.
-        </p>
-
-        <h3>Useful resources</h3>
-
-        <p>
-          Official guidance, application forms and useful links will
-          be added as the profile develops.
-        </p>
-
-      </div>
-
     </section>
+
 
     <!-- SUBMISSION FORM -->
 
@@ -571,12 +519,19 @@
 
           <div class="form-field">
             <label for="country">Country *</label>
-            <input id="country" name="country" type="text"
-              placeholder="Enter a country" required>
+
+            <input
+              id="country"
+              name="country"
+              type="text"
+              placeholder="Enter a country"
+              required
+            >
           </div>
 
           <div class="form-field">
             <label for="contribution">What are you sharing? *</label>
+
             <select id="contribution" name="contribution" required>
               <option value="">Select one</option>
               <option>Research permission information</option>
@@ -587,6 +542,7 @@
 
           <div class="form-field">
             <label for="research-type">Research type</label>
+
             <select id="research-type" name="researchType">
               <option value="">Select one</option>
               <option>Social sciences</option>
@@ -604,6 +560,7 @@
 
           <div class="form-field">
             <label for="methodology">Methodology</label>
+
             <select id="methodology" name="methodology">
               <option value="">Select one</option>
               <option>Qualitative</option>
@@ -619,12 +576,20 @@
 
           <div class="form-field">
             <label for="year">Year of application / fieldwork</label>
-            <input id="year" name="year" type="number"
-              min="1950" max="2100" placeholder="e.g. 2026">
+
+            <input
+              id="year"
+              name="year"
+              type="number"
+              min="1950"
+              max="2100"
+              placeholder="e.g. 2026"
+            >
           </div>
 
           <div class="form-field">
             <label for="outcome">Application outcome</label>
+
             <select id="outcome" name="outcome">
               <option value="">Select one</option>
               <option>Approved</option>
@@ -637,37 +602,66 @@
 
           <div class="form-field full">
             <label for="experience">Tell us about your experience *</label>
-            <textarea id="experience" name="experience"
+
+            <textarea
+              id="experience"
+              name="experience"
               placeholder="What permissions did you need? Who did you contact? What happened?"
-              required></textarea>
+              required
+            ></textarea>
           </div>
 
           <div class="form-field full">
             <label for="advice">What advice would you give another researcher?</label>
-            <textarea id="advice" name="advice"
-              placeholder="What do you wish you had known?"></textarea>
+
+            <textarea
+              id="advice"
+              name="advice"
+              placeholder="What do you wish you had known?"
+            ></textarea>
           </div>
 
           <div class="form-field full">
             <label for="links">Useful links or documents</label>
-            <input id="links" name="links" type="text"
-              placeholder="Paste a website or document link">
+
+            <input
+              id="links"
+              name="links"
+              type="text"
+              placeholder="Paste a website or document link"
+            >
           </div>
 
           <div class="form-field">
             <label for="name">Your name (optional)</label>
-            <input id="name" name="name" type="text" placeholder="Name">
+
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Name"
+            >
           </div>
 
           <div class="form-field">
             <label for="email">Email (optional, kept private)</label>
-            <input id="email" name="email" type="email"
-              placeholder="Email address">
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email address"
+            >
           </div>
 
           <div class="form-field full">
             <label class="consent-label">
-              <input type="checkbox" id="consent" required>
+              <input
+                type="checkbox"
+                id="consent"
+                required
+              >
+
               I agree that this contribution may be reviewed for publication
               on the Fieldwork Atlas. *
             </label>
@@ -685,6 +679,7 @@
 
     </section>
 
+
     <!-- EXPERIENCE GALLERY -->
 
     <section id="experiences">
@@ -696,7 +691,11 @@
 
       <div class="gallery">
 
-        <article class="experience-card" onclick="openProfile('Malawi')">
+        <article
+          class="experience-card"
+          id="country-malawi"
+          onclick="openCountryProfile('Malawi')"
+        >
 
           <div class="card-image">🇲🇼</div>
 
@@ -723,6 +722,7 @@
 
     </section>
 
+
     <!-- ABOUT -->
 
     <section id="about">
@@ -740,23 +740,25 @@
 
   </main>
 
+
   <!-- FOOTER -->
 
   <footer>
     <div class="container">
-      Fieldwork Atlas · A collaborative research resource
+      FIELDWORK ATLAS · A COLLABORATIVE RESEARCH RESOURCE
     </div>
   </footer>
 
 
-  <!-- JAVASCRIPT -->
+  <!-- GLOBE FUNCTIONALITY -->
 
   <script>
 
     // COUNTRIES WITH APPROVED PROFILES
-    // This will eventually be loaded from Google Sheets.
+    // This will eventually be populated from Google Sheets.
 
     const profileCountries = ["Malawi"];
+
 
     // CREATE GLOBE
 
@@ -766,87 +768,92 @@
 
       .backgroundColor("#ffffff")
 
-      .showAtmosphere(false)
-
-      .showGraticules(false)
-
       .showGlobe(true)
 
-      // Ocean colour
+      .showAtmosphere(false)
+
+      .showGraticules(true)
+
+      // White globe surface
       .globeMaterial(
-        new THREE.MeshPhongMaterial({
-          color: "#F0F2F0",
-          shininess: 0
+        new THREE.MeshBasicMaterial({
+          color: "#ffffff"
         })
       )
 
-      // Country height
+      // Subtle longitude and latitude lines
+      .graticuleColor(() => "rgba(38, 59, 143, 0.20)")
+
+      // White country interiors
+      .polygonCapColor(() => "#ffffff")
+
+      .polygonSideColor(() => "#ffffff")
+
+      // Country outlines
+      .polygonStrokeColor(country =>
+        profileCountries.includes(country.properties.name)
+          ? "#263B8F"
+          : "#AEB8C2"
+      )
+
+      // Very subtle profile-country elevation
       .polygonAltitude(country =>
         profileCountries.includes(country.properties.name)
-          ? 0.012
+          ? 0.002
           : 0.001
       )
 
-      // Country colours
-      .polygonCapColor(country =>
-        profileCountries.includes(country.properties.name)
-          ? "#A8C5B3"
-          : "#FFFFFF"
-      )
-
-      // Country sides
-      .polygonSideColor(() => "#FFFFFF")
-
-      // Very subtle country boundaries
-      .polygonStrokeColor(() => "#FFFFFF")
-
       .polygonsTransitionDuration(300)
 
-      // Hover interaction
+      // Country hover
       .onPolygonHover(country => {
 
-        globeElement.style.cursor =
-          country && profileCountries.includes(country.properties.name)
-            ? "pointer"
-            : "grab";
+        globeElement.style.cursor = country
+          ? "pointer"
+          : "grab";
 
-        globe.polygonCapColor(d => {
+        globe.polygonStrokeColor(d => {
 
-          if (d === country && profileCountries.includes(d.properties.name)) {
-            return "#D5E3DA";
+          if (d === country) {
+            return "#263B8F";
           }
 
           return profileCountries.includes(d.properties.name)
-            ? "#A8C5B3"
-            : "#FFFFFF";
+            ? "#263B8F"
+            : "#AEB8C2";
 
         });
 
       })
 
-      // Click interaction
+      // Country click
       .onPolygonClick(country => {
 
-        if (
-          country &&
-          profileCountries.includes(country.properties.name)
-        ) {
-          openProfile(country.properties.name);
+        if (!country) return;
+
+        const countryName = country.properties.name;
+
+        if (profileCountries.includes(countryName)) {
+          openCountryProfile(countryName);
+        } else {
+          showCountryMessage(countryName);
         }
 
       });
 
 
-    // LOAD COUNTRY BOUNDARIES
+    // LOAD COUNTRY SHAPES
 
     fetch("https://unpkg.com/world-atlas@2/countries-110m.json")
 
       .then(response => {
+
         if (!response.ok) {
           throw new Error("Could not load map data");
         }
 
         return response.json();
+
       })
 
       .then(world => {
@@ -858,15 +865,12 @@
 
         globe.polygonsData(countries);
 
-        // Initial view
-        globe.pointOfView(
-          {
-            lat: -3,
-            lng: 20,
-            altitude: 2.1
-          },
-          1000
-        );
+        // Start with Africa facing forward
+        globe.pointOfView({
+          lat: -3,
+          lng: 20,
+          altitude: 2.2
+        }, 1000);
 
       })
 
@@ -890,35 +894,50 @@
     resizeGlobe();
 
 
-    // OPEN COUNTRY PROFILE
+    // OPEN A COUNTRY PROFILE
 
-    function openProfile(country) {
+    function openCountryProfile(countryName) {
 
-      document.getElementById("profile-country-name").textContent = country;
+      if (!profileCountries.includes(countryName)) return;
 
-      document.getElementById("country-profile-region").textContent =
-        "Research permissions and fieldwork";
+      const profile = document.getElementById("country-profile");
 
-      document.getElementById("country-profile").classList.add("visible");
+      document.getElementById("profile-country-name").textContent =
+        countryName;
 
-      document.getElementById("experiences").style.display = "none";
+      document.getElementById("profile-country-description").textContent =
+        "Explore research permissions and fieldwork experiences contributed by researchers working in " +
+        countryName + ".";
 
-      document.getElementById("submit-section").classList.remove("visible");
+      profile.classList.add("visible");
 
-      document.getElementById("country-profile").scrollIntoView({
-        behavior: "smooth"
+      profile.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
       });
 
     }
 
 
-    // CLOSE COUNTRY PROFILE
+    // MESSAGE FOR COUNTRIES WITHOUT PROFILES
 
-    function closeProfile() {
+    function showCountryMessage(countryName) {
 
-      document.getElementById("country-profile").classList.remove("visible");
+      const profile = document.getElementById("country-profile");
 
-      document.getElementById("experiences").style.display = "block";
+      document.getElementById("profile-country-name").textContent =
+        countryName;
+
+      document.getElementById("profile-country-description").textContent =
+        "There is not yet a published research profile for " +
+        countryName + ". You can help build this country profile by contributing your experience.";
+
+      profile.classList.add("visible");
+
+      profile.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
 
     }
 
@@ -927,13 +946,11 @@
 
     function showForm() {
 
-      document.getElementById("submit-section").classList.add("visible");
+      const form = document.getElementById("submit-section");
 
-      document.getElementById("country-profile").classList.remove("visible");
+      form.classList.add("visible");
 
-      document.getElementById("experiences").style.display = "block";
-
-      document.getElementById("submit-section").scrollIntoView({
+      form.scrollIntoView({
         behavior: "smooth"
       });
 
@@ -949,7 +966,7 @@
         event.preventDefault();
 
         document.getElementById("form-message").textContent =
-          "The form is not connected to the database yet. Your contribution has not been saved.";
+          "The form is ready for testing, but it is not connected to the database yet. Your contribution has not been sent or saved.";
 
       });
 
