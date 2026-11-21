@@ -13,9 +13,9 @@
 <style>
 :root {
   --ink: #263B8F;
-  --muted: #6f7895;
-  --line: #dce1ed;
-  --soft: #f7f8fb;
+  --muted: #77849A;
+  --line: #DCEAF2;
+  --sea: #DCEAF2;
   --sage: #B5C6B0;
   --white: #ffffff;
 }
@@ -32,7 +32,8 @@ body {
   margin: 0;
   background: var(--white);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
 }
 
 a {
@@ -43,70 +44,30 @@ a {
 .page {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 20px 42px 80px;
+  padding: 12px 42px 70px;
 }
 
-/* GLOBE HERO */
+/* GLOBE */
 
 .hero {
-  position: relative;
   width: 100%;
   min-height: 660px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: white;
   overflow: hidden;
-  background: #ffffff;
-}
-
-/* Cartographic details around the globe */
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    repeating-radial-gradient(
-      ellipse at 8% 22%,
-      transparent 0,
-      transparent 24px,
-      rgba(38,59,143,0.17) 25px,
-      transparent 27px,
-      transparent 42px
-    ),
-    repeating-radial-gradient(
-      ellipse at 92% 76%,
-      transparent 0,
-      transparent 30px,
-      rgba(38,59,143,0.16) 31px,
-      transparent 33px,
-      transparent 51px
-    ),
-    repeating-radial-gradient(
-      ellipse at 85% 5%,
-      transparent 0,
-      transparent 39px,
-      rgba(38,59,143,0.12) 40px,
-      transparent 42px,
-      transparent 59px
-    );
-  opacity: 0.85;
 }
 
 .globe-frame {
-  position: relative;
   width: min(100%, 760px);
   height: 660px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
 }
 
 #globeViz {
-  position: relative;
-  z-index: 1;
   width: 100%;
   height: 100%;
   cursor: grab;
@@ -119,92 +80,51 @@ a {
 /* NAVIGATION */
 
 .navigation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 0 auto 65px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin: 0 auto 45px;
 }
 
 .navigation a {
-  border: 1px solid var(--line);
-  border-radius: 30px;
-  padding: 10px 20px;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  transition: all 0.2s ease;
+  text-align: center;
+  padding: 17px 10px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-right: 1px solid var(--line);
+  transition: background 0.2s, color 0.2s;
+}
+
+.navigation a:last-child {
+  border-right: none;
 }
 
 .navigation a:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: white;
-}
-
-/* GENERAL SECTIONS */
-
-section {
-  margin: 0 auto 90px;
-  max-width: 1100px;
-}
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 20px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 14px;
-  margin-bottom: 22px;
-}
-
-h1, h2, h3 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: normal;
-}
-
-h2 {
-  font-size: 27px;
-  margin: 0;
-}
-
-h3 {
-  color: var(--ink);
-}
-
-.section-note {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.section-intro {
-  max-width: 720px;
-  color: #626b83;
-  font-size: 14px;
-  line-height: 1.8;
-  margin: 0 0 28px;
+  background: var(--sea);
 }
 
 /* COUNTRY PROFILE */
 
 #countryProfile {
   display: none;
-  background: var(--soft);
   border: 1px solid var(--line);
-  padding: 30px;
-  margin: 30px auto 65px;
+  padding: 25px;
+  margin: 30px auto 55px;
   max-width: 900px;
 }
 
 #countryProfile h2 {
-  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: normal;
+  margin: 8px 0 12px;
 }
 
 #countryProfile p {
-  color: #535d79;
-  line-height: 1.7;
-  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 12px;
 }
 
 .close-profile {
@@ -216,83 +136,90 @@ h3 {
   cursor: pointer;
 }
 
-/* EXPERIENCE FILTERS */
+/* EXPERIENCE GALLERY */
+
+#experiences {
+  max-width: 1200px;
+  margin: 0 auto 90px;
+}
 
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 25px 0;
+  gap: 0;
+  margin: 0 0 20px;
+  border-bottom: 1px solid var(--line);
 }
 
 .filter-button {
   background: white;
-  border: 1px solid var(--line);
+  border: none;
+  border-bottom: 2px solid transparent;
   color: var(--muted);
-  border-radius: 25px;
-  padding: 8px 15px;
-  font-size: 11px;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
 }
 
 .filter-button:hover,
 .filter-button.active {
-  border-color: var(--ink);
   color: var(--ink);
+  border-bottom-color: var(--ink);
 }
-
-/* EXPERIENCE CARDS */
 
 .gallery {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
+  gap: 12px;
 }
 
 .experience-card {
   display: flex;
   flex-direction: column;
+  min-height: 205px;
+  padding: 18px;
   border: 1px solid var(--line);
-  padding: 21px;
-  min-height: 235px;
   background: white;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: pointer;
 }
 
 .experience-card:hover {
+  background: #F7FAFC;
   border-color: var(--ink);
-  transform: translateY(-3px);
 }
 
 .card-type {
-  display: inline-block;
-  align-self: flex-start;
-  color: var(--ink);
-  background: #f0f2f8;
-  padding: 5px 9px;
+  color: var(--muted);
   font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-bottom: 15px;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
 }
 
 .experience-card .country {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   margin-bottom: 10px;
 }
 
 .experience-card h3 {
-  font-size: 19px;
-  line-height: 1.35;
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 1.5;
   margin: 0 0 10px;
 }
 
 .experience-card p {
-  color: #626b83;
-  font-size: 12px;
+  color: var(--muted);
+  font-size: 11px;
   line-height: 1.7;
   margin: 0 0 18px;
 }
@@ -303,9 +230,10 @@ h3 {
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
-  align-items: center;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .read-more {
@@ -314,29 +242,60 @@ h3 {
   color: var(--ink);
   padding: 0;
   cursor: pointer;
-  font-size: 11px;
+  font-family: inherit;
+  font-size: 10px;
 }
 
 .empty-state {
   grid-column: 1 / -1;
-  border: 1px dashed var(--line);
   padding: 40px;
   text-align: center;
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 11px;
+  border: 1px solid var(--line);
 }
-
-/* COUNTRY PROFILE EXPERIENCES */
 
 .profile-gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
-  margin-top: 25px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
-/* CONTRIBUTION FORM */
+/* FORM AND ABOUT */
+
+section:not(#experiences) {
+  margin: 0 auto 80px;
+  max-width: 900px;
+}
+
+.section-heading {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-family: inherit;
+  font-weight: normal;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.section-note {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.section-intro,
+.about-copy {
+  max-width: 720px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.9;
+  margin: 0 0 25px;
+}
 
 .form-container {
   max-width: 760px;
@@ -344,18 +303,17 @@ h3 {
 
 .form-intro {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.7;
-  margin-bottom: 25px;
 }
 
 .form-group {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   margin: 0 0 8px;
   color: var(--ink);
 }
@@ -367,11 +325,11 @@ input, select, textarea {
   background: white;
   color: var(--ink);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 110px;
   resize: vertical;
 }
 
@@ -389,10 +347,11 @@ textarea:focus {
 }
 
 .form-subheading {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--ink);
-  margin: 38px 0 10px;
+  margin: 35px 0 18px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
@@ -410,7 +369,7 @@ textarea:focus {
 }
 
 .consent-row label {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.6;
 }
 
@@ -421,7 +380,10 @@ textarea:focus {
   color: white;
   border: 1px solid var(--ink);
   cursor: pointer;
-  font-size: 12px;
+  font-family: inherit;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .submit-button:hover {
@@ -431,38 +393,31 @@ textarea:focus {
 
 .form-message {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.6;
   margin-top: 15px;
-}
-
-/* ABOUT */
-
-.about-copy {
-  max-width: 720px;
-  color: #535d79;
-  font-size: 14px;
-  line-height: 1.8;
 }
 
 /* FOOTER */
 
 footer {
   border-top: 1px solid var(--line);
-  padding-top: 22px;
+  padding-top: 20px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   text-align: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-/* EXPERIENCE READING WINDOW */
+/* MODAL */
 
 .modal {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 10;
-  background: rgba(25,35,65,0.55);
+  background: rgba(25,35,65,0.45);
   padding: 25px;
   overflow-y: auto;
   align-items: center;
@@ -479,6 +434,7 @@ footer {
   max-width: 720px;
   padding: 38px;
   position: relative;
+  border: 1px solid var(--line);
 }
 
 .modal-close {
@@ -494,13 +450,13 @@ footer {
 
 .modal-content h2 {
   margin: 12px 0;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .modal-content p {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.9;
-  color: #535d79;
+  color: var(--muted);
   white-space: pre-line;
 }
 
@@ -512,7 +468,7 @@ footer {
 
 @media (max-width: 700px) {
   .page {
-    padding: 10px 18px 50px;
+    padding: 5px 15px 45px;
   }
 
   .hero {
@@ -524,13 +480,12 @@ footer {
   }
 
   .navigation {
-    margin-bottom: 45px;
-    gap: 8px;
+    margin-bottom: 35px;
   }
 
   .navigation a {
-    padding: 8px 13px;
-    font-size: 11px;
+    font-size: 9px;
+    padding: 14px 5px;
   }
 
   .gallery,
@@ -538,13 +493,18 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .section-heading {
-    align-items: flex-start;
-    flex-direction: column;
+  .filters {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .filter-button {
+    padding: 12px 10px;
+    font-size: 9px;
   }
 
   #countryProfile {
-    padding: 22px;
+    padding: 20px;
   }
 
   .modal-content {
@@ -558,15 +518,11 @@ footer {
 
 <main class="page">
 
-  <!-- GLOBE HERO -->
-
   <div class="hero">
     <div class="globe-frame">
       <div id="globeViz"></div>
     </div>
   </div>
-
-  <!-- THREE NAVIGATION BUTTONS -->
 
   <nav class="navigation">
     <a href="#contribute">Contribute</a>
@@ -574,69 +530,51 @@ footer {
     <a href="#about">About the Atlas</a>
   </nav>
 
-  <!-- COUNTRY PROFILE -->
-
   <div id="countryProfile">
     <button class="close-profile" onclick="closeProfile()">×</button>
+    <div class="card-type">Country profile / Atlas record</div>
     <h2 id="profileTitle"></h2>
     <p id="profileText"></p>
     <div id="profileExperiences" class="profile-gallery"></div>
   </div>
 
-  <!-- EXPERIENCE GALLERY -->
-
   <section id="experiences">
 
-    <div class="section-heading">
-      <h2>Fieldwork experiences</h2>
-      <span class="section-note">Research, permissions and practice around the world</span>
-    </div>
-
-    <p class="section-intro">
-      The paperwork is only part of the story. Explore the experiences,
-      challenges, advice and practical knowledge of researchers working
-      around the world.
-    </p>
-
     <div class="filters">
-      <button class="filter-button active" data-filter="all">All experiences</button>
+      <button class="filter-button active" data-filter="all">All records</button>
       <button class="filter-button" data-filter="permission">Permissions</button>
-      <button class="filter-button" data-filter="experience">On the ground</button>
+      <button class="filter-button" data-filter="experience">Fieldwork</button>
       <button class="filter-button" data-filter="advice">Advice</button>
       <button class="filter-button" data-filter="resource">Resources</button>
     </div>
 
     <div class="gallery" id="experienceGallery">
 
-      <article class="experience-card">
-        <span class="card-type">Fieldwork experience</span>
+      <article class="experience-card" data-type="experience" onclick="openExperience('sample')">
+        <span class="card-type">EXP / 001</span>
         <div class="country">Malawi</div>
         <h3>Research in Malawi</h3>
         <p>
           Experiences and information about conducting research in Malawi.
-          This is an initial example of the kind of contribution the Atlas will host.
         </p>
         <div class="card-bottom">
-          <span>Example entry</span>
-          <button class="read-more" onclick="openExperience('sample')">Read more →</button>
+          <span>Fieldwork record</span>
+          <button class="read-more" onclick="event.stopPropagation(); openExperience('sample')">Open →</button>
         </div>
       </article>
 
       <div class="empty-state" style="display:none" id="emptyGallery">
-        No experiences in this category yet.
-        Be the first to contribute.
+        No records in this category yet.
       </div>
 
     </div>
   </section>
 
-  <!-- CONTRIBUTION FORM -->
-
   <section id="contribute">
 
     <div class="section-heading">
       <h2>Contribute to the Atlas</h2>
-      <span class="section-note">Share what you have learned</span>
+      <span class="section-note">/ Submit a fieldwork record</span>
     </div>
 
     <p class="section-intro">
@@ -646,13 +584,12 @@ footer {
     </p>
 
     <div class="form-container">
-
       <form id="contributionForm">
 
-        <div class="form-subheading">About your research</div>
+        <div class="form-subheading">01 / Research details</div>
 
         <div class="form-group">
-          <label for="contributionType">What would you like to contribute?</label>
+          <label for="contributionType">Contribution type</label>
           <select id="contributionType" required>
             <option value="">Choose a contribution type</option>
             <option value="permission">Research permission information</option>
@@ -682,20 +619,20 @@ footer {
           <input id="researchType" type="text" placeholder="e.g. PhD fieldwork, clinical research, consultancy">
         </div>
 
-        <div class="form-subheading">The permission process</div>
+        <div class="form-subheading">02 / Permission process</div>
 
         <div class="form-group">
-          <label for="authority">Which authority or institution did you apply to?</label>
+          <label for="authority">Authority or institution</label>
           <textarea id="authority" placeholder="List the relevant institutions, authorities or committees."></textarea>
         </div>
 
         <div class="form-group">
-          <label for="permissionDuration">How long did the process take?</label>
+          <label for="permissionDuration">Duration of process</label>
           <input id="permissionDuration" type="text" placeholder="e.g. 3 months">
         </div>
 
         <div class="form-group">
-          <label for="permissionOutcome">What was the outcome?</label>
+          <label for="permissionOutcome">Outcome</label>
           <select id="permissionOutcome">
             <option value="">Select an outcome</option>
             <option>Approved</option>
@@ -708,45 +645,44 @@ footer {
         </div>
 
         <div class="form-group">
-          <label for="permissionCost">What were the costs? (optional)</label>
+          <label for="permissionCost">Costs (optional)</label>
           <input id="permissionCost" type="text" placeholder="Include currency if known">
         </div>
 
-        <div class="form-subheading">Your experience</div>
+        <div class="form-subheading">03 / Fieldwork account</div>
 
         <div class="form-group">
-          <label for="title">Give your contribution a title</label>
+          <label for="title">Record title</label>
           <input id="title" type="text" placeholder="e.g. Getting research approval in Malawi" required>
         </div>
 
         <div class="form-group">
-          <label for="summary">A short introduction</label>
+          <label for="summary">Short introduction</label>
           <textarea id="summary" placeholder="What is your contribution about?" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="experience">Tell us more about your experience</label>
+          <label for="experience">Full account</label>
           <textarea id="experience" style="min-height:240px" placeholder="What happened? What surprised you? What was difficult? Who helped? What would you want another researcher to know?"></textarea>
           <div class="field-hint">
-            This is the longer account. It can be a few paragraphs or a more detailed story.
-            Think of it as a fieldwork blog entry rather than a formal report.
+            A few paragraphs or a more detailed account are both welcome.
           </div>
         </div>
 
         <div class="form-group">
-          <label for="advice">What advice would you give another researcher?</label>
+          <label for="advice">Advice for other researchers</label>
           <textarea id="advice" placeholder="Anything you wish you had known beforehand?"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="source">Useful links or documents (optional)</label>
+          <label for="source">Useful links or documents</label>
           <textarea id="source" placeholder="Add links to publicly shareable resources."></textarea>
         </div>
 
-        <div class="form-subheading">About you</div>
+        <div class="form-subheading">04 / Contributor details</div>
 
         <div class="form-group">
-          <label for="contributorName">Your name (optional)</label>
+          <label for="contributorName">Name (optional)</label>
           <input id="contributorName" type="text" placeholder="Leave blank to contribute anonymously">
         </div>
 
@@ -764,10 +700,10 @@ footer {
           </label>
         </div>
 
-        <button class="submit-button" type="submit">Submit contribution</button>
+        <button class="submit-button" type="submit">Submit record →</button>
 
         <p class="form-message" id="formMessage">
-          This form is not yet connected to the Atlas database.
+          Prototype form / Not yet connected to the Atlas database.
           Please do not submit confidential or sensitive information.
         </p>
 
@@ -775,10 +711,7 @@ footer {
     </div>
   </section>
 
-  <!-- ABOUT -->
-
   <section id="about">
-
     <div class="section-heading">
       <h2>About the Atlas</h2>
     </div>
@@ -805,12 +738,10 @@ footer {
   </section>
 
   <footer>
-    Fieldwork Atlas · A collaborative research resource
+    Fieldwork Atlas / A collaborative research resource
   </footer>
 
 </main>
-
-<!-- EXPERIENCE READING WINDOW -->
 
 <div class="modal" id="experienceModal" onclick="closeModalOutside(event)">
   <div class="modal-content">
@@ -844,7 +775,6 @@ const experienceEntries = {
 
 function openProfile(countryName) {
   const profile = profiles[countryName];
-
   const panel = document.getElementById("countryProfile");
 
   document.getElementById("profileTitle").textContent =
@@ -954,7 +884,7 @@ document.getElementById("contributionForm").addEventListener("submit", event => 
     "Thank you for contributing. The form is not connected to the database yet, so your information has not been saved.";
 });
 
-/* GLOBE: ORIGINAL WORKING IMPLEMENTATION */
+/* GLOBE: KEEPING THE WORKING IMPLEMENTATION */
 
 window.addEventListener("load", async () => {
 
@@ -967,7 +897,7 @@ window.addEventListener("load", async () => {
     .showGlobe(true)
     .globeMaterial(
       new THREE.MeshPhongMaterial({
-        color: 0xffffff,
+        color: "#DCEAF2",
         shininess: 0
       })
     )
@@ -979,10 +909,10 @@ window.addEventListener("load", async () => {
 
       return name === "Malawi"
         ? "rgba(181,198,176,0.95)"
-        : "#edf0f5";
+        : "#ffffff";
     })
     .polygonSideColor(() => "rgba(255,255,255,0)")
-    .polygonStrokeColor(() => "#263B8F")
+    .polygonStrokeColor(() => "#DCEAF2")
     .polygonLabel(feature => feature.properties.name)
     .onPolygonClick(feature => {
       openProfile(feature.properties.name);
