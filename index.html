@@ -48,28 +48,25 @@
 
     /* HERO AND GLOBE */
 
-    .hero {
-      position: relative;
-      width: calc(100% + 84px);
-      margin-left: -42px;
-      min-height: 660px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+   
+.hero {
+  position: relative;
+  width: calc(100% + 84px);
+  margin-left: -42px;
+  min-height: 660px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 
-      background-color: #f0f3f8;
+  background-color: #eef2f8;
 
-      background-image:
-        repeating-radial-gradient(
-          ellipse at 50% 50%,
-          transparent 0,
-          transparent 35px,
-          rgba(38,59,143,0.035) 36px,
-          transparent 37px,
-          transparent 65px
-        );
-    }
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='600' viewBox='0 0 700 600'%3E%3Cg fill='none' stroke='%23263B8F' stroke-width='1' opacity='.17'%3E%3Cpath d='M-80 120 C20 40 90 40 160 100 S280 190 360 110 S500 10 780 90'/%3E%3Cpath d='M-80 140 C20 60 100 60 170 120 S280 210 370 130 S510 30 780 110'/%3E%3Cpath d='M-80 160 C20 80 110 80 180 140 S290 230 380 150 S520 50 780 130'/%3E%3Cpath d='M-80 180 C20 100 120 100 190 160 S300 250 390 170 S530 70 780 150'/%3E%3Cpath d='M-100 400 C20 320 100 330 180 390 S300 480 390 400 S550 300 800 380'/%3E%3Cpath d='M-100 420 C20 340 110 350 190 410 S310 500 400 420 S560 320 800 400'/%3E%3Cpath d='M-100 440 C20 360 120 370 200 430 S320 520 410 440 S570 340 800 420'/%3E%3Cpath d='M-100 460 C20 380 130 390 210 450 S330 540 420 460 S580 360 800 440'/%3E%3Cpath d='M300 -100 C220 0 240 80 310 140 S400 250 330 330 S250 470 340 700'/%3E%3Cpath d='M320 -100 C240 0 260 80 330 140 S420 250 350 330 S270 470 360 700'/%3E%3Cpath d='M340 -100 C260 0 280 80 350 140 S440 250 370 330 S290 470 380 700'/%3E%3C/g%3E%3C/svg%3E");
+
+  background-repeat: repeat;
+  background-size: 700px 600px;
+}
+
 
     .globe-frame {
       position: relative;
