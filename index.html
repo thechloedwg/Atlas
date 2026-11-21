@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,19 +32,9 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
-button, input, select, textarea {
-  font: inherit;
-}
-
-button, a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
 button { cursor: pointer; }
 
 .page {
@@ -140,7 +129,7 @@ button { cursor: pointer; }
 /* HOME HERO */
 
 .home-hero {
-  min-height: 540px;
+  min-height: 680px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   position: relative;
@@ -149,44 +138,7 @@ button { cursor: pointer; }
 
 .home-globe {
   width: 100%;
-  height: 540px;
-}
-
-.home-instructions {
-  position: absolute;
-  top: 30px;
-  left: 0;
-  z-index: 2;
-  pointer-events: none;
-  max-width: 230px;
-  background: rgba(255,255,255,.88);
-  padding: 12px 15px;
-  font-size: 10px;
-  line-height: 1.8;
-}
-
-.home-instructions strong {
-  display: block;
-  font-weight: normal;
-  letter-spacing: .12em;
-  font-size: 12px;
-}
-
-.home-instructions ul {
-  padding-left: 15px;
-  margin: 6px 0 0;
-}
-
-.home-title {
-  position: absolute;
-  top: 22px;
-  right: 0;
-  z-index: 2;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  background: white;
-  padding: 10px 12px;
+  height: 680px;
 }
 
 /* HOME NAV */
@@ -217,7 +169,7 @@ button { cursor: pointer; }
   color: var(--ink);
 }
 
-/* HOME PROTOCOL GALLERY */
+/* HOME SECTIONS */
 
 .home-section {
   margin: 0 auto 35px;
@@ -252,6 +204,8 @@ button { cursor: pointer; }
 
 .text-link:hover { color: var(--ink); }
 
+/* HOME PROTOCOL GALLERY */
+
 .protocol-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -261,8 +215,8 @@ button { cursor: pointer; }
 .protocol-tile {
   min-height: 125px;
   padding: 14px;
-  border: 1px solid transparent;
-  background: var(--grey-tile);
+  border: 1px solid var(--line);
+  background: white;
   color: var(--ink);
   display: flex;
   flex-direction: column;
@@ -272,7 +226,7 @@ button { cursor: pointer; }
 }
 
 .protocol-tile:hover {
-  background: var(--sea);
+  background: white;
   border-color: var(--ink);
 }
 
@@ -303,15 +257,13 @@ button { cursor: pointer; }
   line-height: 1;
 }
 
-.add-tile:hover {
-  background: var(--pale);
-}
+.add-tile:hover { background: var(--pale); }
 
 /* HOME EXPERIENCES */
 
 .home-experiences {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -324,13 +276,14 @@ button { cursor: pointer; }
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--grey-tile);
+  background: white;
+  border: 1px solid var(--line);
   color: var(--ink);
   text-align: center;
-  transition: background .2s;
+  transition: border-color .2s;
 }
 
-.contribute-block:hover { background: var(--sea); }
+.contribute-block:hover { border-color: var(--ink); }
 
 .contribute-block span:first-child {
   font-size: 11px;
@@ -355,7 +308,8 @@ button { cursor: pointer; }
 .experience-preview-item {
   flex: 1;
   min-height: 55px;
-  background: var(--grey-tile);
+  background: white;
+  border: 1px solid var(--line);
   padding: 12px;
   display: flex;
   justify-content: space-between;
@@ -369,7 +323,7 @@ button { cursor: pointer; }
   font-size: 9px;
 }
 
-.experience-preview-item:hover { background: var(--sea); }
+.experience-preview-item:hover { border-color: var(--ink); }
 
 .experience-add {
   border: 1px solid var(--line);
@@ -382,11 +336,12 @@ button { cursor: pointer; }
 
 .experience-add:hover { background: var(--pale); }
 
-/* ABOUT TILE */
+/* ABOUT */
 
 .about-tile {
   display: block;
-  background: var(--grey-tile);
+  background: white;
+  border: 1px solid var(--line);
   color: var(--ink);
   padding: 28px;
   margin-top: 14px;
@@ -396,7 +351,7 @@ button { cursor: pointer; }
   line-height: 1.8;
 }
 
-.about-tile:hover { background: var(--sea); }
+.about-tile:hover { border-color: var(--ink); }
 
 /* PROTOCOL GALLERY PAGE */
 
@@ -431,9 +386,7 @@ button { cursor: pointer; }
   margin: 15px 0 35px;
 }
 
-.gallery-page-grid .protocol-tile {
-  min-height: 175px;
-}
+.gallery-page-grid .protocol-tile { min-height: 175px; }
 
 /* COUNTRY PROFILE */
 
@@ -452,7 +405,7 @@ button { cursor: pointer; }
   background: white;
 }
 
-.country-map #globeViz {
+.country-map #countryGlobeViz {
   width: 100%;
   height: 500px;
 }
@@ -500,9 +453,7 @@ button { cursor: pointer; }
   line-height: 1.9;
 }
 
-.protocol-explainer ul {
-  padding-left: 18px;
-}
+.protocol-explainer ul { padding-left: 18px; }
 
 .protocol-status {
   display: inline-block;
@@ -576,7 +527,7 @@ button { cursor: pointer; }
   color: white;
 }
 
-/* CONTRIBUTION PAGE */
+/* CONTRIBUTION FORM */
 
 .form-page {
   max-width: 850px;
@@ -765,9 +716,7 @@ footer {
     min-height: 250px;
   }
 
-  .experience-list {
-    max-height: 220px;
-  }
+  .experience-list { max-height: 220px; }
 }
 
 @media (max-width: 650px) {
@@ -775,21 +724,8 @@ footer {
 
   .home-hero,
   .home-globe {
-    min-height: 430px;
-    height: 430px;
-  }
-
-  .home-instructions {
-    top: 10px;
-    left: 5px;
-    max-width: 180px;
-    font-size: 9px;
-  }
-
-  .home-title {
-    top: 10px;
-    right: 5px;
-    font-size: 9px;
+    min-height: 600px;
+    height: 600px;
   }
 
   .home-nav button {
@@ -797,20 +733,31 @@ footer {
     padding: 13px 3px;
   }
 
-  .protocol-grid,
+  /* Keep the homepage protocol tiles in four columns on mobile. */
+  .protocol-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+
   .gallery-page-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
 
-  .protocol-tile { min-height: 110px; }
-
-  .home-experiences {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+  .protocol-grid .protocol-tile {
+    min-height: 90px;
+    padding: 7px 5px;
+    overflow-wrap: anywhere;
   }
 
-  .contribute-block { min-height: 210px; }
+  .protocol-grid .tile-country { font-size: 9px; }
+  .protocol-grid .tile-meta { font-size: 7px; }
+  .protocol-grid .eyebrow { font-size: 7px; }
+
+  .home-experiences {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 
   .experience-preview { min-height: 210px; }
 
@@ -831,12 +778,13 @@ footer {
     height: 300px;
   }
 
-  .country-map #globeViz { height: 300px; }
+  .country-map #countryGlobeViz {
+    width: 100%;
+    height: 300px;
+  }
 
   .protocol-explainer { min-height: 400px; }
-
   .country-experiences { min-height: 280px; }
-
   .experience-list { max-height: 230px; }
 }
 </style>
@@ -854,23 +802,12 @@ footer {
         <div id="globeViz"></div>
       </div>
     </div>
-
-    <div class="home-title">Fieldwork Atlas / Global research index</div>
-
-    <div class="home-instructions">
-      <strong>THE ATLAS</strong>
-      <ul>
-        <li>Click a country to view its protocol profile</li>
-        <li>Use the navigation to explore the Atlas</li>
-        <li>Contribute your own research experience</li>
-      </ul>
-    </div>
   </div>
 
   <nav class="home-nav">
-    <button onclick="showView('contributeView')">Contribute</button>
+    <button onclick="goHomeSection('homeContribution')">Contribute</button>
     <button onclick="showView('galleryView')">Protocol gallery</button>
-    <button onclick="showView('aboutView')">About the Atlas</button>
+    <button onclick="goHomeSection('homeAbout')">About the Atlas</button>
   </nav>
 
   <section class="home-section">
@@ -878,7 +815,6 @@ footer {
       <h2>Recent protocols / 01–14</h2>
       <button class="text-link" onclick="showView('galleryView')">View all protocols →</button>
     </div>
-
     <div class="protocol-grid" id="homeProtocolGrid"></div>
   </section>
 
@@ -889,11 +825,6 @@ footer {
     </div>
 
     <div class="home-experiences">
-      <button class="contribute-block" onclick="showView('contributeView')">
-        <span>Contribute</span>
-        <strong>+</strong>
-      </button>
-
       <div class="experience-preview" id="homeExperienceList">
         <button class="experience-preview-item" onclick="openExperience('sample')">
           <span>Malawi / Research in practice</span>
@@ -903,22 +834,199 @@ footer {
           <span>Explore researcher accounts</span>
           <span>MORE →</span>
         </button>
-        <button class="experience-add" onclick="showView('contributeView')">
+        <button class="experience-add" onclick="goHomeSection('homeContribution')">
           Add your experience +
         </button>
       </div>
     </div>
   </section>
 
-  <section class="home-section">
-    <button class="about-tile" onclick="showView('aboutView')">
-      ABOUT THE ATLAS<br>
-      Why it exists, how it works, research rules and a place to share feedback.
-    </button>
+  <section class="home-section" id="homeContribution">
+    <div class="section-topline">
+      <h2>Contribute / Add to the Atlas</h2>
+    </div>
+
+    <div class="form-page">
+      <div class="eyebrow">Add to the global research index</div>
+      <h1>Contribute to the Atlas</h1>
+      <p>
+        Share formal information about research permissions, or tell a longer
+        story about what happened during your fieldwork. You do not need to
+        complete every field to make a useful contribution.
+      </p>
+
+      <form id="contributionForm">
+
+        <div class="form-subheading">01 / Contribution type</div>
+
+        <div class="form-group">
+          <label for="contributionType">What would you like to contribute?</label>
+          <select id="contributionType" required>
+            <option value="">Choose a contribution type</option>
+            <option value="protocol">Research protocol information</option>
+            <option value="experience">Personal research experience</option>
+            <option value="advice">Advice for other researchers</option>
+            <option value="resource">Useful resource or document</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input id="country" type="text" placeholder="Enter country" required>
+        </div>
+
+        <div class="form-group">
+          <label for="researchYear">Year of research</label>
+          <input id="researchYear" type="number" min="1900" max="2100" placeholder="e.g. 2026">
+        </div>
+
+        <div class="form-group">
+          <label for="discipline">Research discipline</label>
+          <input id="discipline" type="text" placeholder="e.g. Geography, anthropology, public health">
+        </div>
+
+        <div class="form-group">
+          <label for="researchType">Type of research</label>
+          <input id="researchType" type="text" placeholder="e.g. PhD fieldwork, clinical research, consultancy">
+        </div>
+
+        <div class="form-subheading">02 / Formal protocol information</div>
+
+        <div class="form-group">
+          <label for="authority">Which authorities or institutions were involved?</label>
+          <textarea id="authority" placeholder="List relevant institutions, authorities or committees."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="permissionDuration">How long did the process take?</label>
+          <input id="permissionDuration" type="text" placeholder="e.g. 3 months">
+        </div>
+
+        <div class="form-group">
+          <label for="permissionOutcome">What was the outcome?</label>
+          <select id="permissionOutcome">
+            <option value="">Select an outcome</option>
+            <option>Approved</option>
+            <option>Approved with conditions</option>
+            <option>Rejected</option>
+            <option>Still waiting</option>
+            <option>Withdrawn</option>
+            <option>Other / not applicable</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="permissionCost">Costs (optional)</label>
+          <input id="permissionCost" type="text" placeholder="Include currency if known">
+        </div>
+
+        <div class="form-group">
+          <label for="protocolSummary">Explain the protocol in plain language</label>
+          <textarea id="protocolSummary" placeholder="What does another researcher need to know?"></textarea>
+        </div>
+
+        <div class="form-subheading">03 / Personal fieldwork experience</div>
+
+        <div class="form-group">
+          <label for="title">Title of your contribution</label>
+          <input id="title" type="text" placeholder="Give your contribution a title" required>
+        </div>
+
+        <div class="form-group">
+          <label for="summary">Short introduction</label>
+          <textarea id="summary" placeholder="What is your contribution about?" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="experience">Your full account</label>
+          <textarea id="experience" style="min-height:220px" placeholder="What happened? What surprised you? What was difficult? What would you want another researcher to know?"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="advice">Advice for other researchers</label>
+          <textarea id="advice" placeholder="Anything you wish you had known beforehand?"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="source">Useful links or documents</label>
+          <textarea id="source" placeholder="Add publicly shareable resources."></textarea>
+        </div>
+
+        <div class="form-subheading">04 / Contributor details</div>
+
+        <div class="form-group">
+          <label for="contributorName">Name (optional)</label>
+          <input id="contributorName" type="text" placeholder="Leave blank to contribute anonymously">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email (optional, kept private)</label>
+          <input id="email" type="email" placeholder="Your email address">
+        </div>
+
+        <div class="consent-row">
+          <input id="consent" type="checkbox" required>
+          <label for="consent">
+            I consent to this contribution being reviewed for possible publication
+            on the Atlas. I understand identifying or sensitive information may
+            be removed before publication.
+          </label>
+        </div>
+
+        <button class="submit-button" type="submit">Submit contribution →</button>
+
+        <p class="form-message" id="formMessage">
+          Prototype form / Not connected to the database yet.
+          Please do not submit confidential or sensitive information.
+        </p>
+
+      </form>
+    </div>
+  </section>
+
+  <section class="home-section" id="homeAbout">
+    <div class="section-topline">
+      <h2>About the Atlas</h2>
+    </div>
+
+    <div class="about-page">
+      <div class="eyebrow">About this project</div>
+      <h1>The Fieldwork Atlas</h1>
+
+      <p>
+        The Fieldwork Atlas is a collaborative resource bringing together
+        information and experiences about conducting research around the world.
+      </p>
+
+      <p>
+        Research permissions can be difficult to navigate. Requirements may be
+        spread across multiple institutions, processes can change, and the
+        experience of applying does not always match the official guidance.
+      </p>
+
+      <p>
+        The Atlas brings together two kinds of knowledge: structured information
+        about formal research protocols, and first-hand accounts from researchers
+        who have gone through those processes.
+      </p>
+
+      <p>
+        The aim is to make research processes more transparent, accessible and
+        easier to navigate.
+      </p>
+
+      <p>
+        This is a collaborative resource. Contributions are reviewed before
+        publication, and personal or sensitive information should not be shared.
+      </p>
+
+      <button class="small-button" onclick="goHomeSection('homeContribution')">
+        Contribute to the Atlas +
+      </button>
+    </div>
   </section>
 
 </div>
-
 
 <!-- PROTOCOL GALLERY VIEW -->
 <div id="galleryView" class="view">
@@ -943,11 +1051,10 @@ footer {
 
   <div class="section-topline">
     <span class="eyebrow">Have information to add?</span>
-    <button class="small-button" onclick="showView('contributeView')">Add a protocol +</button>
+    <button class="small-button" onclick="goHomeSection('homeContribution')">Add a protocol +</button>
   </div>
 
 </div>
-
 
 <!-- COUNTRY PROFILE VIEW -->
 <div id="countryView" class="view">
@@ -960,7 +1067,7 @@ footer {
   <div class="country-layout">
 
     <div class="country-map">
-      <div id="globeViz"></div>
+      <div id="countryGlobeViz"></div>
       <div class="country-map-label" id="countryMapLabel">Selected country</div>
     </div>
 
@@ -991,7 +1098,7 @@ footer {
         Requirements can change. Check with the relevant authorities before making plans.
       </p>
 
-      <button class="small-button" onclick="showView('contributeView')">
+      <button class="small-button" onclick="goHomeSection('homeContribution')">
         Update this protocol +
       </button>
     </div>
@@ -1006,214 +1113,17 @@ footer {
         </button>
       </div>
 
-      <button class="country-add-button" onclick="showView('contributeView')">
+      <button class="country-add-button" onclick="goHomeSection('homeContribution')">
         Add your experience +
       </button>
     </aside>
 
   </div>
-
-</div>
-
-
-<!-- CONTRIBUTION VIEW -->
-<div id="contributeView" class="view">
-
-  <div class="page-topline">
-    <span class="brand">Fieldwork Atlas / Contribution</span>
-    <button class="back-link" onclick="showView('homeView')">← Back to atlas</button>
-  </div>
-
-  <div class="form-page">
-    <div class="eyebrow">Add to the global research index</div>
-    <h1>Contribute to the Atlas</h1>
-    <p>
-      Share formal information about research permissions, or tell a longer
-      story about what happened during your fieldwork. You do not need to
-      complete every field to make a useful contribution.
-    </p>
-
-    <form id="contributionForm">
-
-      <div class="form-subheading">01 / Contribution type</div>
-
-      <div class="form-group">
-        <label for="contributionType">What would you like to contribute?</label>
-        <select id="contributionType" required>
-          <option value="">Choose a contribution type</option>
-          <option value="protocol">Research protocol information</option>
-          <option value="experience">Personal research experience</option>
-          <option value="advice">Advice for other researchers</option>
-          <option value="resource">Useful resource or document</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="country">Country</label>
-        <input id="country" type="text" placeholder="Enter country" required>
-      </div>
-
-      <div class="form-group">
-        <label for="researchYear">Year of research</label>
-        <input id="researchYear" type="number" min="1900" max="2100" placeholder="e.g. 2026">
-      </div>
-
-      <div class="form-group">
-        <label for="discipline">Research discipline</label>
-        <input id="discipline" type="text" placeholder="e.g. Geography, anthropology, public health">
-      </div>
-
-      <div class="form-group">
-        <label for="researchType">Type of research</label>
-        <input id="researchType" type="text" placeholder="e.g. PhD fieldwork, clinical research, consultancy">
-      </div>
-
-      <div class="form-subheading">02 / Formal protocol information</div>
-
-      <div class="form-group">
-        <label for="authority">Which authorities or institutions were involved?</label>
-        <textarea id="authority" placeholder="List relevant institutions, authorities or committees."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="permissionDuration">How long did the process take?</label>
-        <input id="permissionDuration" type="text" placeholder="e.g. 3 months">
-      </div>
-
-      <div class="form-group">
-        <label for="permissionOutcome">What was the outcome?</label>
-        <select id="permissionOutcome">
-          <option value="">Select an outcome</option>
-          <option>Approved</option>
-          <option>Approved with conditions</option>
-          <option>Rejected</option>
-          <option>Still waiting</option>
-          <option>Withdrawn</option>
-          <option>Other / not applicable</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="permissionCost">Costs (optional)</label>
-        <input id="permissionCost" type="text" placeholder="Include currency if known">
-      </div>
-
-      <div class="form-group">
-        <label for="protocolSummary">Explain the protocol in plain language</label>
-        <textarea id="protocolSummary" placeholder="What does another researcher need to know?"></textarea>
-      </div>
-
-      <div class="form-subheading">03 / Personal fieldwork experience</div>
-
-      <div class="form-group">
-        <label for="title">Title of your contribution</label>
-        <input id="title" type="text" placeholder="Give your contribution a title" required>
-      </div>
-
-      <div class="form-group">
-        <label for="summary">Short introduction</label>
-        <textarea id="summary" placeholder="What is your contribution about?" required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="experience">Your full account</label>
-        <textarea id="experience" style="min-height:220px" placeholder="What happened? What surprised you? What was difficult? What would you want another researcher to know?"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="advice">Advice for other researchers</label>
-        <textarea id="advice" placeholder="Anything you wish you had known beforehand?"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="source">Useful links or documents</label>
-        <textarea id="source" placeholder="Add publicly shareable resources."></textarea>
-      </div>
-
-      <div class="form-subheading">04 / Contributor details</div>
-
-      <div class="form-group">
-        <label for="contributorName">Name (optional)</label>
-        <input id="contributorName" type="text" placeholder="Leave blank to contribute anonymously">
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email (optional, kept private)</label>
-        <input id="email" type="email" placeholder="Your email address">
-      </div>
-
-      <div class="consent-row">
-        <input id="consent" type="checkbox" required>
-        <label for="consent">
-          I consent to this contribution being reviewed for possible publication
-          on the Atlas. I understand identifying or sensitive information may
-          be removed before publication.
-        </label>
-      </div>
-
-      <button class="submit-button" type="submit">Submit contribution →</button>
-
-      <p class="form-message" id="formMessage">
-        Prototype form / Not connected to the database yet.
-        Please do not submit confidential or sensitive information.
-      </p>
-
-    </form>
-  </div>
-
-</div>
-
-
-<!-- ABOUT VIEW -->
-<div id="aboutView" class="view">
-
-  <div class="page-topline">
-    <span class="brand">Fieldwork Atlas / About</span>
-    <button class="back-link" onclick="showView('homeView')">← Back to atlas</button>
-  </div>
-
-  <div class="about-page">
-    <div class="eyebrow">About this project</div>
-    <h1>The Fieldwork Atlas</h1>
-
-    <p>
-      The Fieldwork Atlas is a collaborative resource bringing together
-      information and experiences about conducting research around the world.
-    </p>
-
-    <p>
-      Research permissions can be difficult to navigate. Requirements may be
-      spread across multiple institutions, processes can change, and the
-      experience of applying does not always match the official guidance.
-    </p>
-
-    <p>
-      The Atlas brings together two kinds of knowledge: structured information
-      about formal research protocols, and first-hand accounts from researchers
-      who have gone through those processes.
-    </p>
-
-    <p>
-      The aim is to make research processes more transparent, accessible and
-      easier to navigate.
-    </p>
-
-    <p>
-      This is a collaborative resource. Contributions are reviewed before
-      publication, and personal or sensitive information should not be shared.
-    </p>
-
-    <button class="small-button" onclick="showView('contributeView')">
-      Contribute to the Atlas +
-    </button>
-  </div>
-
 </div>
 
 <footer>Fieldwork Atlas / A collaborative research resource</footer>
 
 </main>
-
 
 <!-- EXPERIENCE MODAL -->
 <div class="modal" id="experienceModal" onclick="closeModalOutside(event)">
@@ -1225,13 +1135,9 @@ footer {
   </div>
 </div>
 
-
 <script>
 
-/* --------------------------------------------------
-   SAMPLE ATLAS CONTENT
-   Add approved protocol records here as the Atlas grows.
--------------------------------------------------- */
+/* SAMPLE ATLAS CONTENT */
 
 const protocols = [
   {
@@ -1261,18 +1167,32 @@ const experiences = {
   }
 };
 
+/* VIEW NAVIGATION */
 
-/* --------------------------------------------------
-   VIEW NAVIGATION
--------------------------------------------------- */
+function goHomeSection(sectionId) {
+  showView("homeView");
+  setTimeout(() => {
+    const section = document.getElementById(sectionId);
+    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 80);
+}
 
 function showView(viewId) {
+  if (viewId === "contributeView") {
+    goHomeSection("homeContribution");
+    return;
+  }
+
+  if (viewId === "aboutView") {
+    goHomeSection("homeAbout");
+    return;
+  }
+
   document.querySelectorAll(".view").forEach(view => {
     view.classList.remove("active");
   });
 
   document.getElementById(viewId).classList.add("active");
-
   window.scrollTo({ top: 0, behavior: "instant" });
 
   if (world) {
@@ -1280,10 +1200,7 @@ function showView(viewId) {
   }
 }
 
-
-/* --------------------------------------------------
-   PROTOCOL TILES
--------------------------------------------------- */
+/* PROTOCOL TILES */
 
 function makeProtocolTile(protocol) {
   const button = document.createElement("button");
@@ -1319,22 +1236,23 @@ function renderProtocolGrids() {
     <span>CONTRIBUTE</span>
     <span class="plus">+</span>
   `;
-  addTile.addEventListener("click", () => showView("contributeView"));
 
   homeGrid.appendChild(addTile.cloneNode(true));
-  homeGrid.lastElementChild.addEventListener("click", () => showView("contributeView"));
+  homeGrid.lastElementChild.addEventListener("click", () => {
+    goHomeSection("homeContribution");
+  });
+
+  addTile.addEventListener("click", () => {
+    goHomeSection("homeContribution");
+  });
 
   fullGrid.appendChild(addTile);
 }
 
-
-/* --------------------------------------------------
-   COUNTRY PROFILES
--------------------------------------------------- */
+/* COUNTRY PROFILES */
 
 function openCountry(countryId) {
   const protocol = protocols.find(item => item.id === countryId);
-
   if (!protocol) return;
 
   document.getElementById("countryTitle").textContent =
@@ -1396,10 +1314,7 @@ function openCountry(countryId) {
   rotateGlobeToCountry(protocol.country);
 }
 
-
-/* --------------------------------------------------
-   EXPERIENCE MODAL
--------------------------------------------------- */
+/* EXPERIENCE MODAL */
 
 function openExperience(id) {
   const entry = experiences[id];
@@ -1408,11 +1323,8 @@ function openExperience(id) {
   document.getElementById("modalCountry").textContent =
     entry.country + " / Fieldwork experience";
 
-  document.getElementById("modalTitle").textContent =
-    entry.title;
-
-  document.getElementById("modalBody").textContent =
-    entry.text;
+  document.getElementById("modalTitle").textContent = entry.title;
+  document.getElementById("modalBody").textContent = entry.text;
 
   document.getElementById("experienceModal").classList.add("visible");
 }
@@ -1427,10 +1339,7 @@ function closeModalOutside(event) {
   }
 }
 
-
-/* --------------------------------------------------
-   CONTRIBUTION FORM
--------------------------------------------------- */
+/* CONTRIBUTION FORM */
 
 document.getElementById("contributionForm").addEventListener("submit", event => {
   event.preventDefault();
@@ -1461,10 +1370,7 @@ document.getElementById("contributionForm").addEventListener("submit", event => 
     "Thank you. This prototype is not connected to the database, so your contribution has not been saved.";
 });
 
-
-/* --------------------------------------------------
-   GLOBE
--------------------------------------------------- */
+/* GLOBE */
 
 let world = null;
 let countryFeatures = [];
@@ -1488,7 +1394,9 @@ function getCountryCentre(feature) {
 
   collect(feature.geometry.coordinates);
 
-  if (!coordinates.length) return { lat: 0, lng: 0 };
+  if (!coordinates.length) {
+    return { lat: 0, lng: 0 };
+  }
 
   let lng = 0;
   let lat = 0;
@@ -1505,7 +1413,8 @@ function getCountryCentre(feature) {
 }
 
 function rotateGlobeToCountry(countryName) {
-  if (!world) return;
+  const targetGlobe = window.countryWorld || world;
+  if (!targetGlobe) return;
 
   const feature = countryFeatures.find(item =>
     item.properties.name.toLowerCase() === countryName.toLowerCase()
@@ -1515,29 +1424,40 @@ function rotateGlobeToCountry(countryName) {
 
   const centre = getCountryCentre(feature);
 
-  world.pointOfView({
+  targetGlobe.pointOfView({
     lat: centre.lat,
     lng: centre.lng,
-    altitude: 1.7
+    altitude: 1.45
   }, 1000);
 
-  world.polygonCapColor(featureItem => {
+  targetGlobe.polygonCapColor(featureItem => {
     if (featureItem.properties.name === countryName) {
       return "rgba(181,198,176,0.98)";
     }
+
     return "#ffffff";
   });
 }
 
 function resizeGlobe() {
-  if (!world) return;
-
   const element = document.getElementById("globeViz");
-  if (!element || !element.clientWidth || !element.clientHeight) return;
 
-  world
-    .width(element.clientWidth)
-    .height(element.clientHeight);
+  if (world && element && element.clientWidth && element.clientHeight) {
+    world.width(element.clientWidth).height(element.clientHeight);
+  }
+
+  const countryElement = document.getElementById("countryGlobeViz");
+
+  if (
+    window.countryWorld &&
+    countryElement &&
+    countryElement.clientWidth &&
+    countryElement.clientHeight
+  ) {
+    window.countryWorld
+      .width(countryElement.clientWidth)
+      .height(countryElement.clientHeight);
+  }
 }
 
 window.addEventListener("load", async () => {
@@ -1556,6 +1476,7 @@ window.addEventListener("load", async () => {
     )
     .showAtmosphere(false)
     .showGraticules(false)
+    .enablePointerInteraction(true)
     .polygonAltitude(0.006)
     .polygonCapColor(feature => {
       return feature.properties.name === "Malawi"
@@ -1567,6 +1488,7 @@ window.addEventListener("load", async () => {
     .polygonLabel(feature => feature.properties.name)
     .onPolygonClick(feature => {
       const countryName = feature.properties.name;
+
       const match = protocols.find(item =>
         item.country.toLowerCase() === countryName.toLowerCase()
       );
@@ -1583,7 +1505,9 @@ window.addEventListener("load", async () => {
       "https://unpkg.com/world-atlas@2/countries-110m.json"
     );
 
-    if (!response.ok) throw new Error("Country data unavailable");
+    if (!response.ok) {
+      throw new Error("Country data unavailable");
+    }
 
     const worldData = await response.json();
 
@@ -1597,8 +1521,64 @@ window.addEventListener("load", async () => {
     world.pointOfView({
       lat: -3,
       lng: 20,
-      altitude: 2.2
+      altitude: 1.65
     });
+
+    /*
+      Keep deliberate globe interaction enabled.
+      Stop wheel events reaching the globe controls so
+      the mouse wheel scrolls the webpage instead.
+    */
+    const controls = world.controls();
+
+    if (controls) {
+      controls.enableZoom = true;
+    }
+
+    globeElement.addEventListener("wheel", event => {
+      event.stopImmediatePropagation();
+    }, true);
+
+    /* Separate globe for individual country profiles. */
+
+    const countryElement = document.getElementById("countryGlobeViz");
+
+    if (countryElement) {
+      window.countryWorld = Globe()(countryElement)
+        .width(countryElement.clientWidth)
+        .height(countryElement.clientHeight)
+        .backgroundColor("rgba(255,255,255,0)")
+        .showGlobe(true)
+        .globeMaterial(
+          new THREE.MeshPhongMaterial({
+            color: "#DCEAF2",
+            shininess: 0
+          })
+        )
+        .showAtmosphere(false)
+        .showGraticules(false)
+        .polygonAltitude(0.006)
+        .polygonCapColor(feature =>
+          feature.properties.name === "Malawi"
+            ? "rgba(181,198,176,0.98)"
+            : "#ffffff"
+        )
+        .polygonSideColor(() => "rgba(255,255,255,0)")
+        .polygonStrokeColor(() => "#DCEAF2")
+        .polygonLabel(feature => feature.properties.name);
+
+      window.countryWorld.polygonsData(countryFeatures);
+
+      const countryControls = window.countryWorld.controls();
+
+      if (countryControls) {
+        countryControls.enableZoom = true;
+      }
+
+      countryElement.addEventListener("wheel", event => {
+        event.stopImmediatePropagation();
+      }, true);
+    }
 
   } catch (error) {
     console.error("Could not load country data:", error);
@@ -1609,10 +1589,7 @@ window.addEventListener("load", async () => {
   window.addEventListener("resize", resizeGlobe);
 });
 
-
-/* --------------------------------------------------
-   COUNTRY WITHOUT A PROTOCOL RECORD
--------------------------------------------------- */
+/* COUNTRY WITHOUT A PROTOCOL RECORD */
 
 function createCountryProfile(countryName) {
   const existing = protocols.find(item =>
@@ -1634,7 +1611,9 @@ function createCountryProfile(countryName) {
     "Awaiting contribution";
 
   document.getElementById("countryOverview").textContent =
-    "There is not yet a published research protocol for " + countryName + ". This profile can be developed through contributions from researchers who have undertaken research here.";
+    "There is not yet a published research protocol for " +
+    countryName +
+    ". This profile can be developed through contributions from researchers who have undertaken research here.";
 
   document.getElementById("countrySteps").innerHTML =
     "<li>No verified steps have been added yet.</li>";
@@ -1655,6 +1634,5 @@ function createCountryProfile(countryName) {
 }
 
 </script>
-
 </body>
 </html>
