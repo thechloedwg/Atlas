@@ -4,148 +4,620 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="An open archive of international research permissions, processes and fieldwork experiences.">
-  <title>Fieldwork Atlas — Research Across Borders</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Fieldwork Atlas</title>
+
+  <!-- Leaflet map styling -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #222222;
+      line-height: 1.5;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+
+    header {
+      padding: 22px 0;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    header a {
+      color: #333333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    /* Map hero */
+
+    .hero {
+      padding: 45px 0 35px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: #666666;
+      margin-bottom: 24px;
+      font-size: 15px;
+    }
+
+    #map {
+      width: 100%;
+      height: 380px;
+      border-radius: 8px;
+      background: #eeeeee;
+      z-index: 1;
+    }
+
+    /* Action row */
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid #eeeeee;
+      border-bottom: 1px solid #eeeeee;
+      margin: 15px 0 55px;
+    }
+
+    .action {
+      display: block;
+      padding: 22px 15px;
+      text-decoration: none;
+      color: #222222;
+      border-right: 1px solid #eeeeee;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .action:last-child {
+      border-right: none;
+    }
+
+    .action:hover {
+      background: #f8f8f8;
+    }
+
+    .action strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .action span {
+      color: #777777;
+      font-size: 13px;
+    }
+
+    /* Experience gallery */
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      font-size: 25px;
+      font-weight: 500;
+    }
+
+    .section-heading p {
+      font-size: 13px;
+      color: #777777;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-bottom: 65px;
+    }
+
+    .experience-card {
+      border: 1px solid #eeeeee;
+      border-radius: 7px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .card-image {
+      height: 165px;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 44px;
+    }
+
+    .card-content {
+      padding: 17px;
+    }
+
+    .card-location {
+      color: #777777;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 7px;
+    }
+
+    .card-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card-content p {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 14px;
+    }
+
+    .card-meta {
+      font-size: 12px;
+      color: #888888;
+      border-top: 1px solid #eeeeee;
+      padding-top: 12px;
+    }
+
+    /* Submission form */
+
+    #submit-section {
+      display: none;
+      padding: 35px;
+      background: #f8f8f8;
+      border-radius: 8px;
+      margin-bottom: 65px;
+    }
+
+    #submit-section.visible {
+      display: block;
+    }
+
+    #submit-section h2 {
+      font-size: 25px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    #submit-section > p {
+      color: #666666;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #dddddd;
+      border-radius: 4px;
+      background: #ffffff;
+      font: inherit;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .submit-button {
+      border: none;
+      border-radius: 4px;
+      background: #222222;
+      color: #ffffff;
+      padding: 12px 22px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    .submit-button:hover {
+      background: #444444;
+    }
+
+    #form-message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #8a4b32;
+    }
+
+    /* Footer */
+
+    footer {
+      border-top: 1px solid #eeeeee;
+      padding: 25px 0;
+      color: #888888;
+      font-size: 13px;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 700px) {
+      .hero {
+        padding-top: 30px;
+      }
+
+      #map {
+        height: 300px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .action {
+        border-right: none;
+        border-bottom: 1px solid #eeeeee;
+        text-align: left;
+      }
+
+      .action:last-child {
+        border-bottom: none;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-field.full {
+        grid-column: auto;
+      }
+
+      #submit-section {
+        padding: 22px;
+      }
+
+      .section-heading {
+        display: block;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-  <header class="site-header">
-    <a class="brand" href="index.html">
-      <span class="brand-icon">🌍</span>
-      <span>FIELDWORK ATLAS</span>
-    </a>
-
-    <nav class="main-nav">
-      <a href="countries.html">Country index</a>
+  <!-- Header -->
+  <header>
+    <div class="container header-content">
+      <div class="logo">FIELDWORK ATLAS</div>
       <a href="#about">About</a>
-      <a href="#contribute">Contribute</a>
-    </nav>
-
-    <a class="header-link" href="#explore">Explore the atlas ↗</a>
+    </div>
   </header>
 
-  <main>
+  <main class="container">
+
+    <!-- Map hero -->
     <section class="hero">
-      <p class="eyebrow">A GLOBAL RESEARCH ARCHIVE · EST. 2026</p>
-
-      <h1>Research has<br><span>a geography.</span></h1>
-
-      <p class="hero-description">
-        An open, collaborative archive of the permissions,
-        processes and experiences that shape international
-        fieldwork.
-      </p>
-
-      <a class="primary-button" href="#explore">
-        🧭 Explore the atlas
-      </a>
-
-      <div class="hero-note">
-        <span>📜 Official requirements</span>
-        <span>💬 Researcher experiences</span>
-        <span>🗂️ Shared resources</span>
-      </div>
-    </section>
-
-    <section class="explore-section" id="explore">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">THE COUNTRY ARCHIVE</p>
-          <h2>Explore by country</h2>
-        </div>
-        <a href="countries.html">View all countries →</a>
-      </div>
-
-      <div class="search-container">
-        <span>🔎</span>
-        <input
-          type="search"
-          id="country-search"
-          placeholder="Search countries..."
-          aria-label="Search countries"
-        >
-      </div>
-
-      <div class="stamp-grid" id="stamp-grid">
-
-        <a class="stamp-card" href="country.html?country=malawi">
-          <div class="stamp stamp-rose">
-            <span class="stamp-top">FIELDWORK ATLAS · MW</span>
-            <span class="stamp-symbol">🌍</span>
-            <strong>MALAWI</strong>
-            <span class="stamp-bottom">COUNTRY FILE · 001</span>
-          </div>
-          <p>MW <span>·</span> Southern Africa</p>
-        </a>
-
-        <a class="stamp-card" href="country.html?country=nepal">
-          <div class="stamp stamp-teal">
-            <span class="stamp-top">FIELDWORK ATLAS · NP</span>
-            <span class="stamp-symbol">🏔️</span>
-            <strong>NEPAL</strong>
-            <span class="stamp-bottom">COUNTRY FILE · 002</span>
-          </div>
-          <p>NP <span>·</span> South Asia</p>
-        </a>
-
-        <a class="stamp-card" href="country.html?country=brazil">
-          <div class="stamp stamp-blue">
-            <span class="stamp-top">FIELDWORK ATLAS · BR</span>
-            <span class="stamp-symbol">🌿</span>
-            <strong>BRAZIL</strong>
-            <span class="stamp-bottom">COUNTRY FILE · 003</span>
-          </div>
-          <p>BR <span>·</span> South America</p>
-        </a>
-
-        <a class="stamp-card" href="country.html?country=finland">
-          <div class="stamp stamp-gold">
-            <span class="stamp-top">FIELDWORK ATLAS · FI</span>
-            <span class="stamp-symbol">❄️</span>
-            <strong>FINLAND</strong>
-            <span class="stamp-bottom">COUNTRY FILE · 004</span>
-          </div>
-          <p>FI <span>·</span> Northern Europe</p>
-        </a>
-
-      </div>
-
-      <p id="no-results" class="no-results" hidden>
-        No countries found. Try another search.
-      </p>
-    </section>
-
-    <section class="about-section" id="about">
-      <p class="eyebrow">WHY THIS ATLAS EXISTS</p>
-      <h2>Making research access more transparent.</h2>
+      <h1>Research, across borders.</h1>
       <p>
-        Research permissions can be complex, fragmented and
-        difficult to navigate. This atlas brings together
-        official information and first-hand experiences to
-        make research processes more visible and accessible.
+        Explore research permissions and fieldwork experiences from around the world.
+      </p>
+
+      <div id="map"></div>
+    </section>
+
+    <!-- Action row -->
+    <nav class="actions">
+      <a class="action" href="#submit-section" onclick="showForm()">
+        <strong>＋ Share an experience</strong>
+        <span>Contribute to the Atlas</span>
+      </a>
+
+      <a class="action" href="#experiences">
+        <strong>Explore experiences</strong>
+        <span>Browse researcher contributions</span>
+      </a>
+
+      <a class="action" href="#about">
+        <strong>About the Atlas</strong>
+        <span>What this project is about</span>
+      </a>
+    </nav>
+
+    <!-- Submission form -->
+    <section id="submit-section">
+      <h2>Share your experience</h2>
+      <p>
+        Help other researchers understand the permissions process
+        and what to expect when conducting fieldwork.
+      </p>
+
+      <form id="experience-form">
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label for="country">Country *</label>
+            <input
+              id="country"
+              name="country"
+              type="text"
+              placeholder="Enter a country"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="contribution">What are you sharing? *</label>
+            <select id="contribution" name="contribution" required>
+              <option value="">Select one</option>
+              <option>Research permission information</option>
+              <option>My research experience</option>
+              <option>A useful resource or document</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="research-type">Research type</label>
+            <select id="research-type" name="researchType">
+              <option value="">Select one</option>
+              <option>Social sciences</option>
+              <option>Humanities</option>
+              <option>Clinical / medical</option>
+              <option>Public health</option>
+              <option>Natural sciences</option>
+              <option>Environmental research</option>
+              <option>Engineering / technology</option>
+              <option>Agricultural research</option>
+              <option>Education</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="methodology">Methodology</label>
+            <select id="methodology" name="methodology">
+              <option value="">Select one</option>
+              <option>Qualitative</option>
+              <option>Quantitative</option>
+              <option>Mixed methods</option>
+              <option>Experimental / clinical trial</option>
+              <option>Ethnographic</option>
+              <option>Participatory / community-based</option>
+              <option>Archival / historical</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="year">Year of application / fieldwork</label>
+            <input
+              id="year"
+              name="year"
+              type="number"
+              min="1950"
+              max="2100"
+              placeholder="e.g. 2026"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="outcome">Application outcome</label>
+            <select id="outcome" name="outcome">
+              <option value="">Select one</option>
+              <option>Approved</option>
+              <option>Rejected</option>
+              <option>Still waiting</option>
+              <option>Withdrawn</option>
+              <option>Not applicable</option>
+            </select>
+          </div>
+
+          <div class="form-field full">
+            <label for="experience">Tell us about your experience *</label>
+            <textarea
+              id="experience"
+              name="experience"
+              placeholder="What permissions did you need? Who did you contact? What happened?"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-field full">
+            <label for="advice">What advice would you give another researcher?</label>
+            <textarea
+              id="advice"
+              name="advice"
+              placeholder="What do you wish you had known?"
+            ></textarea>
+          </div>
+
+          <div class="form-field full">
+            <label for="links">Useful links or documents</label>
+            <input
+              id="links"
+              name="links"
+              type="text"
+              placeholder="Paste a website or document link"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="name">Your name (optional)</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Name"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email (optional, kept private)</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email address"
+            >
+          </div>
+
+          <div class="form-field full">
+            <label>
+              <input
+                type="checkbox"
+                id="consent"
+                required
+                style="width:auto; margin-right:8px;"
+              >
+              I agree that this contribution may be reviewed for publication
+              on the Fieldwork Atlas. *
+            </label>
+          </div>
+
+        </div>
+
+        <button class="submit-button" type="submit">
+          Submit contribution
+        </button>
+
+        <div id="form-message" role="status"></div>
+      </form>
+    </section>
+
+    <!-- Experience gallery -->
+    <section id="experiences">
+      <div class="section-heading">
+        <h2>Fieldwork experiences</h2>
+        <p>Explore contributions from researchers</p>
+      </div>
+
+      <div class="gallery">
+
+        <article class="experience-card">
+          <div class="card-image">🇲🇼</div>
+          <div class="card-content">
+            <div class="card-location">Malawi · Africa</div>
+            <h3>Research permissions in Malawi</h3>
+            <p>
+              A PhD researcher's experience navigating university ethics,
+              local research clearance and site permissions.
+            </p>
+            <div class="card-meta">
+              Social sciences · Qualitative · 2026
+            </div>
+          </div>
+        </article>
+
+        <!-- New approved experiences will appear here later -->
+
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" style="max-width:650px; margin-bottom:65px;">
+      <h2 style="font-size:25px; font-weight:500; margin-bottom:10px;">
+        About the Atlas
+      </h2>
+      <p style="color:#666666; font-size:14px;">
+        The Fieldwork Atlas is a collaborative resource documenting
+        research permissions, approval processes and fieldwork experiences
+        around the world. It aims to make the practical realities of
+        conducting international research easier to understand.
       </p>
     </section>
 
-    <section class="contribute-section" id="contribute">
-      <div>
-        <p class="eyebrow">A COLLABORATIVE ARCHIVE</p>
-        <h2>Have conducted research abroad?</h2>
-        <p>Help build a shared resource by contributing your experience.</p>
-      </div>
-      <a class="primary-button" href="mailto:hello@example.com">
-        💬 Contribute an experience
-      </a>
-    </section>
   </main>
 
   <footer>
-    <span>🌍 FIELDWORK ATLAS</span>
-    <span>Research across borders · Est. 2026</span>
+    <div class="container">
+      Fieldwork Atlas · A collaborative research resource
+    </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <!-- Leaflet map script -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // Create the world map
+    const map = L.map('map').setView([10, 15], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Example country marker: Malawi
+    const malawi = L.marker([-13.2543, 34.3015]).addTo(map);
+
+    malawi.bindPopup(
+      '<strong>Malawi</strong><br>1 example fieldwork record<br><a href="#experiences" onclick="map.closePopup()">View experience</a>'
+    );
+
+    // Show the contribution form
+    function showForm() {
+      document.getElementById('submit-section').classList.add('visible');
+    }
+
+    // Temporary form behaviour until Google Sheets is connected
+    document.getElementById('experience-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      document.getElementById('form-message').textContent =
+        'The form is ready for testing, but it is not connected to the Atlas database yet. Your contribution has not been sent or saved.';
+
+    });
+  </script>
+
 </body>
 </html>
-
