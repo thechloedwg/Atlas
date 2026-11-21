@@ -2,975 +2,854 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Fieldwork Atlas</title>
-
-  <!-- Globe libraries -->
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
-  <script src="https://unpkg.com/topojson-client@3"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #252525;
-      line-height: 1.5;
-    }
-
-    .container {
-      width: 92%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* HEADER */
-
-    header {
-      padding: 20px 0;
-      border-bottom: 1px solid #eeeeee;
-    }
-
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: Georgia, serif;
-      font-size: 21px;
-      font-weight: normal;
-      letter-spacing: 1.5px;
-      color: #263B8F;
-    }
-
-    header a {
-      color: #263B8F;
-      text-decoration: none;
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    /* HERO GLOBE */
-
-    .hero {
-      padding: 12px 0 10px;
-    }
-
-    #map {
-      width: 100%;
-      height: 560px;
-      background: #ffffff;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Circular outline */
-
-    #map::after {
-      content: "";
-      position: absolute;
-      width: min(560px, 90%);
-      aspect-ratio: 1 / 1;
-      border: 1px solid #263B8F;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .globe-instruction {
-      text-align: center;
-      color: #263B8F;
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 0 0 22px;
-    }
-
-    /* NAVIGATION */
-
-    .actions {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 18px 0;
-      border-top: 1px solid #eeeeee;
-      border-bottom: 1px solid #eeeeee;
-      margin: 0 0 65px;
-    }
-
-    .action {
-      display: inline-block;
-      padding: 8px 18px;
-      border: 1px solid #263B8F;
-      border-radius: 30px;
-      color: #263B8F;
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .action:hover {
-      background: #263B8F;
-      color: #ffffff;
-    }
-
-    /* SECTION HEADINGS */
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 24px;
-    }
-
-    .section-heading h2 {
-      font-family: Georgia, serif;
-      font-size: 30px;
-      font-weight: normal;
-      color: #263B8F;
-    }
-
-    .section-heading p {
-      font-size: 12px;
-      color: #777777;
-    }
-
-    /* EXPERIENCE GALLERY */
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-      margin-bottom: 75px;
-    }
-
-    .experience-card {
-      border: 1px solid #eeeeee;
-      background: #ffffff;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .experience-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 18px rgba(0,0,0,0.06);
-    }
-
-    .card-image {
-      height: 175px;
-      background: #F4F4F0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 52px;
-    }
-
-    .card-content {
-      padding: 19px;
-    }
-
-    .card-location {
-      color: #263B8F;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1.3px;
-      margin-bottom: 8px;
-    }
-
-    .card-content h3 {
-      font-family: Georgia, serif;
-      font-size: 21px;
-      font-weight: normal;
-      margin-bottom: 9px;
-    }
-
-    .card-content p {
-      font-size: 13px;
-      color: #666666;
-      margin-bottom: 17px;
-    }
-
-    .card-meta {
-      font-size: 11px;
-      color: #888888;
-      border-top: 1px solid #eeeeee;
-      padding-top: 12px;
-    }
-
-    /* COUNTRY PROFILE */
-
-    #country-profile {
-      display: none;
-      padding: 28px;
-      border: 1px solid #263B8F;
-      margin: 0 0 65px;
-    }
-
-    #country-profile.visible {
-      display: block;
-    }
-
-    #country-profile h2 {
-      font-family: Georgia, serif;
-      font-size: 30px;
-      font-weight: normal;
-      color: #263B8F;
-      margin-bottom: 12px;
-    }
-
-    #country-profile p {
-      font-size: 14px;
-      color: #666666;
-      margin-bottom: 12px;
-    }
-
-    .profile-link {
-      color: #263B8F;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-decoration: none;
-    }
-
-    /* SUBMISSION FORM */
-
-    #submit-section {
-      display: none;
-      padding: 35px;
-      background: #fafafa;
-      margin-bottom: 65px;
-    }
-
-    #submit-section.visible {
-      display: block;
-    }
-
-    #submit-section h2 {
-      font-family: Georgia, serif;
-      font-size: 30px;
-      font-weight: normal;
-      color: #263B8F;
-      margin-bottom: 8px;
-    }
-
-    #submit-section > p {
-      color: #666666;
-      margin-bottom: 25px;
-      font-size: 14px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-field.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #dddddd;
-      border-radius: 3px;
-      background: #ffffff;
-      font: inherit;
-      font-size: 14px;
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .consent-label {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-weight: normal;
-    }
-
-    .consent-label input {
-      width: auto;
-      margin-top: 4px;
-    }
-
-    .submit-button {
-      border: 1px solid #263B8F;
-      background: #263B8F;
-      color: #ffffff;
-      padding: 11px 22px;
-      cursor: pointer;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-top: 20px;
-    }
-
-    .submit-button:hover {
-      background: #ffffff;
-      color: #263B8F;
-    }
-
-    #form-message {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #8a4b32;
-    }
-
-    /* ABOUT */
-
-    #about {
-      max-width: 700px;
-      margin-bottom: 75px;
-    }
-
-    #about h2 {
-      font-family: Georgia, serif;
-      font-size: 30px;
-      font-weight: normal;
-      color: #263B8F;
-      margin-bottom: 12px;
-    }
-
-    #about p {
-      color: #666666;
-      font-size: 14px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      border-top: 1px solid #eeeeee;
-      padding: 25px 0;
-      color: #888888;
-      font-size: 11px;
-      letter-spacing: 0.5px;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 700px) {
-      .hero {
-        padding-top: 5px;
-      }
-
-      #map {
-        height: 390px;
-      }
-
-      #map::after {
-        width: min(370px, 95%);
-      }
-
-      .actions {
-        gap: 8px;
-        margin-bottom: 45px;
-      }
-
-      .action {
-        padding: 8px 12px;
-        font-size: 10px;
-      }
-
-      .gallery {
-        grid-template-columns: 1fr;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-field.full {
-        grid-column: auto;
-      }
-
-      #submit-section {
-        padding: 22px;
-      }
-
-      .section-heading {
-        display: block;
-      }
-
-      .section-heading p {
-        margin-top: 5px;
-      }
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fieldwork Atlas</title>
+
+<!-- Globe libraries -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  color: #252525;
+  line-height: 1.5;
+}
+
+.container {
+  width: 92%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* GLOBE HERO */
+
+.hero {
+  width: 100%;
+  padding-top: 15px;
+}
+
+#map {
+  width: 100%;
+  height: 620px;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+#map canvas {
+  display: block;
+}
+
+/* Outer globe outline */
+#map::after {
+  content: "";
+  position: absolute;
+  width: min(570px, 88vw);
+  aspect-ratio: 1 / 1;
+  border: 1px solid #263B8F;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.globe-instruction {
+  text-align: center;
+  color: #263B8F;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0 10px 25px;
+}
+
+/* NAVIGATION */
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 18px 0;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+  margin-bottom: 65px;
+}
+
+.action {
+  display: inline-block;
+  padding: 7px 17px;
+  border: 1px solid #263B8F;
+  border-radius: 30px;
+  color: #263B8F;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+}
+
+.action:hover {
+  background: #263B8F;
+  color: white;
+}
+
+/* SECTION HEADINGS */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 24px;
+}
+
+.section-heading h2,
+#about h2,
+#submit-section h2,
+#country-profile h2 {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: normal;
+  color: #263B8F;
+}
+
+.section-heading p {
+  font-size: 12px;
+  color: #777777;
+}
+
+/* EXPERIENCE GALLERY */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 75px;
+}
+
+.experience-card {
+  border: 1px solid #eeeeee;
+  background: white;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.experience-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+}
+
+.card-image {
+  height: 175px;
+  background: #F4F4F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 52px;
+}
+
+.card-content {
+  padding: 19px;
+}
+
+.card-location {
+  color: #263B8F;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  margin-bottom: 8px;
+}
+
+.card-content h3 {
+  font-family: Georgia, serif;
+  font-size: 21px;
+  font-weight: normal;
+  margin-bottom: 9px;
+}
+
+.card-content p {
+  font-size: 13px;
+  color: #666666;
+  margin-bottom: 17px;
+}
+
+.card-meta {
+  font-size: 11px;
+  color: #888888;
+  border-top: 1px solid #eeeeee;
+  padding-top: 12px;
+}
+
+/* COUNTRY PROFILE */
+
+#country-profile {
+  display: none;
+  padding: 28px;
+  border: 1px solid #263B8F;
+  margin-bottom: 65px;
+}
+
+#country-profile.visible {
+  display: block;
+}
+
+#country-profile p {
+  font-size: 14px;
+  color: #666666;
+  margin: 12px 0;
+}
+
+.profile-link {
+  color: #263B8F;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+/* SUBMISSION FORM */
+
+#submit-section {
+  display: none;
+  padding: 35px;
+  background: #fafafa;
+  margin-bottom: 65px;
+}
+
+#submit-section.visible {
+  display: block;
+}
+
+#submit-section > p {
+  color: #666666;
+  margin: 8px 0 25px;
+  font-size: 14px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  background: white;
+  font: inherit;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-weight: normal;
+}
+
+.consent-label input {
+  width: auto;
+  margin-top: 4px;
+}
+
+.submit-button {
+  border: 1px solid #263B8F;
+  background: #263B8F;
+  color: white;
+  padding: 11px 22px;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background: white;
+  color: #263B8F;
+}
+
+#form-message {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+/* ABOUT */
+
+#about {
+  max-width: 700px;
+  margin-bottom: 75px;
+}
+
+#about h2 {
+  margin-bottom: 12px;
+}
+
+#about p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* FOOTER */
+
+footer {
+  border-top: 1px solid #eeeeee;
+  padding: 25px 0;
+  color: #888888;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  #map {
+    height: 390px;
+  }
+
+  #map::after {
+    width: min(370px, 90vw);
+  }
+
+  .actions {
+    gap: 7px;
+    margin-bottom: 45px;
+  }
+
+  .action {
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field.full {
+    grid-column: auto;
+  }
+
+  #submit-section {
+    padding: 22px;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading p {
+    margin-top: 5px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
+<main class="container">
 
-  <header>
-    <div class="container header-content">
-      <div class="logo">FIELDWORK ATLAS</div>
-      <a href="#about">About</a>
+  <!-- GLOBE -->
+
+  <section class="hero">
+
+    <div id="map"></div>
+
+    <p class="globe-instruction">
+      Select a highlighted country to explore its profile
+    </p>
+
+  </section>
+
+  <!-- NAVIGATION -->
+
+  <nav class="actions">
+
+    <a class="action" href="#submit-section" onclick="showForm()">
+      + Contribute
+    </a>
+
+    <a class="action" href="#experiences">
+      Explore experiences
+    </a>
+
+    <a class="action" href="#about">
+      About the Atlas
+    </a>
+
+  </nav>
+
+  <!-- COUNTRY PROFILE -->
+
+  <section id="country-profile">
+
+    <h2 id="profile-country-name">Malawi</h2>
+
+    <p id="profile-country-description">
+      Explore research permissions and fieldwork experiences contributed
+      by researchers working in Malawi.
+    </p>
+
+    <a class="profile-link" href="#experiences">
+      View fieldwork experiences →
+    </a>
+
+  </section>
+
+  <!-- SUBMISSION FORM -->
+
+  <section id="submit-section">
+
+    <h2>Share your experience</h2>
+
+    <p>
+      Help other researchers understand the permissions process
+      and what to expect when conducting fieldwork.
+    </p>
+
+    <form id="experience-form">
+
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label for="country">Country *</label>
+          <input id="country" name="country" type="text"
+            placeholder="Enter a country" required>
+        </div>
+
+        <div class="form-field">
+          <label for="contribution">What are you sharing? *</label>
+          <select id="contribution" name="contribution" required>
+            <option value="">Select one</option>
+            <option>Research permission information</option>
+            <option>My research experience</option>
+            <option>A useful resource or document</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="research-type">Research type</label>
+          <select id="research-type" name="researchType">
+            <option value="">Select one</option>
+            <option>Social sciences</option>
+            <option>Humanities</option>
+            <option>Clinical / medical</option>
+            <option>Public health</option>
+            <option>Natural sciences</option>
+            <option>Environmental research</option>
+            <option>Engineering / technology</option>
+            <option>Agricultural research</option>
+            <option>Education</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="methodology">Methodology</label>
+          <select id="methodology" name="methodology">
+            <option value="">Select one</option>
+            <option>Qualitative</option>
+            <option>Quantitative</option>
+            <option>Mixed methods</option>
+            <option>Experimental / clinical trial</option>
+            <option>Ethnographic</option>
+            <option>Participatory / community-based</option>
+            <option>Archival / historical</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="year">Year of application / fieldwork</label>
+          <input id="year" name="year" type="number"
+            min="1950" max="2100" placeholder="e.g. 2026">
+        </div>
+
+        <div class="form-field">
+          <label for="outcome">Application outcome</label>
+          <select id="outcome" name="outcome">
+            <option value="">Select one</option>
+            <option>Approved</option>
+            <option>Rejected</option>
+            <option>Still waiting</option>
+            <option>Withdrawn</option>
+            <option>Not applicable</option>
+          </select>
+        </div>
+
+        <div class="form-field full">
+          <label for="experience">Tell us about your experience *</label>
+          <textarea id="experience" name="experience"
+            placeholder="What permissions did you need? Who did you contact? What happened?"
+            required></textarea>
+        </div>
+
+        <div class="form-field full">
+          <label for="advice">What advice would you give another researcher?</label>
+          <textarea id="advice" name="advice"
+            placeholder="What do you wish you had known?"></textarea>
+        </div>
+
+        <div class="form-field full">
+          <label for="links">Useful links or documents</label>
+          <input id="links" name="links" type="text"
+            placeholder="Paste a website or document link">
+        </div>
+
+        <div class="form-field">
+          <label for="name">Your name (optional)</label>
+          <input id="name" name="name" type="text" placeholder="Name">
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email (optional, kept private)</label>
+          <input id="email" name="email" type="email"
+            placeholder="Email address">
+        </div>
+
+        <div class="form-field full">
+          <label class="consent-label">
+            <input type="checkbox" id="consent" required>
+            I agree that this contribution may be reviewed for publication
+            on the Fieldwork Atlas. *
+          </label>
+        </div>
+
+      </div>
+
+      <button class="submit-button" type="submit">
+        Submit contribution
+      </button>
+
+      <div id="form-message" role="status"></div>
+
+    </form>
+  </section>
+
+  <!-- EXPERIENCE GALLERY -->
+
+  <section id="experiences">
+
+    <div class="section-heading">
+      <h2>Fieldwork experiences</h2>
+      <p>Explore contributions from researchers</p>
     </div>
-  </header>
 
+    <div class="gallery">
 
-  <main class="container">
+      <article class="experience-card"
+        onclick="openCountryProfile('Malawi')">
 
-    <!-- GLOBE HERO -->
+        <div class="card-image">🇲🇼</div>
 
-    <section class="hero">
+        <div class="card-content">
 
-      <div id="map"></div>
+          <div class="card-location">Malawi · Africa</div>
 
-      <p class="globe-instruction">
-        Select a highlighted country to explore its profile
-      </p>
+          <h3>Research permissions in Malawi</h3>
 
-    </section>
+          <p>
+            A PhD researcher's experience navigating university ethics,
+            local research clearance and site permissions.
+          </p>
 
-
-    <!-- NAVIGATION -->
-
-    <nav class="actions">
-
-      <a class="action" href="#submit-section" onclick="showForm()">
-        + Contribute
-      </a>
-
-      <a class="action" href="#experiences">
-        Explore experiences
-      </a>
-
-      <a class="action" href="#about">
-        About the Atlas
-      </a>
-
-    </nav>
-
-
-    <!-- COUNTRY PROFILE PANEL -->
-
-    <section id="country-profile">
-
-      <h2 id="profile-country-name">Malawi</h2>
-
-      <p id="profile-country-description">
-        Explore research permissions and fieldwork experiences contributed
-        by researchers working in Malawi.
-      </p>
-
-      <a class="profile-link" href="#experiences">
-        View fieldwork experiences →
-      </a>
-
-    </section>
-
-
-    <!-- SUBMISSION FORM -->
-
-    <section id="submit-section">
-
-      <h2>Share your experience</h2>
-
-      <p>
-        Help other researchers understand the permissions process
-        and what to expect when conducting fieldwork.
-      </p>
-
-      <form id="experience-form">
-
-        <div class="form-grid">
-
-          <div class="form-field">
-            <label for="country">Country *</label>
-
-            <input
-              id="country"
-              name="country"
-              type="text"
-              placeholder="Enter a country"
-              required
-            >
-          </div>
-
-          <div class="form-field">
-            <label for="contribution">What are you sharing? *</label>
-
-            <select id="contribution" name="contribution" required>
-              <option value="">Select one</option>
-              <option>Research permission information</option>
-              <option>My research experience</option>
-              <option>A useful resource or document</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="research-type">Research type</label>
-
-            <select id="research-type" name="researchType">
-              <option value="">Select one</option>
-              <option>Social sciences</option>
-              <option>Humanities</option>
-              <option>Clinical / medical</option>
-              <option>Public health</option>
-              <option>Natural sciences</option>
-              <option>Environmental research</option>
-              <option>Engineering / technology</option>
-              <option>Agricultural research</option>
-              <option>Education</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="methodology">Methodology</label>
-
-            <select id="methodology" name="methodology">
-              <option value="">Select one</option>
-              <option>Qualitative</option>
-              <option>Quantitative</option>
-              <option>Mixed methods</option>
-              <option>Experimental / clinical trial</option>
-              <option>Ethnographic</option>
-              <option>Participatory / community-based</option>
-              <option>Archival / historical</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="year">Year of application / fieldwork</label>
-
-            <input
-              id="year"
-              name="year"
-              type="number"
-              min="1950"
-              max="2100"
-              placeholder="e.g. 2026"
-            >
-          </div>
-
-          <div class="form-field">
-            <label for="outcome">Application outcome</label>
-
-            <select id="outcome" name="outcome">
-              <option value="">Select one</option>
-              <option>Approved</option>
-              <option>Rejected</option>
-              <option>Still waiting</option>
-              <option>Withdrawn</option>
-              <option>Not applicable</option>
-            </select>
-          </div>
-
-          <div class="form-field full">
-            <label for="experience">Tell us about your experience *</label>
-
-            <textarea
-              id="experience"
-              name="experience"
-              placeholder="What permissions did you need? Who did you contact? What happened?"
-              required
-            ></textarea>
-          </div>
-
-          <div class="form-field full">
-            <label for="advice">What advice would you give another researcher?</label>
-
-            <textarea
-              id="advice"
-              name="advice"
-              placeholder="What do you wish you had known?"
-            ></textarea>
-          </div>
-
-          <div class="form-field full">
-            <label for="links">Useful links or documents</label>
-
-            <input
-              id="links"
-              name="links"
-              type="text"
-              placeholder="Paste a website or document link"
-            >
-          </div>
-
-          <div class="form-field">
-            <label for="name">Your name (optional)</label>
-
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Name"
-            >
-          </div>
-
-          <div class="form-field">
-            <label for="email">Email (optional, kept private)</label>
-
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email address"
-            >
-          </div>
-
-          <div class="form-field full">
-            <label class="consent-label">
-              <input
-                type="checkbox"
-                id="consent"
-                required
-              >
-
-              I agree that this contribution may be reviewed for publication
-              on the Fieldwork Atlas. *
-            </label>
+          <div class="card-meta">
+            Social sciences · Qualitative · 2026
           </div>
 
         </div>
+      </article>
 
-        <button class="submit-button" type="submit">
-          Submit contribution
-        </button>
-
-        <div id="form-message" role="status"></div>
-
-      </form>
-
-    </section>
-
-
-    <!-- EXPERIENCE GALLERY -->
-
-    <section id="experiences">
-
-      <div class="section-heading">
-        <h2>Fieldwork experiences</h2>
-        <p>Explore contributions from researchers</p>
-      </div>
-
-      <div class="gallery">
-
-        <article
-          class="experience-card"
-          id="country-malawi"
-          onclick="openCountryProfile('Malawi')"
-        >
-
-          <div class="card-image">🇲🇼</div>
-
-          <div class="card-content">
-
-            <div class="card-location">Malawi · Africa</div>
-
-            <h3>Research permissions in Malawi</h3>
-
-            <p>
-              A PhD researcher's experience navigating university ethics,
-              local research clearance and site permissions.
-            </p>
-
-            <div class="card-meta">
-              Social sciences · Qualitative · 2026
-            </div>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- ABOUT -->
-
-    <section id="about">
-
-      <h2>About the Atlas</h2>
-
-      <p>
-        The Fieldwork Atlas is a collaborative resource documenting
-        research permissions, approval processes and fieldwork experiences
-        around the world. It aims to make the practical realities of
-        conducting international research easier to understand.
-      </p>
-
-    </section>
-
-  </main>
-
-
-  <!-- FOOTER -->
-
-  <footer>
-    <div class="container">
-      FIELDWORK ATLAS · A COLLABORATIVE RESEARCH RESOURCE
     </div>
-  </footer>
+
+  </section>
+
+  <!-- ABOUT -->
+
+  <section id="about">
+
+    <h2>About the Atlas</h2>
+
+    <p>
+      The Fieldwork Atlas is a collaborative resource documenting
+      research permissions, approval processes and fieldwork experiences
+      around the world. It aims to make the practical realities of
+      conducting international research easier to understand.
+    </p>
+
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    FIELDWORK ATLAS · A COLLABORATIVE RESEARCH RESOURCE
+  </div>
+</footer>
 
 
-  <!-- GLOBE FUNCTIONALITY -->
+<!-- GLOBE JAVASCRIPT -->
 
-  <script>
+<script>
 
-    // COUNTRIES WITH APPROVED PROFILES
-    // This will eventually be populated from Google Sheets.
+// Countries with profiles
+const profileCountries = ["Malawi"];
 
-    const profileCountries = ["Malawi"];
+const globeElement = document.getElementById("map");
 
 
-    // CREATE GLOBE
+// Check that the libraries loaded before creating the globe
+if (typeof Globe === "undefined" ||
+    typeof THREE === "undefined" ||
+    typeof topojson === "undefined") {
 
-    const globeElement = document.getElementById("map");
+  globeElement.innerHTML =
+    '<p style="text-align:center;padding:40px;color:#263B8F;">The globe could not load. Please refresh the page.</p>';
 
-    const globe = Globe()(globeElement)
+} else {
 
-      .backgroundColor("#ffffff")
+  // Create globe
+  const globe = Globe()(globeElement)
 
-      .showGlobe(true)
+    .backgroundColor("#ffffff")
 
-      .showAtmosphere(false)
+    .showGlobe(true)
 
-      .showGraticules(true)
+    .showAtmosphere(false)
 
-      // White globe surface
-      .globeMaterial(
-        new THREE.MeshBasicMaterial({
-          color: "#ffffff"
-        })
-      )
+    .showGraticules(true)
 
-      // Subtle longitude and latitude lines
-      .graticuleColor(() => "rgba(38, 59, 143, 0.20)")
+    .globeMaterial(
+      new THREE.MeshBasicMaterial({
+        color: "#ffffff"
+      })
+    )
 
-      // White country interiors
-      .polygonCapColor(() => "#ffffff")
+    // Latitude and longitude lines
+    .graticuleColor("#D6DAE8")
 
-      .polygonSideColor(() => "#ffffff")
+    // Country interiors stay white
+    .polygonCapColor(() => "#ffffff")
 
-      // Country outlines
-      .polygonStrokeColor(country =>
-        profileCountries.includes(country.properties.name)
+    .polygonSideColor(() => "#ffffff")
+
+    // Country outlines
+    .polygonStrokeColor(country =>
+      profileCountries.includes(country.properties.name)
+        ? "#263B8F"
+        : "#AEB8C2"
+    )
+
+    // Keep country surfaces flat
+    .polygonAltitude(0.001)
+
+    .polygonsTransitionDuration(0)
+
+    // Hover
+    .onPolygonHover(country => {
+
+      globeElement.style.cursor = country
+        ? "pointer"
+        : "grab";
+
+      globe.polygonStrokeColor(d => {
+
+        if (d === country) {
+          return "#263B8F";
+        }
+
+        return profileCountries.includes(d.properties.name)
           ? "#263B8F"
-          : "#AEB8C2"
-      )
-
-      // Very subtle profile-country elevation
-      .polygonAltitude(country =>
-        profileCountries.includes(country.properties.name)
-          ? 0.002
-          : 0.001
-      )
-
-      .polygonsTransitionDuration(300)
-
-      // Country hover
-      .onPolygonHover(country => {
-
-        globeElement.style.cursor = country
-          ? "pointer"
-          : "grab";
-
-        globe.polygonStrokeColor(d => {
-
-          if (d === country) {
-            return "#263B8F";
-          }
-
-          return profileCountries.includes(d.properties.name)
-            ? "#263B8F"
-            : "#AEB8C2";
-
-        });
-
-      })
-
-      // Country click
-      .onPolygonClick(country => {
-
-        if (!country) return;
-
-        const countryName = country.properties.name;
-
-        if (profileCountries.includes(countryName)) {
-          openCountryProfile(countryName);
-        } else {
-          showCountryMessage(countryName);
-        }
+          : "#AEB8C2";
 
       });
 
+    })
 
-    // LOAD COUNTRY SHAPES
+    // Click
+    .onPolygonClick(country => {
 
-    fetch("https://unpkg.com/world-atlas@2/countries-110m.json")
+      if (!country) return;
 
-      .then(response => {
+      const countryName = country.properties.name;
 
-        if (!response.ok) {
-          throw new Error("Could not load map data");
-        }
+      if (profileCountries.includes(countryName)) {
+        openCountryProfile(countryName);
+      } else {
+        showCountryMessage(countryName);
+      }
 
-        return response.json();
-
-      })
-
-      .then(world => {
-
-        const countries = topojson.feature(
-          world,
-          world.objects.countries
-        ).features;
-
-        globe.polygonsData(countries);
-
-        // Start with Africa facing forward
-        globe.pointOfView({
-          lat: -3,
-          lng: 20,
-          altitude: 2.2
-        }, 1000);
-
-      })
-
-      .catch(error => {
-        console.error("Could not load country boundaries:", error);
-      });
+    });
 
 
-    // RESPONSIVE GLOBE
+  // Load country boundaries
+  fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
 
-    function resizeGlobe() {
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Country data could not load");
+      }
+      return response.json();
+    })
 
-      globe
-        .width(globeElement.clientWidth)
-        .height(globeElement.clientHeight);
+    .then(world => {
 
-    }
+      const countries = topojson.feature(
+        world,
+        world.objects.countries
+      ).features;
 
-    window.addEventListener("resize", resizeGlobe);
+      globe.polygonsData(countries);
 
-    resizeGlobe();
+      // Initial view
+      globe.pointOfView({
+        lat: -3,
+        lng: 20,
+        altitude: 2.2
+      }, 1000);
 
+    })
 
-    // OPEN A COUNTRY PROFILE
+    .catch(error => {
 
-    function openCountryProfile(countryName) {
+      console.error("Globe data error:", error);
 
-      if (!profileCountries.includes(countryName)) return;
+      globeElement.insertAdjacentHTML(
+        "beforeend",
+        '<p style="position:absolute;bottom:10px;text-align:center;width:100%;color:#263B8F;font-size:12px;">Country outlines could not load. Please refresh.</p>'
+      );
 
-      const profile = document.getElementById("country-profile");
-
-      document.getElementById("profile-country-name").textContent =
-        countryName;
-
-      document.getElementById("profile-country-description").textContent =
-        "Explore research permissions and fieldwork experiences contributed by researchers working in " +
-        countryName + ".";
-
-      profile.classList.add("visible");
-
-      profile.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-    }
-
-
-    // MESSAGE FOR COUNTRIES WITHOUT PROFILES
-
-    function showCountryMessage(countryName) {
-
-      const profile = document.getElementById("country-profile");
-
-      document.getElementById("profile-country-name").textContent =
-        countryName;
-
-      document.getElementById("profile-country-description").textContent =
-        "There is not yet a published research profile for " +
-        countryName + ". You can help build this country profile by contributing your experience.";
-
-      profile.classList.add("visible");
-
-      profile.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-    }
+    });
 
 
-    // SHOW SUBMISSION FORM
+  // Responsive sizing
+  function resizeGlobe() {
+    globe
+      .width(globeElement.clientWidth)
+      .height(globeElement.clientHeight);
+  }
 
-    function showForm() {
+  window.addEventListener("resize", resizeGlobe);
+  resizeGlobe();
 
-      const form = document.getElementById("submit-section");
-
-      form.classList.add("visible");
-
-      form.scrollIntoView({
-        behavior: "smooth"
-      });
-
-    }
+}
 
 
-    // TEMPORARY FORM SUBMISSION
+// Country profile panel
+function openCountryProfile(countryName) {
 
-    document
-      .getElementById("experience-form")
-      .addEventListener("submit", function(event) {
+  const profile = document.getElementById("country-profile");
 
-        event.preventDefault();
+  document.getElementById("profile-country-name").textContent =
+    countryName;
 
-        document.getElementById("form-message").textContent =
-          "The form is ready for testing, but it is not connected to the database yet. Your contribution has not been sent or saved.";
+  document.getElementById("profile-country-description").textContent =
+    "Explore research permissions and fieldwork experiences contributed by researchers working in " +
+    countryName + ".";
 
-      });
+  profile.classList.add("visible");
 
-  </script>
+  profile.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+// Message for countries without profiles
+function showCountryMessage(countryName) {
+
+  const profile = document.getElementById("country-profile");
+
+  document.getElementById("profile-country-name").textContent =
+    countryName;
+
+  document.getElementById("profile-country-description").textContent =
+    "There is not yet a published research profile for " +
+    countryName + ". You can help build this country profile by contributing your experience.";
+
+  profile.classList.add("visible");
+
+  profile.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+// Show contribution form
+function showForm() {
+
+  const form = document.getElementById("submit-section");
+
+  form.classList.add("visible");
+
+  form.scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+
+// Temporary form submission
+document.getElementById("experience-form")
+  .addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    document.getElementById("form-message").textContent =
+      "The form is not connected to the database yet. Your contribution has not been saved.";
+
+  });
+
+</script>
 
 </body>
 </html>
