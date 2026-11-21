@@ -1,1179 +1,214 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fieldwork Atlas</title>
-
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
-<script src="https://unpkg.com/topojson-client@3"></script>
-
-<style>
-:root {
-  --ink: #263B8F;
-  --muted: #77849A;
-  --line: #DCEAF2;
-  --sea: #DCEAF2;
-  --sage: #B5C6B0;
-  --pale: #F3F7FA;
-  --white: #FFFFFF;
-  --grey-tile: #C9D3DC;
-}
-
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  background: #F1F3F5;
-  color: var(--ink);
-  font-family: "Courier New", Courier, monospace;
-}
-
-button, input, select, textarea { font: inherit; }
-button, a { -webkit-tap-highlight-color: transparent; }
-a { color: inherit; text-decoration: none; }
-button { cursor: pointer; }
-
-.page {
-  max-width: 1500px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 22px;
-  background: white;
-}
-
-/* GENERAL */
-
-.view {
-  display: none;
-  animation: appear .25s ease;
-}
-
-.view.active { display: block; }
-
-@keyframes appear {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.eyebrow {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  color: var(--muted);
-}
-
-.small-button {
-  border: 1px solid var(--line);
-  background: white;
-  color: var(--ink);
-  padding: 11px 15px;
-  font-family: inherit;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-
-.small-button:hover {
-  background: var(--ink);
-  color: white;
-  border-color: var(--ink);
-}
-
-.page-topline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-  padding: 4px 0 14px;
-  margin-bottom: 18px;
-}
-
-.brand {
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.back-link {
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
-.back-link:hover { color: var(--ink); }
-
-/* GLOBE */
-
-.globe-frame {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-#globeViz {
-  width: 100%;
-  height: 100%;
-  cursor: grab;
-}
-
-#globeViz:active { cursor: grabbing; }
-
-/* HOME HERO */
-
-.home-hero {
-  min-height: 680px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  position: relative;
-  border-bottom: 1px solid var(--line);
-}
-
-.home-globe {
-  width: 100%;
-  height: 680px;
-}
-
-/* HOME NAV */
-
-.home-nav {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 30px;
-}
-
-.home-nav button {
-  padding: 15px 8px;
-  background: white;
-  border: 0;
-  border-right: 1px solid var(--line);
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.home-nav button:last-child { border-right: 0; }
-
-.home-nav button:hover {
-  background: var(--pale);
-  color: var(--ink);
-}
-
-/* HOME SECTIONS */
-
-.home-section {
-  margin: 0 auto 35px;
-  max-width: 1200px;
-}
-
-.section-topline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 14px;
-}
-
-.section-topline h2 {
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.text-link {
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-.text-link:hover { color: var(--ink); }
-
-/* HOME PROTOCOL GALLERY */
-
-.protocol-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.protocol-tile {
-  min-height: 125px;
-  padding: 14px;
-  border: 1px solid var(--line);
-  background: white;
-  color: var(--ink);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
-  transition: background .2s, border-color .2s;
-}
-
-.protocol-tile:hover {
-  background: white;
-  border-color: var(--ink);
-}
-
-.protocol-tile .tile-country {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-
-.protocol-tile .tile-meta {
-  font-size: 9px;
-  color: #59677A;
-  line-height: 1.6;
-}
-
-.protocol-tile.add-tile {
-  background: white;
-  border: 1px solid var(--line);
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 8px;
-}
-
-.add-tile .plus {
-  font-family: Arial, sans-serif;
-  font-size: 30px;
-  line-height: 1;
-}
-
-.add-tile:hover { background: var(--pale); }
-
-/* HOME EXPERIENCES */
-
-.home-experiences {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 14px 0;
-}
-
-.contribute-block {
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  border: 1px solid var(--line);
-  color: var(--ink);
-  text-align: center;
-  transition: border-color .2s;
-}
-
-.contribute-block:hover { border-color: var(--ink); }
-
-.contribute-block span:first-child {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-}
-
-.contribute-block strong {
-  font-family: Arial, sans-serif;
-  font-size: 34px;
-  font-weight: normal;
-  margin-top: 12px;
-}
-
-.experience-preview {
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.experience-preview-item {
-  flex: 1;
-  min-height: 55px;
-  background: white;
-  border: 1px solid var(--line);
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  font-size: 10px;
-}
-
-.experience-preview-item span:last-child {
-  color: #59677A;
-  font-size: 9px;
-}
-
-.experience-preview-item:hover { border-color: var(--ink); }
-
-.experience-add {
-  border: 1px solid var(--line);
-  background: white;
-  color: var(--ink);
-  min-height: 48px;
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
-.experience-add:hover { background: var(--pale); }
-
-/* ABOUT */
-
-.about-tile {
-  display: block;
-  background: white;
-  border: 1px solid var(--line);
-  color: var(--ink);
-  padding: 28px;
-  margin-top: 14px;
-  min-height: 125px;
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.about-tile:hover { border-color: var(--ink); }
-
-/* PROTOCOL GALLERY PAGE */
-
-.gallery-header {
-  padding: 25px 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 20px;
-}
-
-.gallery-header h1 {
-  font-size: 20px;
-  font-weight: normal;
-  letter-spacing: .05em;
-  margin: 8px 0 0;
-}
-
-.gallery-header p {
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.7;
-  max-width: 400px;
-  margin: 0;
-  text-align: right;
-}
-
-.gallery-page-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 15px 0 35px;
-}
-
-.gallery-page-grid .protocol-tile { min-height: 175px; }
-
-/* COUNTRY PROFILE */
-
-.country-layout {
-  display: grid;
-  grid-template-columns: minmax(220px, 30%) minmax(300px, 1fr) minmax(190px, 23%);
-  gap: 18px;
-  min-height: 520px;
-  margin-top: 15px;
-}
-
-.country-map {
-  min-height: 500px;
-  overflow: hidden;
-  position: relative;
-  background: white;
-}
-
-.country-map #countryGlobeViz {
-  width: 100%;
-  height: 500px;
-}
-
-.country-map-label {
-  position: absolute;
-  bottom: 15px;
-  left: 10px;
-  z-index: 2;
-  background: rgba(255,255,255,.9);
-  padding: 8px;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  pointer-events: none;
-}
-
-.protocol-explainer {
-  background: var(--grey-tile);
-  padding: 30px;
-  min-height: 500px;
-  color: var(--ink);
-}
-
-.protocol-explainer h1 {
-  font-size: 19px;
-  line-height: 1.5;
-  font-weight: normal;
-  margin: 10px 0 25px;
-}
-
-.protocol-explainer h2 {
-  font-size: 11px;
-  font-weight: normal;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  margin: 25px 0 10px;
-  border-bottom: 1px solid rgba(38,59,143,.2);
-  padding-bottom: 8px;
-}
-
-.protocol-explainer p,
-.protocol-explainer li {
-  font-size: 11px;
-  line-height: 1.9;
-}
-
-.protocol-explainer ul { padding-left: 18px; }
-
-.protocol-status {
-  display: inline-block;
-  border: 1px solid rgba(38,59,143,.35);
-  padding: 6px 9px;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-.country-experiences {
-  display: flex;
-  flex-direction: column;
-  min-height: 500px;
-}
-
-.experience-list-heading {
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.experience-list {
-  flex: 1;
-  overflow-y: auto;
-  max-height: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 8px 0;
-}
-
-.experience-list-card {
-  border: 1px solid var(--line);
-  padding: 12px;
-  background: white;
-  text-align: left;
-  color: var(--ink);
-}
-
-.experience-list-card:hover { background: var(--pale); }
-
-.experience-list-card strong {
-  display: block;
-  font-size: 10px;
-  font-weight: normal;
-  margin-bottom: 7px;
-}
-
-.experience-list-card span {
-  display: block;
-  color: var(--muted);
-  font-size: 9px;
-  line-height: 1.6;
-}
-
-.country-add-button {
-  border: 1px solid var(--ink);
-  background: white;
-  color: var(--ink);
-  padding: 16px 8px;
-  font-size: 10px;
-  text-transform: uppercase;
-  margin-top: 8px;
-}
-
-.country-add-button:hover {
-  background: var(--ink);
-  color: white;
-}
-
-/* CONTRIBUTION FORM */
-
-.form-page {
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 25px 0 60px;
-}
-
-.form-page h1 {
-  font-size: 20px;
-  font-weight: normal;
-  margin: 10px 0;
-}
-
-.form-page > p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.8;
-  margin-bottom: 30px;
-}
-
-.form-subheading {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--ink);
-  margin: 35px 0 18px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
-}
-
-.form-group { margin-bottom: 19px; }
-
-.form-group label {
-  display: block;
-  font-size: 11px;
-  margin-bottom: 8px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--line);
-  background: white;
-  color: var(--ink);
-  font-family: inherit;
-  font-size: 11px;
-}
-
-textarea {
-  min-height: 110px;
-  resize: vertical;
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: 1px solid var(--ink);
-}
-
-.consent-row {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  margin: 25px 0;
-}
-
-.consent-row input {
-  width: auto;
-  margin-top: 3px;
-}
-
-.consent-row label {
-  font-size: 10px;
-  line-height: 1.7;
-}
-
-.submit-button {
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: white;
-  padding: 13px 20px;
-  font-family: inherit;
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
-.submit-button:hover {
-  background: white;
-  color: var(--ink);
-}
-
-.form-message {
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.7;
-  margin-top: 15px;
-}
-
-/* ABOUT PAGE */
-
-.about-page {
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 40px 0;
-}
-
-.about-page h1 {
-  font-size: 22px;
-  font-weight: normal;
-}
-
-.about-page p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 2;
-}
-
-/* MODAL */
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: rgba(20,30,55,.45);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal.visible { display: flex; }
-
-.modal-content {
-  background: white;
-  width: 100%;
-  max-width: 650px;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 30px;
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  right: 15px;
-  top: 12px;
-  border: 0;
-  background: none;
-  color: var(--ink);
-  font-size: 22px;
-}
-
-.modal-content h2 {
-  font-size: 17px;
-  font-weight: normal;
-  margin: 12px 0;
-}
-
-.modal-content p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.9;
-  white-space: pre-line;
-}
-
-/* FOOTER */
-
-footer {
-  border-top: 1px solid var(--line);
-  margin-top: 30px;
-  padding: 18px 0 5px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 900px) {
-  .country-layout {
-    grid-template-columns: 1fr 1.5fr;
-  }
-
-  .country-experiences {
-    grid-column: 1 / -1;
-    min-height: 250px;
-  }
-
-  .experience-list { max-height: 220px; }
-}
-
-@media (max-width: 650px) {
-  .page { padding: 10px; }
-
-  .home-hero,
-  .home-globe {
-    min-height: 600px;
-    height: 600px;
-  }
-
-  .home-nav button {
-    font-size: 8px;
-    padding: 13px 3px;
-  }
-
-  /* Keep the homepage protocol tiles in four columns on mobile. */
-  .protocol-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 5px;
-  }
-
-  .gallery-page-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .protocol-grid .protocol-tile {
-    min-height: 90px;
-    padding: 7px 5px;
-    overflow-wrap: anywhere;
-  }
-
-  .protocol-grid .tile-country { font-size: 9px; }
-  .protocol-grid .tile-meta { font-size: 7px; }
-  .protocol-grid .eyebrow { font-size: 7px; }
-
-  .home-experiences {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .experience-preview { min-height: 210px; }
-
-  .gallery-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .gallery-header p { text-align: left; }
-
-  .country-layout {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .country-map {
-    min-height: 300px;
-    height: 300px;
-  }
-
-  .country-map #countryGlobeViz {
-    width: 100%;
-    height: 300px;
-  }
-
-  .protocol-explainer { min-height: 400px; }
-  .country-experiences { min-height: 280px; }
-  .experience-list { max-height: 230px; }
-}
-</style>
-</head>
-
-<body>
-<main class="page">
-
-<!-- HOME VIEW -->
-<div id="homeView" class="view active">
-
-  <div class="home-hero">
-    <div class="home-globe">
-      <div class="globe-frame">
-        <div id="globeViz"></div>
-      </div>
-    </div>
-  </div>
-
-  <nav class="home-nav">
-    <button onclick="goHomeSection('homeContribution')">Contribute</button>
-    <button onclick="showView('galleryView')">Protocol gallery</button>
-    <button onclick="goHomeSection('homeAbout')">About the Atlas</button>
-  </nav>
-
-  <section class="home-section">
-    <div class="section-topline">
-      <h2>Recent protocols / 01–14</h2>
-      <button class="text-link" onclick="showView('galleryView')">View all protocols →</button>
-    </div>
-    <div class="protocol-grid" id="homeProtocolGrid"></div>
-  </section>
-
-  <section class="home-section">
-    <div class="section-topline">
-      <h2>Fieldwork experiences</h2>
-      <button class="text-link" onclick="showView('galleryView')">Explore →</button>
-    </div>
-
-    <div class="home-experiences">
-      <div class="experience-preview" id="homeExperienceList">
-        <button class="experience-preview-item" onclick="openExperience('sample')">
-          <span>Malawi / Research in practice</span>
-          <span>OPEN →</span>
-        </button>
-        <button class="experience-preview-item" onclick="showView('galleryView')">
-          <span>Explore researcher accounts</span>
-          <span>MORE →</span>
-        </button>
-        <button class="experience-add" onclick="goHomeSection('homeContribution')">
-          Add your experience +
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-section" id="homeContribution">
-    <div class="section-topline">
-      <h2>Contribute / Add to the Atlas</h2>
-    </div>
-
-    <div class="form-page">
-      <div class="eyebrow">Add to the global research index</div>
-      <h1>Contribute to the Atlas</h1>
-      <p>
-        Share formal information about research permissions, or tell a longer
-        story about what happened during your fieldwork. You do not need to
-        complete every field to make a useful contribution.
-      </p>
-
-      <form id="contributionForm">
-
-        <div class="form-subheading">01 / Contribution type</div>
-
-        <div class="form-group">
-          <label for="contributionType">What would you like to contribute?</label>
-          <select id="contributionType" required>
-            <option value="">Choose a contribution type</option>
-            <option value="protocol">Research protocol information</option>
-            <option value="experience">Personal research experience</option>
-            <option value="advice">Advice for other researchers</option>
-            <option value="resource">Useful resource or document</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="country">Country</label>
-          <input id="country" type="text" placeholder="Enter country" required>
-        </div>
-
-        <div class="form-group">
-          <label for="researchYear">Year of research</label>
-          <input id="researchYear" type="number" min="1900" max="2100" placeholder="e.g. 2026">
-        </div>
-
-        <div class="form-group">
-          <label for="discipline">Research discipline</label>
-          <input id="discipline" type="text" placeholder="e.g. Geography, anthropology, public health">
-        </div>
-
-        <div class="form-group">
-          <label for="researchType">Type of research</label>
-          <input id="researchType" type="text" placeholder="e.g. PhD fieldwork, clinical research, consultancy">
-        </div>
-
-        <div class="form-subheading">02 / Formal protocol information</div>
-
-        <div class="form-group">
-          <label for="authority">Which authorities or institutions were involved?</label>
-          <textarea id="authority" placeholder="List relevant institutions, authorities or committees."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="permissionDuration">How long did the process take?</label>
-          <input id="permissionDuration" type="text" placeholder="e.g. 3 months">
-        </div>
-
-        <div class="form-group">
-          <label for="permissionOutcome">What was the outcome?</label>
-          <select id="permissionOutcome">
-            <option value="">Select an outcome</option>
-            <option>Approved</option>
-            <option>Approved with conditions</option>
-            <option>Rejected</option>
-            <option>Still waiting</option>
-            <option>Withdrawn</option>
-            <option>Other / not applicable</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="permissionCost">Costs (optional)</label>
-          <input id="permissionCost" type="text" placeholder="Include currency if known">
-        </div>
-
-        <div class="form-group">
-          <label for="protocolSummary">Explain the protocol in plain language</label>
-          <textarea id="protocolSummary" placeholder="What does another researcher need to know?"></textarea>
-        </div>
-
-        <div class="form-subheading">03 / Personal fieldwork experience</div>
-
-        <div class="form-group">
-          <label for="title">Title of your contribution</label>
-          <input id="title" type="text" placeholder="Give your contribution a title" required>
-        </div>
-
-        <div class="form-group">
-          <label for="summary">Short introduction</label>
-          <textarea id="summary" placeholder="What is your contribution about?" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="experience">Your full account</label>
-          <textarea id="experience" style="min-height:220px" placeholder="What happened? What surprised you? What was difficult? What would you want another researcher to know?"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="advice">Advice for other researchers</label>
-          <textarea id="advice" placeholder="Anything you wish you had known beforehand?"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="source">Useful links or documents</label>
-          <textarea id="source" placeholder="Add publicly shareable resources."></textarea>
-        </div>
-
-        <div class="form-subheading">04 / Contributor details</div>
-
-        <div class="form-group">
-          <label for="contributorName">Name (optional)</label>
-          <input id="contributorName" type="text" placeholder="Leave blank to contribute anonymously">
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email (optional, kept private)</label>
-          <input id="email" type="email" placeholder="Your email address">
-        </div>
-
-        <div class="consent-row">
-          <input id="consent" type="checkbox" required>
-          <label for="consent">
-            I consent to this contribution being reviewed for possible publication
-            on the Atlas. I understand identifying or sensitive information may
-            be removed before publication.
-          </label>
-        </div>
-
-        <button class="submit-button" type="submit">Submit contribution →</button>
-
-        <p class="form-message" id="formMessage">
-          Prototype form / Not connected to the database yet.
-          Please do not submit confidential or sensitive information.
-        </p>
-
-      </form>
-    </div>
-  </section>
-
-  <section class="home-section" id="homeAbout">
-    <div class="section-topline">
-      <h2>About the Atlas</h2>
-    </div>
-
-    <div class="about-page">
-      <div class="eyebrow">About this project</div>
-      <h1>The Fieldwork Atlas</h1>
-
-      <p>
-        The Fieldwork Atlas is a collaborative resource bringing together
-        information and experiences about conducting research around the world.
-      </p>
-
-      <p>
-        Research permissions can be difficult to navigate. Requirements may be
-        spread across multiple institutions, processes can change, and the
-        experience of applying does not always match the official guidance.
-      </p>
-
-      <p>
-        The Atlas brings together two kinds of knowledge: structured information
-        about formal research protocols, and first-hand accounts from researchers
-        who have gone through those processes.
-      </p>
-
-      <p>
-        The aim is to make research processes more transparent, accessible and
-        easier to navigate.
-      </p>
-
-      <p>
-        This is a collaborative resource. Contributions are reviewed before
-        publication, and personal or sensitive information should not be shared.
-      </p>
-
-      <button class="small-button" onclick="goHomeSection('homeContribution')">
-        Contribute to the Atlas +
-      </button>
-    </div>
-  </section>
-
-</div>
-
-<!-- PROTOCOL GALLERY VIEW -->
-<div id="galleryView" class="view">
-
-  <div class="page-topline">
-    <span class="brand">Fieldwork Atlas</span>
-    <button class="back-link" onclick="showView('homeView')">← Back to atlas</button>
-  </div>
-
-  <div class="gallery-header">
-    <div>
-      <div class="eyebrow">Global research index / Protocols</div>
-      <h1>Protocol gallery</h1>
-    </div>
-    <p>
-      Browse country-level information about research permissions,
-      institutional requirements and formal processes.
-    </p>
-  </div>
-
-  <div class="gallery-page-grid" id="fullProtocolGrid"></div>
-
-  <div class="section-topline">
-    <span class="eyebrow">Have information to add?</span>
-    <button class="small-button" onclick="goHomeSection('homeContribution')">Add a protocol +</button>
-  </div>
-
-</div>
-
-<!-- COUNTRY PROFILE VIEW -->
-<div id="countryView" class="view">
-
-  <div class="page-topline">
-    <span class="brand">Fieldwork Atlas / Country profile</span>
-    <button class="back-link" onclick="showView('galleryView')">← Protocol gallery</button>
-  </div>
-
-  <div class="country-layout">
-
-    <div class="country-map">
-      <div id="countryGlobeViz"></div>
-      <div class="country-map-label" id="countryMapLabel">Selected country</div>
-    </div>
-
-    <div class="protocol-explainer">
-      <div class="eyebrow" id="countryEyebrow">Country protocol / 001</div>
-      <h1 id="countryTitle">Protocol made easy</h1>
-      <span class="protocol-status" id="countryStatus">Demonstration record</span>
-
-      <h2>Overview</h2>
-      <p id="countryOverview">
-        A plain-language introduction to the research permission process.
-      </p>
-
-      <h2>What you need to do</h2>
-      <ul id="countrySteps">
-        <li>Check the relevant research requirements.</li>
-        <li>Identify the responsible authorities.</li>
-        <li>Confirm current procedures before applying.</li>
-      </ul>
-
-      <h2>Institutions and permissions</h2>
-      <p id="countryInstitutions">
-        Institutional information will be added as records are contributed and reviewed.
-      </p>
-
-      <h2>Important notes</h2>
-      <p id="countryNotes">
-        Requirements can change. Check with the relevant authorities before making plans.
-      </p>
-
-      <button class="small-button" onclick="goHomeSection('homeContribution')">
-        Update this protocol +
-      </button>
-    </div>
-
-    <aside class="country-experiences">
-      <div class="experience-list-heading">Experiences / Field notes</div>
-
-      <div class="experience-list" id="countryExperienceList">
-        <button class="experience-list-card" onclick="openExperience('sample')">
-          <strong>Research in Malawi</strong>
-          <span>First-hand fieldwork account / Demonstration entry</span>
-        </button>
-      </div>
-
-      <button class="country-add-button" onclick="goHomeSection('homeContribution')">
-        Add your experience +
-      </button>
-    </aside>
-
-  </div>
-</div>
-
-<footer>Fieldwork Atlas / A collaborative research resource</footer>
-
-</main>
-
-<!-- EXPERIENCE MODAL -->
-<div class="modal" id="experienceModal" onclick="closeModalOutside(event)">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeExperience()">×</button>
-    <div class="eyebrow" id="modalCountry"></div>
-    <h2 id="modalTitle"></h2>
-    <p id="modalBody"></p>
-  </div>
-</div>
-
 <script>
+/* GOOGLE SHEETS CONNECTION */
 
-/* SAMPLE ATLAS CONTENT */
+const ATLAS_API_URL = "https://script.google.com/macros/s/AKfycbwlbNgi_qXZTueXo2vT133RcE9iotf95LrTwyVL_LHuic-vRBKYja-jaMjnsFgZUigN/exec";
 
-const protocols = [
-  {
-    id: "malawi",
-    country: "Malawi",
-    code: "MW",
-    title: "Research in Malawi",
-    updated: "Demonstration record",
-    status: "Demonstration record",
-    overview: "This is a demonstration country profile. It will provide a plain-language guide to the formal requirements and institutional processes involved in conducting research in Malawi.",
-    steps: [
-      "Identify the relevant national research approval requirements.",
-      "Check whether institutional or sector-specific permissions are also required.",
-      "Confirm current application procedures and fees with the relevant authorities.",
-      "Allow time for local review and any additional clearances."
-    ],
-    institutions: "Institutional names, application details and links will be added when the information has been verified and reviewed.",
-    notes: "This is a placeholder, not official guidance. Always confirm current requirements with the relevant authorities."
+const protocols = [];
+const experiences = {};
+let approvedEntries = [];
+
+/* LOAD APPROVED CONTRIBUTIONS */
+
+function loadApprovedEntries() {
+  return new Promise((resolve, reject) => {
+    const callbackName = "atlasFeed_" + Date.now();
+    const script = document.createElement("script");
+    let finished = false;
+
+    const cleanUp = () => {
+      delete window[callbackName];
+      script.remove();
+    };
+
+    const timeout = setTimeout(() => {
+      if (finished) return;
+      finished = true;
+      cleanUp();
+      reject(new Error("Approved contributions feed timed out."));
+    }, 15000);
+
+    window[callbackName] = data => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      cleanUp();
+
+      if (!data || data.success !== true || !Array.isArray(data.entries)) {
+        reject(new Error("Unexpected response from Atlas feed."));
+        return;
+      }
+
+      resolve(data.entries);
+    };
+
+    script.onerror = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      cleanUp();
+      reject(new Error("Could not connect to Atlas feed."));
+    };
+
+    script.src = ATLAS_API_URL + "?callback=" +
+      encodeURIComponent(callbackName) + "&_=" + Date.now();
+
+    document.head.appendChild(script);
+  });
+}
+
+function normaliseEntry(entry) {
+  const get = key => entry[key] == null ? "" : String(entry[key]).trim();
+
+  return {
+    id: get("ID") || "entry-" + Math.random().toString(36).slice(2),
+    country: get("Country"),
+    type: get("Contribution Type").toLowerCase(),
+    title: get("Title") || "Untitled contribution",
+    summary: get("Summary"),
+    protocolSummary: get("Protocol Summary"),
+    year: get("Research Year"),
+    discipline: get("Discipline"),
+    researchType: get("Research Type"),
+    authority: get("Authority"),
+    duration: get("Duration"),
+    outcome: get("Outcome"),
+    cost: get("Cost"),
+    experience: get("Experience"),
+    advice: get("Advice"),
+    source: get("Resources")
+  };
+}
+
+function refreshAtlasFromSheet() {
+  return loadApprovedEntries().then(rows => {
+    approvedEntries = rows.map(normaliseEntry).filter(item => item.country);
+
+    Object.keys(experiences).forEach(key => delete experiences[key]);
+    protocols.splice(0, protocols.length);
+
+    const countryGroups = new Map();
+
+    approvedEntries.forEach(entry => {
+      const key = entry.country.toLowerCase();
+
+      if (!countryGroups.has(key)) countryGroups.set(key, []);
+      countryGroups.get(key).push(entry);
+
+      if (
+        entry.type === "experience" ||
+        entry.type === "advice" ||
+        entry.experience ||
+        entry.advice
+      ) {
+        experiences[entry.id] = {
+          country: entry.country,
+          title: entry.title,
+          text: [
+            entry.summary,
+            entry.experience,
+            entry.advice ? "Advice for other researchers\n\n" + entry.advice : "",
+            entry.source ? "Resources\n\n" + entry.source : ""
+          ].filter(Boolean).join("\n\n"),
+          summary: entry.summary,
+          year: entry.year,
+          discipline: entry.discipline
+        };
+      }
+    });
+
+    countryGroups.forEach((records, key) => {
+      const country = records[0].country;
+      const protocolRecords = records.filter(item => item.type === "protocol");
+      const overview = protocolRecords
+        .map(item => item.protocolSummary || item.summary)
+        .filter(Boolean).join("\n\n");
+
+      const authorities = [...new Set(
+        protocolRecords.map(item => item.authority).filter(Boolean)
+      )].join("\n\n");
+
+      const details = protocolRecords.map(item => [
+        item.duration ? "Process duration: " + item.duration : "",
+        item.outcome ? "Outcome: " + item.outcome : "",
+        item.cost ? "Reported cost: " + item.cost : ""
+      ].filter(Boolean).join(" / ")).filter(Boolean);
+
+      protocols.push({
+        id: "country-" + key.replace(/[^a-z0-9]+/g, "-"),
+        country: country,
+        code: country.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2) || "AT",
+        title: "Research in " + country,
+        updated: "Community contribution",
+        status: protocolRecords.length ? "Published contributions" : "Published experiences",
+        overview: overview ||
+          records.map(item => item.summary).filter(Boolean).join("\n\n") ||
+          "Published contributions from researchers working in this country.",
+        steps: details.length ? details : [
+          "Review the published contributions and check current requirements with the relevant authorities."
+        ],
+        institutions: authorities ||
+          "No institutional details have been included in the approved contributions yet.",
+        notes: "This information is based on contributor accounts and may not represent current official guidance. Confirm requirements with the relevant authorities before making plans."
+      });
+    });
+
+    renderProtocolGrids();
+    renderHomeExperiences();
+
+    return approvedEntries;
+  });
+}
+
+/* HOME EXPERIENCE PREVIEWS */
+
+function renderHomeExperiences() {
+  const container = document.getElementById("homeExperienceList");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const items = Object.entries(experiences).slice(0, 3);
+
+  if (!items.length) {
+    const empty = document.createElement("div");
+    empty.className = "experience-preview-item";
+    empty.textContent = "No approved fieldwork experiences yet.";
+    container.appendChild(empty);
+  } else {
+    items.forEach(([id, item]) => {
+      const button = document.createElement("button");
+      button.className = "experience-preview-item";
+
+      const title = document.createElement("span");
+      title.textContent = item.title;
+
+      const country = document.createElement("span");
+      country.textContent = item.country;
+
+      button.append(title, country);
+      button.addEventListener("click", () => openExperience(id));
+      container.appendChild(button);
+    });
   }
-];
 
-const experiences = {
-  sample: {
-    country: "Malawi",
-    title: "Research in Malawi",
-    text: "This is a demonstration fieldwork account. The Atlas will host longer first-hand accounts alongside formal information about research permissions. Researchers will be able to describe what happened in practice, what surprised them, what was difficult and what they would recommend to others."
-  }
-};
+  const add = document.createElement("button");
+  add.className = "experience-add";
+  add.textContent = "Add your experience +";
+  add.addEventListener("click", () => goHomeSection("homeContribution"));
+  container.appendChild(add);
+}
 
 /* VIEW NAVIGATION */
 
 function goHomeSection(sectionId) {
   showView("homeView");
+
   setTimeout(() => {
     const section = document.getElementById(sectionId);
-    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (section) section.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }, 80);
 }
 
@@ -1195,9 +230,7 @@ function showView(viewId) {
   document.getElementById(viewId).classList.add("active");
   window.scrollTo({ top: 0, behavior: "instant" });
 
-  if (world) {
-    setTimeout(resizeGlobe, 100);
-  }
+  if (world) setTimeout(resizeGlobe, 100);
 }
 
 /* PROTOCOL TILES */
@@ -1208,9 +241,13 @@ function makeProtocolTile(protocol) {
 
   button.innerHTML = `
     <span class="eyebrow">${protocol.code || "ATLAS"}</span>
-    <span class="tile-country">${protocol.country}</span>
-    <span class="tile-meta">${protocol.updated || "Protocol record"}<br>Open country profile →</span>
+    <span class="tile-country"></span>
+    <span class="tile-meta"></span>
   `;
+
+  button.querySelector(".tile-country").textContent = protocol.country;
+  button.querySelector(".tile-meta").textContent =
+    (protocol.updated || "Protocol record") + " / Open country profile →";
 
   button.addEventListener("click", () => openCountry(protocol.id));
   return button;
@@ -1220,12 +257,12 @@ function renderProtocolGrids() {
   const homeGrid = document.getElementById("homeProtocolGrid");
   const fullGrid = document.getElementById("fullProtocolGrid");
 
+  if (!homeGrid || !fullGrid) return;
+
   homeGrid.innerHTML = "";
   fullGrid.innerHTML = "";
 
-  const recent = protocols.slice(0, 14);
-
-  recent.forEach(protocol => {
+  protocols.slice(0, 14).forEach(protocol => {
     homeGrid.appendChild(makeProtocolTile(protocol));
     fullGrid.appendChild(makeProtocolTile(protocol));
   });
@@ -1236,15 +273,13 @@ function renderProtocolGrids() {
     <span>CONTRIBUTE</span>
     <span class="plus">+</span>
   `;
+  addTile.addEventListener("click", () => goHomeSection("homeContribution"));
 
   homeGrid.appendChild(addTile.cloneNode(true));
-  homeGrid.lastElementChild.addEventListener("click", () => {
-    goHomeSection("homeContribution");
-  });
-
-  addTile.addEventListener("click", () => {
-    goHomeSection("homeContribution");
-  });
+  homeGrid.lastElementChild.addEventListener(
+    "click",
+    () => goHomeSection("homeContribution")
+  );
 
   fullGrid.appendChild(addTile);
 }
@@ -1282,16 +317,15 @@ function openCountry(countryId) {
     steps.appendChild(li);
   });
 
-  document.getElementById("countryMapLabel").textContent =
-    protocol.country;
+  document.getElementById("countryMapLabel").textContent = protocol.country;
 
   const list = document.getElementById("countryExperienceList");
   list.innerHTML = "";
 
   const matchingExperiences = Object.entries(experiences)
-    .filter(([id, item]) => item.country === protocol.country);
+    .filter(([id, item]) => item.country.toLowerCase() === protocol.country.toLowerCase());
 
-  if (matchingExperiences.length === 0) {
+  if (!matchingExperiences.length) {
     list.innerHTML = '<div class="eyebrow">No experiences published yet.</div>';
   } else {
     matchingExperiences.forEach(([id, item]) => {
@@ -1334,9 +368,7 @@ function closeExperience() {
 }
 
 function closeModalOutside(event) {
-  if (event.target.id === "experienceModal") {
-    closeExperience();
-  }
+  if (event.target.id === "experienceModal") closeExperience();
 }
 
 /* CONTRIBUTION FORM */
@@ -1344,30 +376,89 @@ function closeModalOutside(event) {
 document.getElementById("contributionForm").addEventListener("submit", event => {
   event.preventDefault();
 
+  const form = event.currentTarget;
+  const message = document.getElementById("formMessage");
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  if (!form.reportValidity()) return;
+
   const submission = {
     type: document.getElementById("contributionType").value,
-    country: document.getElementById("country").value,
+    country: document.getElementById("country").value.trim(),
     year: document.getElementById("researchYear").value,
-    discipline: document.getElementById("discipline").value,
-    researchType: document.getElementById("researchType").value,
-    authority: document.getElementById("authority").value,
-    duration: document.getElementById("permissionDuration").value,
+    discipline: document.getElementById("discipline").value.trim(),
+    researchType: document.getElementById("researchType").value.trim(),
+    authority: document.getElementById("authority").value.trim(),
+    duration: document.getElementById("permissionDuration").value.trim(),
     outcome: document.getElementById("permissionOutcome").value,
-    cost: document.getElementById("permissionCost").value,
-    protocolSummary: document.getElementById("protocolSummary").value,
-    title: document.getElementById("title").value,
-    summary: document.getElementById("summary").value,
-    experience: document.getElementById("experience").value,
-    advice: document.getElementById("advice").value,
-    source: document.getElementById("source").value,
-    name: document.getElementById("contributorName").value,
-    email: document.getElementById("email").value
+    cost: document.getElementById("permissionCost").value.trim(),
+    protocolSummary: document.getElementById("protocolSummary").value.trim(),
+    title: document.getElementById("title").value.trim(),
+    summary: document.getElementById("summary").value.trim(),
+    experience: document.getElementById("experience").value.trim(),
+    advice: document.getElementById("advice").value.trim(),
+    source: document.getElementById("source").value.trim(),
+    name: document.getElementById("contributorName").value.trim(),
+    email: document.getElementById("email").value.trim()
   };
 
-  console.log("Atlas submission prototype:", submission);
+  submitButton.disabled = true;
+  message.textContent = "Sending your contribution…";
 
-  document.getElementById("formMessage").textContent =
-    "Thank you. This prototype is not connected to the database, so your contribution has not been saved.";
+  const frameName = "atlasSubmissionFrame_" + Date.now();
+  const iframe = document.createElement("iframe");
+  iframe.name = frameName;
+  iframe.title = "Submission response";
+  iframe.src = "about:blank";
+  iframe.style.display = "none";
+
+  const postForm = document.createElement("form");
+  postForm.method = "POST";
+  postForm.action = ATLAS_API_URL;
+  postForm.target = frameName;
+  postForm.style.display = "none";
+
+  const payload = document.createElement("input");
+  payload.type = "hidden";
+  payload.name = "payload";
+  payload.value = JSON.stringify(submission);
+  postForm.appendChild(payload);
+
+  let completed = false;
+  let submitted = false;
+  let failureTimer;
+
+  const finish = success => {
+    if (completed) return;
+    completed = true;
+    clearTimeout(failureTimer);
+    postForm.remove();
+    iframe.remove();
+    submitButton.disabled = false;
+
+    if (success) {
+      form.reset();
+      message.textContent =
+        "Thank you. Your contribution has been sent for review. It will only appear on the Atlas if it is approved.";
+    } else {
+      message.textContent =
+        "We could not confirm that your contribution was sent. Please try again.";
+    }
+  };
+
+  iframe.addEventListener("load", () => {
+    if (!submitted) {
+      submitted = true;
+      postForm.submit();
+      return;
+    }
+    finish(true);
+  });
+
+  document.body.appendChild(iframe);
+  document.body.appendChild(postForm);
+
+  failureTimer = setTimeout(() => finish(false), 20000);
 });
 
 /* GLOBE */
@@ -1394,9 +485,7 @@ function getCountryCentre(feature) {
 
   collect(feature.geometry.coordinates);
 
-  if (!coordinates.length) {
-    return { lat: 0, lng: 0 };
-  }
+  if (!coordinates.length) return { lat: 0, lng: 0 };
 
   let lng = 0;
   let lat = 0;
@@ -1431,11 +520,9 @@ function rotateGlobeToCountry(countryName) {
   }, 1000);
 
   targetGlobe.polygonCapColor(featureItem => {
-    if (featureItem.properties.name === countryName) {
-      return "rgba(181,198,176,0.98)";
-    }
-
-    return "#ffffff";
+    return featureItem.properties.name === countryName
+      ? "rgba(181,198,176,0.98)"
+      : "#ffffff";
   });
 }
 
@@ -1468,12 +555,10 @@ window.addEventListener("load", async () => {
     .height(globeElement.clientHeight)
     .backgroundColor("rgba(255,255,255,0)")
     .showGlobe(true)
-    .globeMaterial(
-      new THREE.MeshPhongMaterial({
-        color: "#DCEAF2",
-        shininess: 0
-      })
-    )
+    .globeMaterial(new THREE.MeshPhongMaterial({
+      color: "#DCEAF2",
+      shininess: 0
+    }))
     .showAtmosphere(false)
     .showGraticules(false)
     .enablePointerInteraction(true)
@@ -1505,9 +590,7 @@ window.addEventListener("load", async () => {
       "https://unpkg.com/world-atlas@2/countries-110m.json"
     );
 
-    if (!response.ok) {
-      throw new Error("Country data unavailable");
-    }
+    if (!response.ok) throw new Error("Country data unavailable");
 
     const worldData = await response.json();
 
@@ -1524,22 +607,8 @@ window.addEventListener("load", async () => {
       altitude: 1.65
     });
 
-    /*
-      Keep deliberate globe interaction enabled.
-      Stop wheel events reaching the globe controls so
-      the mouse wheel scrolls the webpage instead.
-    */
     const controls = world.controls();
-
-    if (controls) {
-      controls.enableZoom = true;
-    }
-
-    globeElement.addEventListener("wheel", event => {
-      event.stopImmediatePropagation();
-    }, true);
-
-    /* Separate globe for individual country profiles. */
+    if (controls) controls.enableZoom = false;
 
     const countryElement = document.getElementById("countryGlobeViz");
 
@@ -1549,12 +618,10 @@ window.addEventListener("load", async () => {
         .height(countryElement.clientHeight)
         .backgroundColor("rgba(255,255,255,0)")
         .showGlobe(true)
-        .globeMaterial(
-          new THREE.MeshPhongMaterial({
-            color: "#DCEAF2",
-            shininess: 0
-          })
-        )
+        .globeMaterial(new THREE.MeshPhongMaterial({
+          color: "#DCEAF2",
+          shininess: 0
+        }))
         .showAtmosphere(false)
         .showGraticules(false)
         .polygonAltitude(0.006)
@@ -1570,21 +637,30 @@ window.addEventListener("load", async () => {
       window.countryWorld.polygonsData(countryFeatures);
 
       const countryControls = window.countryWorld.controls();
-
-      if (countryControls) {
-        countryControls.enableZoom = true;
-      }
-
-      countryElement.addEventListener("wheel", event => {
-        event.stopImmediatePropagation();
-      }, true);
+      if (countryControls) countryControls.enableZoom = false;
     }
-
   } catch (error) {
     console.error("Could not load country data:", error);
   }
 
   renderProtocolGrids();
+  renderHomeExperiences();
+
+  refreshAtlasFromSheet().catch(error => {
+    console.error("Could not load approved Atlas contributions:", error);
+
+    const message = document.getElementById("homeExperienceList");
+    if (message && !Object.keys(experiences).length) {
+      message.innerHTML =
+        '<div class="experience-preview-item">Approved contributions are temporarily unavailable.</div>';
+    }
+  });
+
+  setInterval(() => {
+    refreshAtlasFromSheet().catch(error =>
+      console.warn("Atlas refresh failed:", error)
+    );
+  }, 60000);
 
   window.addEventListener("resize", resizeGlobe);
 });
@@ -1632,7 +708,4 @@ function createCountryProfile(countryName) {
   showView("countryView");
   rotateGlobeToCountry(countryName);
 }
-
 </script>
-</body>
-</html>
