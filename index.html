@@ -1339,36 +1339,94 @@ function closeModalOutside(event) {
   }
 }
 
-/* CONTRIBUTION FORM */
+/* CONTRIBUTION FORM — GOOGLE SHEETS */
 
-document.getElementById("contributionForm").addEventListener("submit", event => {
-  event.preventDefault();
+const contributionForm = document.getElementById("contributionForm");
 
-  const submission = {
-    type: document.getElementById("contributionType").value,
-    country: document.getElementById("country").value,
-    year: document.getElementById("researchYear").value,
-    discipline: document.getElementById("discipline").value,
-    researchType: document.getElementById("researchType").value,
-    authority: document.getElementById("authority").value,
-    duration: document.getElementById("permissionDuration").value,
-    outcome: document.getElementById("permissionOutcome").value,
-    cost: document.getElementById("permissionCost").value,
-    protocolSummary: document.getElementById("protocolSummary").value,
-    title: document.getElementById("title").value,
-    summary: document.getElementById("summary").value,
-    experience: document.getElementById("experience").value,
-    advice: document.getElementById("advice").value,
-    source: document.getElementById("source").value,
-    name: document.getElementById("contributorName").value,
-    email: document.getElementById("email").value
-  };
+if (contributionForm) {
+  contributionForm.addEventListener("submit", event => {
+    event.preventDefault();
 
-  console.log("Atlas submission prototype:", submission);
+    const formMessage = document.getElementById("formMessage");
+    const submitButton = contributionForm.querySelector(
+      'button[type="submit"]'
+    );
 
-  document.getElementById("formMessage").textContent =
-    "Thank you. This prototype is not connected to the database, so your contribution has not been saved.";
-});
+    const submission = {
+      type: document.getElementById("contributionType").value,
+      country: document.getElementById("country").value,
+      year: document.getElementById("researchYear").value,
+      discipline: document.getElementById("discipline").value,
+      researchType: document.getElementById("researchType").value,
+      authority: document.getElementById("authority").value,
+      duration: document.getElementById("permissionDuration").value,
+      outcome: document.getElementById("permissionOutcome").value,
+      cost: document.getElementById("permissionCost").value,
+      protocolSummary: document.getElementById("protocolSummary").value,
+      title: document.getElementById("title").value,
+      summary: document.getElementById("summary").value,
+      experience: document.getElementById("experience").value,
+      advice: document.getElementById("advice").value,
+      source: document.getElementById("source").value,
+      name: document.getElementById("contributorName").value,
+      email: document.getElementById("email").value
+    };
+
+    if (submitButton) submitButton.disabled = true;
+
+    if (formMessage) {
+      formMessage.textContent = "Submitting your contribution...";
+    }
+
+    const callbackName =
+      "atlasSubmit_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2);
+
+    const script = document.createElement("script");
+
+    const cleanup = () => {
+      delete window[callbackName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      if (submitButton) submitButton.disabled = false;
+    };
+
+    window[callbackName] = response => {
+      cleanup();
+
+      if (response && response.success) {
+        if (formMessage) {
+          formMessage.textContent =
+            "Thank you! Your contribution has been submitted for review.";
+        }
+
+        contributionForm.reset();
+      } else {
+        if (formMessage) {
+          formMessage.textContent =
+            "Sorry, your contribution could not be submitted. Please try again.";
+        }
+      }
+    };
+
+    script.onerror = () => {
+      cleanup();
+
+      if (formMessage) {
+        formMessage.textContent =
+          "There was a connection problem. Please try again.";
+      }
+    };
+
+    const payload = encodeURIComponent(JSON.stringify(submission));
+
+    script.src =
+      ATLAS_API_URL +
+      "?action=submit&data=" + payload +
+      "&callback=" + callbackName;
+
+    document.body.appendChild(script);
+  });
+}
 
 /* GLOBE */
 
