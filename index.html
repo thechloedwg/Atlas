@@ -42,10 +42,9 @@
       padding: 20px 42px 80px;
     }
 
-    /* GLOBE HERO */
+    /* GLOBE */
 
     .hero {
-      position: relative;
       width: 100%;
       min-height: 660px;
       display: flex;
@@ -63,23 +62,8 @@
       align-items: center;
     }
 
-    /* Decorative outline sits behind the interactive globe */
-    .globe-frame::before {
-      content: "";
-      position: absolute;
-      width: 570px;
-      height: 570px;
-      max-width: 85%;
-      max-height: 85%;
-      border: 1px solid var(--ink);
-      border-radius: 50%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
     #globeViz {
       position: relative;
-      z-index: 1;
       width: 100%;
       height: 100%;
       cursor: grab;
@@ -98,10 +82,13 @@
       gap: 12px;
       flex-wrap: wrap;
       margin: 0 auto 55px;
+      padding: 26px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     .navigation a {
-      border: 1px solid var(--line);
+      border: 1px solid var(--ink);
       border-radius: 30px;
       padding: 9px 18px;
       font-size: 12px;
@@ -111,11 +98,10 @@
 
     .navigation a:hover {
       background: var(--ink);
-      border-color: var(--ink);
       color: white;
     }
 
-    /* GENERAL SECTIONS */
+    /* SECTIONS */
 
     section {
       margin: 0 auto 90px;
@@ -295,11 +281,6 @@
         height: 430px;
       }
 
-      .globe-frame::before {
-        width: 330px;
-        height: 330px;
-      }
-
       .navigation {
         margin-bottom: 45px;
         gap: 8px;
@@ -336,7 +317,7 @@
     </div>
 
     <nav class="navigation">
-      <a href="#contribute">Contribute</a>
+      <a href="#contribute">+ Contribute</a>
       <a href="#experiences">Explore experiences</a>
       <a href="#about">About the Atlas</a>
     </nav>
@@ -350,7 +331,7 @@
     <section id="experiences">
       <div class="section-heading">
         <h2>Fieldwork experiences</h2>
-        <span class="section-note">Research, permissions and practice around the world</span>
+        <span class="section-note">Explore contributions from researchers</span>
       </div>
 
       <div class="gallery" id="experienceGallery">
@@ -439,15 +420,15 @@
 
     function openProfile(countryName) {
       const profile = profiles[countryName];
-
       const panel = document.getElementById("countryProfile");
-      document.getElementById("profileTitle").textContent = profile
-        ? profile.title
-        : countryName;
 
-      document.getElementById("profileText").textContent = profile
-        ? profile.text
-        : "There is not yet a published profile for this country. You can contribute your experience to help build the Atlas.";
+      document.getElementById("profileTitle").textContent =
+        profile ? profile.title : countryName;
+
+      document.getElementById("profileText").textContent =
+        profile
+          ? profile.text
+          : "There is not yet a published profile for this country. You can contribute your experience to help build the Atlas.";
 
       panel.style.display = "block";
       panel.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -462,40 +443,68 @@
       const consent = document.getElementById("consent").checked;
 
       if (!consent) {
-        message.textContent = "Please confirm that you consent to your contribution being reviewed.";
+        message.textContent =
+          "Please confirm that you consent to your contribution being reviewed.";
         return;
       }
 
-      message.textContent = "Thank you. The contribution form is not connected yet, so your information has not been saved.";
+      message.textContent =
+        "Thank you. The contribution form is not connected yet, so your information has not been saved.";
     }
 
     window.addEventListener("load", async () => {
       const globeElement = document.getElementById("globeViz");
 
+      let hoveredCountry = null;
+
       const world = Globe()(globeElement)
         .width(globeElement.clientWidth)
         .height(globeElement.clientHeight)
+
+        // White ocean surface
         .backgroundColor("rgba(255,255,255,0)")
-.globeImageUrl("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2048' height='1024'%3E%3Crect width='2048' height='1024' fill='white'/%3E%3C/svg%3E")
-.showGlobe(true)
-        .globeMaterial(
-  new THREE.MeshBasicMaterial({
-    color: 0xffffff
-  })
-)
-         
+        .globeImageUrl(
+          "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2048' height='1024'%3E%3Crect width='2048' height='1024' fill='white'/%3E%3C/svg%3E"
+        )
+        .showGlobe(true)
         .showAtmosphere(false)
-        .showGraticules(false)
-        .polygonAltitude(0.006)
+
+        // Latitude and longitude linework
+        .showGraticules(true)
+        .graticulesMaterial(
+          new THREE.LineBasicMaterial({
+            color: 0x263B8F,
+            transparent: true,
+            opacity: 0.22
+          })
+        )
+
+        // Country polygons
+        .polygonAltitude(feature =>
+          feature === hoveredCountry ? 0.012 : 0.006
+        )
+
         .polygonCapColor(feature => {
-          const name = feature.properties.name;
-          return name === "Malawi"
-            ? "rgba(181,198,176,0.95)"
-            : "rgba(255,255,255,0.95)";
+          if (feature.properties.name === "Malawi") {
+            return "rgba(181,198,176,0.95)";
+          }
+          return "rgba(255,255,255,0.95)";
         })
+
         .polygonSideColor(() => "rgba(255,255,255,0)")
-        .polygonStrokeColor(() => "#263B8F")
+
+        // Blue country borders, stronger on hover
+        .polygonStrokeColor(feature =>
+          feature === hoveredCountry ? "#263B8F" : "#aebbd5"
+        )
+
         .polygonLabel(feature => feature.properties.name)
+
+        .onPolygonHover(feature => {
+          hoveredCountry = feature || null;
+          document.body.style.cursor = feature ? "pointer" : "default";
+        })
+
         .onPolygonClick(feature => {
           openProfile(feature.properties.name);
         });
