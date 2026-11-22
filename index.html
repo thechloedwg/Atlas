@@ -1340,9 +1340,10 @@ function closeModalOutside(event) {
 }
 
 
+
 /* CONTRIBUTION FORM — GOOGLE SHEETS */
 
-const ATLAS_API_URL = "https://script.google.com/macros/s/AKfycbwlbNgi_qXZTueXo2vT133RcE9iotf95LrTwyVL_LHuic-vRBKYja-jaMjnsFgZUigN/exec";
+const ATLAS_API_URL = "https://script.google.com/macros/s/AKfycbwlbNgi_qXZTueo2vT133RcE9iotf95LrTwyVL_LHuic-vRBKYja-jaMjnsFgZUigN/exec";
 
 const contributionForm = document.getElementById("contributionForm");
 
@@ -1357,7 +1358,12 @@ if (contributionForm) {
 
     if (!contributionForm.reportValidity()) return;
 
+    const requestId =
+      "atlas_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2);
+
     const submission = {
+      requestId: requestId,
       type: document.getElementById("contributionType").value,
       country: document.getElementById("country").value.trim(),
       year: document.getElementById("researchYear").value,
@@ -1408,45 +1414,62 @@ if (contributionForm) {
       completed = true;
 
       clearTimeout(timeout);
+      window.removeEventListener("message", handleMessage);
 
-      if (iframe.parentNode) iframe.remove();
-      if (postForm.parentNode) postForm.remove();
+      iframe.remove();
+      postForm.remove();
 
       if (submitButton) submitButton.disabled = false;
     }
 
-    function handleResponse() {
+    function handleMessage(event) {
+      const response = event.data;
+
+      if (
+        !response ||
+        response.type !== "atlas-submission-response" ||
+        response.requestId !== requestId ||
+        event.source !== iframe.contentWindow
+      ) {
+        return;
+      }
+
       cleanup();
 
-      formMessage.textContent =
-        "Your contribution has been sent to the Atlas. It should appear in the Submissions sheet with Pending status, ready for review.";
+      if (response.success) {
+        formMessage.textContent =
+          "Thank you! Your contribution has been saved and is awaiting review.";
 
-      contributionForm.reset();
+        contributionForm.reset();
+      } else {
+        formMessage.textContent =
+          "The submission could not be saved: " +
+          (response.message || "Unknown error") +
+          ". Please try again.";
+      }
     }
 
-    // Wait for the iframe to load before sending the POST.
+    window.addEventListener("message", handleMessage);
+
     iframe.addEventListener("load", function initialLoad() {
       iframe.removeEventListener("load", initialLoad);
-
-      iframe.addEventListener("load", handleResponse, { once: true });
-
       postForm.submit();
     });
 
-    document.body.appendChild(iframe);
     document.body.appendChild(postForm);
+    document.body.appendChild(iframe);
 
-    // Avoid leaving the form stuck indefinitely.
     timeout = setTimeout(function() {
       if (completed) return;
 
       cleanup();
 
       formMessage.textContent =
-        "We could not confirm the submission. Please check the Submissions sheet before trying again, to avoid sending a duplicate.";
-    }, 25000);
+        "We could not confirm whether your contribution was saved. Please check the Submissions sheet before trying again, to avoid a duplicate.";
+    }, 30000);
   });
 }
+
 
 /* GLOBE */
 
