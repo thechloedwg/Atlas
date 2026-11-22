@@ -42,9 +42,32 @@ a{color:inherit;text-decoration:none}
 button{font:inherit}
 
 .page{
-  max-width:1440px;
+  max-width:1600px;
   margin:0 auto;
   padding:12px 48px 45px;
+}
+
+/* DESKTOP PAGE LAYOUT */
+
+@media(min-width:1001px){
+  .page{
+    display:grid;
+    grid-template-columns:minmax(0,55%) minmax(0,45%);
+    grid-template-areas:
+      "hero main"
+      "nav nav"
+      "profile profile"
+      "form form"
+      "footer footer";
+    align-items:center;
+  }
+
+  .hero{grid-area:hero}
+  .main-content{grid-area:main}
+  .navigation{grid-area:nav}
+  #countryProfile{grid-area:profile}
+  .form-section{grid-area:form}
+  footer{grid-area:footer}
 }
 
 /* Globe */
@@ -52,17 +75,18 @@ button{font:inherit}
 .hero{
   position:relative;
   width:100%;
-  height:650px;
+  height:620px;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
   background:var(--white);
+  min-width:0;
 }
 
 .globe-frame{
   width:min(100%,780px);
-  height:650px;
+  height:620px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -93,20 +117,24 @@ button{font:inherit}
   align-items:center;
   gap:10px;
   flex-wrap:wrap;
-  margin:0 auto 65px;
+  margin:0 auto 55px;
 }
 
-.navigation a{
+.navigation a,
+.navigation button{
   border:1px solid var(--line);
   border-radius:30px;
   padding:9px 19px;
   font-size:13px;
   color:var(--ink);
+  background:white;
   transition:.2s;
   text-align:center;
+  cursor:pointer;
 }
 
-.navigation a:hover{
+.navigation a:hover,
+.navigation button:hover{
   background:var(--blue);
   border-color:var(--blue);
   color:white;
@@ -115,12 +143,14 @@ button{font:inherit}
 /* Homepage */
 
 .main-content{
+  width:100%;
   max-width:1180px;
   margin:0 auto 80px;
   display:grid;
   grid-template-columns:2fr 1fr;
   gap:65px;
   align-items:start;
+  min-width:0;
 }
 
 .about-column,.latest-column{min-width:0}
@@ -226,6 +256,7 @@ button{font:inherit}
   padding:30px;
   margin:0 auto 65px;
   max-width:1100px;
+  width:100%;
   scroll-margin-top:30px;
 }
 
@@ -450,17 +481,52 @@ button{font:inherit}
 
 .individual-contributions{margin-top:28px}
 
-/* Form: scaled to 75% */
+/* Contribution form: hidden until requested */
 
 .form-section{
+  display:none;
   max-width:1180px;
+  width:100%;
   margin:0 auto 45px;
   scroll-margin-top:30px;
 }
 
+.form-section.open{display:block}
+
 .form-container{
   max-width:850px;
   margin:0 auto;
+}
+
+.form-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin:0 auto 12px;
+  max-width:850px;
+}
+
+.form-heading h2{
+  margin:0;
+  font-size:30px;
+  font-weight:normal;
+  text-align:left;
+}
+
+.close-form{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--ink);
+  padding:7px 15px;
+  border-radius:25px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+.close-form:hover{
+  border-color:var(--blue);
+  color:var(--blue);
 }
 
 .google-form-embed{
@@ -570,6 +636,66 @@ footer{
   text-align:left;
 }
 
+/* DESKTOP: GLOBE LEFT, CONTENT RIGHT */
+
+@media(min-width:1001px){
+  .hero{
+    height:620px;
+    width:100%;
+  }
+
+  .globe-frame{
+    width:100%;
+    height:620px;
+  }
+
+  .main-content{
+    max-width:none;
+    width:100%;
+    margin:0;
+    padding:30px 10px 30px 25px;
+    grid-template-columns:1fr;
+    gap:25px;
+    align-self:center;
+  }
+
+  .about-copy{
+    font-size:15px;
+    line-height:1.75;
+  }
+
+  .latest-column{
+    width:100%;
+  }
+
+  .protocol-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .protocol-card{
+    min-height:105px;
+  }
+
+  #allCountryProtocols{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  #allCountryProtocols .empty-state{
+    grid-column:1/-1;
+  }
+
+  .view-all-button{
+    width:100%;
+  }
+
+  .navigation{
+    margin-top:5px;
+    margin-bottom:55px;
+  }
+}
+
 @media(max-width:1000px){
   .page{
     padding-left:28px;
@@ -589,7 +715,8 @@ footer{
     gap:6px;
   }
 
-  .navigation a{
+  .navigation a,
+  .navigation button{
     padding:7px 11px;
     font-size:12px;
   }
@@ -664,6 +791,8 @@ footer{
   .google-form-embed{height:1600px}
 
   .google-form-embed iframe{height:2133px}
+
+  .form-heading h2{font-size:25px}
 }
 
 @media(max-width:430px){
@@ -685,7 +814,8 @@ footer{
 
   .protocol-meta{font-size:10px}
 
-  .navigation a{
+  .navigation a,
+  .navigation button{
     padding:6px 9px;
     font-size:11px;
   }
@@ -732,7 +862,13 @@ footer{
   </div>
 
   <nav class="navigation" aria-label="Main navigation">
-    <a href="#contribute">Contribute</a>
+    <button
+      type="button"
+      id="contributeButton"
+      aria-expanded="false"
+      onclick="toggleContributionForm()">
+      Contribute
+    </button>
     <a href="#protocols">Explore experiences</a>
     <a href="#about">About the Atlas</a>
   </nav>
@@ -787,10 +923,21 @@ footer{
   </section>
 
   <section class="form-section" id="contribute">
+    <div class="form-heading">
+      <h2>Contribute to the Atlas</h2>
+      <button
+        class="close-form"
+        type="button"
+        onclick="closeContributionForm()">
+        Close form ×
+      </button>
+    </div>
+
     <div class="form-container">
       <div class="google-form-embed">
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSckkKBpgWjLCr096cxS9sZxkzT1MWNqaH4i-_Gn3JgaaWZpUg/viewform?embedded=true"
+          id="contributionFormFrame"
+          data-src="https://docs.google.com/forms/d/e/1FAIpQLSckkKBpgWjLCr096cxS9sZxkzT1MWNqaH4i-_Gn3JgaaWZpUg/viewform?embedded=true"
           title="Fieldwork Atlas contribution form"
           loading="lazy">
           Loading contribution form…
@@ -832,6 +979,48 @@ let countryProfiles = {};
 let globeInstance = null;
 let countryFeatures = [];
 let allProtocolsExpanded = false;
+
+
+/* =========================================================
+   CONTRIBUTION FORM OPEN / CLOSE
+   ========================================================= */
+
+function toggleContributionForm() {
+  const section = document.getElementById("contribute");
+
+  if (section.classList.contains("open")) {
+    closeContributionForm();
+  } else {
+    openContributionForm();
+  }
+}
+
+function openContributionForm() {
+  const section = document.getElementById("contribute");
+  const button = document.getElementById("contributeButton");
+  const frame = document.getElementById("contributionFormFrame");
+
+  section.classList.add("open");
+  button.setAttribute("aria-expanded", "true");
+
+  /* Load the Google Form only when someone opens it. */
+  if (!frame.getAttribute("src")) {
+    frame.setAttribute("src", frame.dataset.src);
+  }
+
+  section.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+function closeContributionForm() {
+  const section = document.getElementById("contribute");
+  const button = document.getElementById("contributeButton");
+
+  section.classList.remove("open");
+  button.setAttribute("aria-expanded", "false");
+}
 
 
 /* =========================================================
@@ -1104,7 +1293,6 @@ function loadAtlasDataJsonp() {
 /* =========================================================
    HOMEPAGE CONTRIBUTIONS
    Latest four shown first; button reveals the full list.
-   No country headings.
    ========================================================= */
 
 function createProtocolCard(entry) {
@@ -1249,7 +1437,6 @@ function closeProfile() {
 
 /* =========================================================
    RESEARCH AREA SUMMARY TILES
-   Each tile contains the full summary for that research area.
    ========================================================= */
 
 function addCategorySummaryBlock(container, heading, values) {
@@ -1360,8 +1547,6 @@ function renderResearchAreaCards(entries) {
       )
     );
 
-    /* Researcher classifications */
-
     addCategorySummaryBlock(
       card,
       "Researcher classifications",
@@ -1369,8 +1554,6 @@ function renderResearchAreaCards(entries) {
         valueOf(entry, "researcherClassification")
       )
     );
-
-    /* Permission authorities and institutions */
 
     addCategorySummaryBlock(
       card,
@@ -1383,8 +1566,6 @@ function renderResearchAreaCards(entries) {
       )
     );
 
-    /* Local partners and affiliations */
-
     addCategorySummaryBlock(
       card,
       "Local partners and affiliations",
@@ -1396,23 +1577,17 @@ function renderResearchAreaCards(entries) {
       )
     );
 
-    /* Application outcomes */
-
     addCategorySummaryBlock(
       card,
       "Application outcomes",
       areaEntries.map(entry => valueOf(entry, "outcome"))
     );
 
-    /* Challenges and delays */
-
     addCategorySummaryBlock(
       card,
       "Challenges and delays",
       areaEntries.map(entry => valueOf(entry, "challenges"))
     );
-
-    /* Advice */
 
     addCategorySummaryBlock(
       card,
@@ -1422,8 +1597,6 @@ function renderResearchAreaCards(entries) {
         valueOf(entry, "advice")
       ])
     );
-
-    /* Resources */
 
     addCategorySummaryBlock(
       card,
@@ -1618,6 +1791,11 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     closeExperience();
     closeProfile();
+
+    const form = document.getElementById("contribute");
+    if (form.classList.contains("open")) {
+      closeContributionForm();
+    }
   }
 });
 
