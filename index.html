@@ -6,80 +6,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fieldwork Atlas</title>
 <meta name="description" content="A collaborative resource sharing research permission information and fieldwork experiences around the world.">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
+:root{
   --ink:#3c4043;
   --blue:#4285f4;
   --blue-dark:#1a73e8;
   --muted:#70757a;
   --line:#dadce0;
   --soft:#f8fafd;
-  --sea:#eaf2ff;
   --land:#e8eaed;
-  --white:#fff;
-  --body-text:#5f6368;
+  --sea:#eaf2ff;
 }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0;
-  background:var(--white);
   color:var(--ink);
+  background:white;
   font-family:'Amiri',serif;
   -webkit-font-smoothing:antialiased;
-  text-align:justify;
 }
-a{color:inherit;text-decoration:none}
 button{font:inherit}
+a{color:inherit;text-decoration:none}
 
-/* =========================================================
-   DESKTOP LAYOUT
-   Globe | Navigation | About and profiles
-   ========================================================= */
+/* MAIN LAYOUT */
 
 .page{
   width:100%;
   max-width:1600px;
   min-height:100vh;
   height:100vh;
-  margin:0 auto;
-  padding:12px 38px 16px;
+  margin:auto;
+  padding:12px 35px 14px;
   display:grid;
-  grid-template-columns:minmax(0,52%) minmax(90px,10%) minmax(0,38%);
+  grid-template-columns:minmax(0,55%) minmax(0,45%);
   grid-template-rows:minmax(0,1fr) auto;
   grid-template-areas:
-    "hero nav main"
-    "footer footer footer";
-  align-items:center;
-  overflow:visible;
+    "left main"
+    "footer footer";
+  gap:0;
+}
+
+.left-column{
+  grid-area:left;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
 }
 
 .hero{
-  grid-area:hero;
   position:relative;
-  width:100%;
-  height:100%;
+  flex:1;
   min-height:0;
+  width:100%;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   overflow:hidden;
-  background:var(--white);
-}
-
-.globe-frame{
-  width:100%;
-  height:100%;
-  min-height:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
 }
 
 #globeViz{
@@ -93,43 +83,35 @@ button{font:inherit}
   position:absolute;
   color:#aab3c5;
   font-size:13px;
-  letter-spacing:.04em;
   pointer-events:none;
   text-align:center;
 }
 
-/* =========================================================
-   DESKTOP NAVIGATION
-   ========================================================= */
+/* BUTTONS UNDER GLOBE */
 
 .navigation{
-  grid-area:nav;
   display:flex;
-  flex-direction:column;
-  justify-content:center;
+  justify-content:flex-start;
   align-items:center;
-  gap:12px;
-  width:100%;
-  padding:10px 5px;
-  margin:0;
+  gap:9px;
+  flex-wrap:wrap;
+  padding:10px 0 8px 8%;
 }
 
 .navigation a,
 .navigation button{
   display:inline-flex;
-  justify-content:center;
   align-items:center;
-  width:100%;
+  justify-content:center;
   border:1px solid var(--line);
   border-radius:30px;
-  padding:9px 8px;
-  font-size:12px;
-  line-height:1.35;
-  color:var(--ink);
   background:white;
+  color:var(--ink);
+  padding:7px 15px;
+  font-size:12px;
   cursor:pointer;
   transition:.2s;
-  text-align:center;
+  white-space:nowrap;
 }
 
 .navigation a:hover,
@@ -139,77 +121,69 @@ button{font:inherit}
   color:white;
 }
 
-/* =========================================================
-   HOMEPAGE CONTENT
-   ========================================================= */
+/* RIGHT-HAND CONTENT */
 
 .main-content{
   grid-area:main;
-  width:100%;
-  max-width:none;
-  height:100%;
+  min-width:0;
   min-height:0;
-  margin:0;
-  padding:20px 5px 20px 12px;
+  height:100%;
+  padding:22px 5px 20px 25px;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  gap:clamp(12px,2vh,25px);
+  gap:22px;
   overflow:hidden;
 }
 
-.about-column,.latest-column{
+.home-content{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:16px;
+  align-items:start;
   width:100%;
-  min-width:0;
 }
 
+.about-column,.latest-column{min-width:0}
+
 .about-heading{
-  font-size:clamp(20px,1.8vw,27px);
+  font-size:clamp(20px,1.7vw,27px);
   font-weight:normal;
   line-height:1.3;
-  color:var(--ink);
   margin:0 0 10px;
-  text-align:left;
 }
 
 .about-copy{
-  color:var(--body-text);
-  font-size:clamp(13px,1.05vw,15px);
+  color:#5f6368;
+  font-size:clamp(12px,1vw,15px);
   line-height:1.55;
   text-align:justify;
 }
-
-.about-copy p{
-  margin:0 0 clamp(7px,1.1vh,13px);
-}
+.about-copy p{margin:0 0 12px}
 .about-copy p:last-child{margin-bottom:0}
 
-.latest-column{min-height:0}
-
-/* Desktop: four columns and three rows */
+/* HOMEPAGE PROTOCOL GRID */
 
 .protocol-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  grid-template-rows:repeat(3,minmax(0,1fr));
   gap:8px;
   width:100%;
 }
 
-.protocol-card,
-.view-all-card{
+.protocol-card{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  min-height:clamp(72px,10vh,100px);
-  padding:10px;
+  min-width:0;
+  min-height:clamp(75px,10vh,105px);
+  padding:9px;
   border:1px solid var(--line);
   background:white;
-  cursor:pointer;
-  text-align:left;
   color:var(--ink);
+  text-align:left;
+  cursor:pointer;
   transition:.2s;
-  min-width:0;
 }
 
 .protocol-card:hover,
@@ -219,88 +193,128 @@ button{font:inherit}
   transform:translateY(-2px);
 }
 
-.protocol-card[hidden]{display:none}
-
 .protocol-country{
   color:var(--blue);
   font-size:11px;
+  line-height:1.3;
   margin-bottom:5px;
 }
 
 .protocol-card h3{
-  color:var(--ink);
-  font-size:clamp(13px,1.05vw,17px);
+  margin:0 0 6px;
+  font-size:clamp(12px,1vw,16px);
   font-weight:normal;
   line-height:1.25;
-  margin:0 0 6px;
   overflow-wrap:anywhere;
 }
 
 .protocol-meta{
+  margin-top:auto;
   color:var(--muted);
   font-size:10px;
+  line-height:1.35;
+}
+
+.view-all-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:clamp(75px,10vh,105px);
+  padding:8px;
+  border:1px solid var(--blue);
+  color:var(--blue);
+  background:white;
+  text-align:center;
+  font-size:12px;
   line-height:1.4;
-  margin-top:auto;
+  transition:.2s;
+}
+
+.view-all-card span{
+  font-size:24px;
+  margin-bottom:4px;
 }
 
 .empty-state{
   grid-column:1/-1;
-  border:1px dashed var(--line);
   padding:18px 12px;
-  text-align:center;
+  border:1px dashed var(--line);
   color:var(--muted);
   font-size:13px;
   line-height:1.6;
-}
-
-.view-all-card{
-  justify-content:center;
-  align-items:center;
   text-align:center;
-  color:var(--blue);
-  font-size:14px;
-  line-height:1.5;
-  text-decoration:none;
-  border-color:var(--blue);
 }
 
-.view-all-card:hover{
-  background:var(--blue);
-  color:white;
+/* CONTRIBUTION PANEL REPLACES HOME CONTENT */
+
+.contribute-panel{
+  display:none;
+  width:100%;
+  min-height:0;
+  height:100%;
+  flex-direction:column;
 }
 
-.view-all-card span{
-  display:block;
+.contribute-panel.visible{display:flex}
+
+.contribute-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:12px;
+}
+
+.contribute-heading h2{
+  font-size:26px;
+  font-weight:normal;
+  margin:0;
+}
+
+.close-contribute{
+  border:0;
+  background:transparent;
+  color:var(--ink);
   font-size:25px;
-  margin-bottom:5px;
+  cursor:pointer;
 }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
+.google-form-embed{
+  position:relative;
+  flex:1;
+  min-height:500px;
+  overflow:hidden;
+  width:100%;
+}
 
-footer{
-  grid-area:footer;
-  border-top:1px solid var(--line);
-  padding-top:10px;
+.google-form-embed iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  background:white;
+}
+
+.form-note{
   color:var(--muted);
   font-size:12px;
-  text-align:center;
+  line-height:1.5;
+  margin-top:8px;
 }
 
-/* =========================================================
-   COUNTRY PROFILE
-   ========================================================= */
+/* COUNTRY PROFILE */
 
 #countryProfile{
   display:none;
   grid-column:1/-1;
-  background:var(--soft);
-  border:1px solid var(--line);
-  padding:30px;
-  margin:15px auto 35px;
   width:100%;
   max-width:1100px;
+  margin:20px auto;
+  padding:25px;
+  border:1px solid var(--line);
+  background:var(--soft);
   scroll-margin-top:20px;
 }
 
@@ -309,109 +323,95 @@ footer{
   justify-content:space-between;
   align-items:flex-start;
   gap:20px;
-  margin-bottom:18px;
+  margin-bottom:15px;
 }
 
 .profile-heading h2{
-  margin:0 0 8px;
+  font-size:32px;
   font-weight:normal;
-  font-size:34px;
-  text-align:left;
+  margin:0 0 8px;
 }
 
 .profile-eyebrow{
   color:var(--muted);
   font-size:12px;
-  margin-bottom:10px;
-  text-align:left;
+  margin-bottom:8px;
 }
 
 .profile-status{
   display:inline-block;
-  background:#e8f0fe;
-  color:var(--blue-dark);
   padding:5px 10px;
+  color:var(--blue-dark);
+  background:#e8f0fe;
   font-size:12px;
-  text-align:left;
 }
-
 .profile-status.empty{
-  background:#f1f3f4;
   color:var(--muted);
+  background:#f1f3f4;
 }
 
 .close-profile{
   border:0;
   background:transparent;
-  color:var(--ink);
   font-size:28px;
   cursor:pointer;
-  line-height:1;
 }
 
 .profile-summary{
-  color:var(--body-text);
-  font-size:15px;
-  line-height:1.8;
-  margin:15px 0 25px;
+  color:#5f6368;
+  font-size:14px;
+  line-height:1.7;
   text-align:justify;
 }
 
 .profile-section{
   border-top:1px solid var(--line);
-  padding-top:20px;
-  margin-top:22px;
+  padding-top:18px;
+  margin-top:20px;
 }
 
 .profile-section h3{
-  color:var(--ink);
-  font-size:24px;
+  font-size:23px;
   font-weight:normal;
   margin:0 0 12px;
-  text-align:left;
 }
 
 .category-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px;
-  align-items:stretch;
 }
 
 .category-card{
+  min-width:0;
+  padding:16px;
   border:1px solid var(--line);
   background:white;
-  padding:17px;
-  min-width:0;
-  text-align:justify;
 }
 
 .category-card h4{
+  font-size:21px;
   font-weight:normal;
-  font-size:22px;
-  line-height:1.3;
-  margin:0 0 9px;
-  text-align:left;
+  margin:0 0 8px;
 }
 
 .category-count{
   color:var(--blue);
-  font-size:13px;
+  font-size:12px;
   margin-bottom:12px;
-  text-align:left;
 }
 
 .category-figures{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:13px;
+  gap:8px;
+  margin-bottom:12px;
 }
 
 .category-figure{
-  background:var(--soft);
-  padding:10px;
   min-width:0;
+  padding:9px;
+  background:var(--soft);
 }
 
 .category-figure span{
@@ -419,39 +419,31 @@ footer{
   color:var(--muted);
   font-size:11px;
   margin-bottom:5px;
-  text-align:left;
 }
 
 .category-figure strong{
   display:block;
-  color:var(--body-text);
-  font-size:14px;
+  color:#5f6368;
+  font-size:13px;
   font-weight:normal;
-  line-height:1.5;
   overflow-wrap:anywhere;
-  text-align:left;
 }
 
 .category-latest-note{
   color:var(--muted);
-  font-size:12px;
+  font-size:11px;
   line-height:1.5;
-  margin:0 0 14px;
-  text-align:justify;
 }
 
 .category-summary-block{
   border-top:1px solid #eceff1;
-  padding-top:11px;
-  margin-top:11px;
+  padding-top:10px;
+  margin-top:10px;
 }
 
 .category-summary-block h5{
-  color:var(--ink);
-  font-size:14px;
-  font-weight:bold;
+  font-size:13px;
   margin:0 0 6px;
-  text-align:left;
 }
 
 .category-summary-block ul{
@@ -461,46 +453,35 @@ footer{
 }
 
 .category-summary-block li{
-  color:var(--body-text);
-  font-size:13px;
+  font-size:12px;
   line-height:1.6;
   padding:3px 0;
   overflow-wrap:anywhere;
-  text-align:justify;
-}
-
-.category-summary-block li+li{
-  border-top:1px solid #f1f3f4;
 }
 
 .profile-entry{
-  background:white;
+  padding:16px;
+  margin-top:10px;
   border:1px solid var(--line);
-  padding:18px;
-  margin-top:12px;
+  background:white;
 }
 
 .profile-entry h4{
-  font-size:22px;
+  font-size:20px;
   font-weight:normal;
   margin:0 0 7px;
-  text-align:left;
 }
 
 .profile-entry-meta{
   color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
+  font-size:12px;
   margin-bottom:10px;
-  text-align:left;
 }
 
 .profile-entry p{
-  margin:7px 0;
-  color:var(--body-text);
-  font-size:14px;
+  font-size:13px;
   line-height:1.7;
-  text-align:justify;
+  color:#5f6368;
 }
 
 .read-more{
@@ -508,202 +489,91 @@ footer{
   padding:0;
   background:transparent;
   color:var(--blue);
-  font-size:14px;
   cursor:pointer;
-  margin-top:8px;
 }
 
 .profile-empty{
+  padding:18px;
   border:1px dashed var(--line);
   background:white;
-  padding:22px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.7;
-  text-align:justify;
-}
-
-.individual-contributions{margin-top:28px}
-
-/* =========================================================
-   CONTRIBUTION FORM
-   ========================================================= */
-
-.form-section{
-  display:none;
-  grid-column:1/-1;
-  width:100%;
-  max-width:1180px;
-  margin:20px auto 35px;
-  scroll-margin-top:20px;
-}
-
-.form-section.open{display:block}
-
-.form-container{
-  max-width:850px;
-  margin:0 auto;
-}
-
-.form-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin:0 auto 12px;
-  max-width:850px;
-}
-
-.form-heading h2{
-  font-weight:normal;
-  font-size:28px;
-  margin:0;
-  text-align:left;
-}
-
-.close-form{
-  border:0;
-  background:transparent;
-  color:var(--ink);
-  font-size:26px;
-  cursor:pointer;
-}
-
-.google-form-embed{
-  position:relative;
-  width:100%;
-  height:1450px;
-  margin:0 auto;
-  padding:0;
-  background:transparent;
-  border:0;
-  overflow:hidden;
-}
-
-.google-form-embed iframe{
-  position:absolute;
-  top:0;
-  left:0;
-  display:block;
-  width:133.333%;
-  height:1933px;
-  border:0;
-  background:transparent;
-  transform:scale(.75);
-  transform-origin:top left;
-}
-
-.form-note{
   color:var(--muted);
   font-size:13px;
   line-height:1.6;
-  margin-top:8px;
-  text-align:justify;
 }
 
-/* =========================================================
-   MODAL
-   ========================================================= */
+/* MODAL */
 
 .modal{
   display:none;
   position:fixed;
   inset:0;
   z-index:10;
-  background:rgba(32,33,36,.55);
   padding:25px;
   overflow-y:auto;
   align-items:center;
   justify-content:center;
+  background:rgba(32,33,36,.55);
 }
-
 .modal.visible{display:flex}
 
 .modal-content{
-  background:white;
+  position:relative;
   width:100%;
   max-width:720px;
-  padding:38px;
-  position:relative;
   max-height:90vh;
   overflow-y:auto;
+  padding:38px;
+  background:white;
 }
 
 .modal-close{
   position:absolute;
-  right:20px;
-  top:15px;
+  right:18px;
+  top:12px;
   border:0;
   background:none;
   font-size:28px;
-  color:var(--ink);
   cursor:pointer;
-}
-
-.modal-content h2{
-  margin:12px 0;
-  line-height:1.35;
-  font-size:32px;
-  font-weight:normal;
-  text-align:left;
-}
-
-.modal-content p{
-  font-size:15px;
-  line-height:1.8;
-  color:var(--body-text);
-  white-space:pre-line;
-  text-align:justify;
-}
-
-.modal-meta{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  margin-bottom:20px;
-  text-align:left;
 }
 
 .modal-country{
   color:var(--blue);
   font-size:13px;
-  text-align:left;
+}
+
+.modal-content h2{
+  font-size:30px;
+  font-weight:normal;
+  margin:10px 0;
+}
+
+.modal-meta{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:20px;
+}
+
+.modal-content p{
+  color:#5f6368;
+  font-size:14px;
+  line-height:1.7;
+  white-space:pre-line;
+  text-align:justify;
+}
+
+/* FOOTER */
+
+footer{
+  grid-area:footer;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
 }
 
 /* =========================================================
-   DESKTOP HEIGHT ADJUSTMENTS
-   ========================================================= */
-
-@media(min-width:1001px){
-  .about-copy{
-    font-size:clamp(12px,1vw,15px);
-    line-height:1.5;
-  }
-
-  .about-copy p{
-    margin-bottom:clamp(6px,1vh,12px);
-  }
-
-  .main-content{
-    gap:clamp(10px,1.5vh,20px);
-  }
-
-  .protocol-card,
-  .view-all-card{
-    min-height:clamp(72px,10vh,100px);
-  }
-
-  .protocol-card h3{
-    font-size:clamp(13px,1.05vw,17px);
-  }
-
-  .protocol-country,.protocol-meta{
-    font-size:10px;
-  }
-}
-
-/* =========================================================
-   TABLET AND MOBILE
+   TABLET
    ========================================================= */
 
 @media(max-width:1000px){
@@ -712,190 +582,146 @@ footer{
     min-height:100vh;
     display:flex;
     flex-direction:column;
-    padding:12px 28px 30px;
+    padding:10px 24px 25px;
+  }
+
+  .left-column{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    order:0;
   }
 
   .hero{
-    width:100%;
-    height:480px;
-    min-height:0;
     flex:none;
-    order:1;
+    width:100%;
+    height:440px;
   }
-
-  .globe-frame{height:100%}
 
   .navigation{
-    order:0;
-    flex-direction:row;
     justify-content:center;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:9px;
-    width:100%;
-    margin:0 auto 20px;
-    padding:0;
-  }
-
-  .navigation a,
-  .navigation button{
-    width:auto;
-    padding:7px 17px;
+    padding:8px 0 15px;
   }
 
   .main-content{
-    order:2;
+    order:1;
     width:100%;
     height:auto;
-    min-height:0;
-    margin:0 auto 35px;
-    padding:15px 0;
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:25px;
+    min-height:400px;
+    padding:15px 0 25px;
     overflow:visible;
   }
 
-  #countryProfile{order:3}
-
-  .form-section{
-    order:4;
-    display:block;
-    margin:25px auto 35px;
+  .home-content{
+    grid-template-columns:2fr 1fr;
+    gap:15px;
   }
 
-  .form-heading{display:none}
-
-  footer{
-    order:5;
-    width:100%;
+  .contribute-panel{
+    min-height:700px;
   }
+
+  #countryProfile{order:2}
+  footer{order:3;width:100%}
 }
 
-@media(max-width:750px){
-  .page{padding:8px 14px 35px}
+/* =========================================================
+   MOBILE
+   About takes 2/3; tiles take 1/3.
+   Homepage shows no more than 3 tiles.
+   ========================================================= */
 
-  .hero{height:430px}
+@media(max-width:750px){
+  .page{padding:8px 13px 25px}
+
+  .hero{height:360px}
 
   .navigation{
-    margin-bottom:12px;
+    justify-content:center;
+    align-items:center;
     gap:6px;
+    padding:7px 0 15px;
   }
 
   .navigation a,
   .navigation button{
     padding:7px 11px;
-    font-size:12px;
-  }
-
-  .main-content{
-    display:flex;
-    flex-direction:column;
-    gap:22px;
-    margin-bottom:35px;
-  }
-
-  .about-heading{
-    font-size:23px;
-    margin-bottom:9px;
-  }
-
-  .about-copy{
-    font-size:13px;
-    line-height:1.7;
-  }
-
-  .about-copy p{margin-bottom:13px}
-
-  /* Mobile homepage profiles: ONE full-width column */
-
-  .protocol-grid{
-    grid-template-columns:1fr;
-    grid-template-rows:auto;
-    gap:9px;
-  }
-
-  .protocol-card,
-  .view-all-card{
-    min-height:90px;
-    padding:12px 14px;
-  }
-
-  .protocol-card h3{
-    font-size:17px;
-    margin-bottom:8px;
-  }
-
-  .protocol-country{
-    font-size:12px;
-    margin-bottom:6px;
-  }
-
-  .protocol-meta{font-size:11px}
-
-  #countryProfile{padding:22px}
-
-  /* Country research-area profiles: ONE full-width column */
-
-  .category-grid{
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-
-  .category-card{padding:15px}
-  .category-card h4{font-size:20px}
-  .category-count{font-size:12px}
-
-  .category-figures{
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-  }
-
-  .category-figure{padding:9px}
-  .category-figure span{font-size:11px}
-  .category-figure strong{font-size:13px}
-  .category-summary-block h5{font-size:13px}
-  .category-summary-block li{font-size:12px}
-  .category-latest-note{font-size:11px}
-
-  .modal-content{padding:28px 22px}
-
-  .google-form-embed{height:1600px}
-  .google-form-embed iframe{height:2133px}
-}
-
-@media(max-width:430px){
-  .hero{height:360px}
-
-  .about-copy{font-size:13px}
-
-  .protocol-card,
-  .view-all-card{
-    min-height:90px;
-    padding:11px 13px;
-  }
-
-  .protocol-card h3{font-size:16px}
-  .protocol-meta{font-size:11px}
-
-  .navigation a,
-  .navigation button{
-    padding:6px 9px;
     font-size:11px;
   }
 
-  #countryProfile{padding:15px}
+  .main-content{
+    min-height:0;
+    padding:10px 0 25px;
+  }
+
+  .home-content{
+    grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+    gap:10px;
+    align-items:start;
+  }
+
+  .about-heading{
+    font-size:20px;
+    margin-bottom:8px;
+  }
+
+  .about-copy{
+    font-size:12px;
+    line-height:1.55;
+  }
+
+  .about-copy p{margin-bottom:10px}
+
+  .protocol-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .protocol-card{
+    min-height:90px;
+    padding:8px;
+  }
+
+  .protocol-country{font-size:10px}
+  .protocol-card h3{font-size:13px}
+  .protocol-meta{font-size:9px}
+
+  .view-all-card{
+    min-height:90px;
+    font-size:10px;
+    padding:6px;
+  }
+
+  .view-all-card span{font-size:20px}
+
+  /* Hide all but the first three homepage cards on mobile */
+  .protocol-card:nth-of-type(n+4){display:none}
+  .view-all-card{display:none}
+
+  .contribute-panel{
+    min-height:750px;
+  }
+
+  .contribute-heading h2{font-size:22px}
+  .google-form-embed{min-height:650px}
+
+  #countryProfile{padding:16px}
 
   .category-grid{grid-template-columns:1fr}
-  .category-card{padding:12px}
-  .category-card h4{font-size:18px}
-  .category-figure{padding:8px}
-  .category-figure strong{font-size:12px}
-  .category-summary-block li{font-size:11px}
-  .category-summary-block h5{font-size:12px}
+  .category-card{padding:13px}
+  .category-card h4{font-size:19px}
 
-  .google-form-embed{height:1650px}
-  .google-form-embed iframe{height:2200px}
+  .modal-content{padding:28px 20px}
+}
+
+@media(max-width:390px){
+  .hero{height:320px}
+  .home-content{gap:8px}
+  .about-copy{font-size:11px}
+  .protocol-card{min-height:85px;padding:7px}
+  .protocol-card h3{font-size:12px}
+  .protocol-country,.protocol-meta{font-size:9px}
+  .navigation a,.navigation button{padding:6px 8px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -908,50 +734,74 @@ footer{
 <body>
 <main class="page">
 
-  <!-- GLOBE -->
-  <div class="hero">
-    <div class="globe-frame">
+  <div class="left-column">
+
+    <!-- GLOBE -->
+    <section class="hero">
       <div id="globeViz" aria-label="Interactive globe showing countries with published contributions"></div>
-    </div>
-    <div class="globe-placeholder" id="globePlaceholder">Loading the Atlas globe…</div>
+      <div class="globe-placeholder" id="globePlaceholder">Loading the Atlas globe…</div>
+    </section>
+
+    <!-- BUTTONS DIRECTLY UNDER THE GLOBE -->
+    <nav class="navigation" aria-label="Main navigation">
+      <button id="contributeButton" type="button" onclick="toggleContributionPanel()">Contribute</button>
+      <a href="protocols.html">Explore experiences</a>
+      <a href="#about">About the Atlas</a>
+    </nav>
+
   </div>
 
-  <!-- NAVIGATION: BETWEEN GLOBE AND CONTENT ON DESKTOP -->
-  <nav class="navigation" aria-label="Main navigation">
-    <button
-      id="contributeButton"
-      type="button"
-      aria-expanded="false"
-      aria-controls="contribute"
-      onclick="toggleContributionForm()">
-      Contribute
-    </button>
+  <!-- RIGHT-HAND CONTENT -->
+  <section class="main-content" id="mainContent">
 
-    <a href="#protocols">Explore experiences</a>
-    <a href="#about">About the Atlas</a>
-  </nav>
+    <!-- DEFAULT HOMEPAGE CONTENT -->
+    <div class="home-content" id="homeContent">
 
-  <!-- ABOUT AND HOMEPAGE PROFILES -->
-  <section class="main-content" id="protocols">
+      <div class="about-column" id="about">
+        <h2 class="about-heading">About the Atlas</h2>
 
-    <div class="about-column" id="about">
-      <h2 class="about-heading">About the Atlas</h2>
+        <div class="about-copy">
+          <p>The Fieldwork Atlas is a collaborative resource bringing together information and experiences about conducting research around the world.</p>
 
-      <div class="about-copy">
-        <p>The Fieldwork Atlas is a collaborative resource bringing together information and experiences about conducting research around the world.</p>
+          <p>It aims to make research processes more transparent by sharing knowledge about permissions, institutions, practical experiences and the realities of fieldwork.</p>
 
-        <p>It aims to make research processes more transparent by sharing knowledge about permissions, institutions, practical experiences and the realities of fieldwork.</p>
+          <p>The Atlas combines structured information about research requirements with first-hand accounts from people who have undertaken research. Because knowing what the rules say is not always the same as knowing what happens in practice.</p>
 
-        <p>The Atlas combines structured information about research requirements with first-hand accounts from people who have undertaken research. Because knowing what the rules say is not always the same as knowing what happens in practice.</p>
-
-        <p>The information shared here reflects individual researchers' experiences at particular points in time. Requirements and procedures can change, so visitors should always confirm current requirements with the relevant authorities.</p>
+          <p>The information shared here reflects individual researchers' experiences at particular points in time. Requirements and procedures can change, so visitors should always confirm current requirements with the relevant authorities.</p>
+        </div>
       </div>
+
+      <div class="latest-column">
+        <div id="allCountryProtocols">
+          <div class="empty-state">Published contributions will appear here as they are added to the Atlas.</div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="latest-column">
-      <div id="allCountryProtocols">
-        <div class="empty-state">Published contributions will appear here as they are added to the Atlas.</div>
+    <!-- CONTRIBUTION FORM: REPLACES ABOUT AND TILES -->
+    <div class="contribute-panel" id="contributePanel">
+
+      <div class="contribute-heading">
+        <h2>Contribute to the Atlas</h2>
+        <button class="close-contribute" type="button" onclick="closeContributionPanel()" aria-label="Return to homepage content">×</button>
       </div>
+
+      <div class="google-form-embed">
+        <iframe
+          id="contributionFormFrame"
+          data-src="https://docs.google.com/forms/d/e/1FAIpQLSckkKBpgWjLCr096cxS9sZxkzT1MWNqaH4i-_Gn3JgaaWZpUg/viewform?embedded=true"
+          title="Fieldwork Atlas contribution form"
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <p class="form-note">
+        Contributions are reviewed before publication. Only approved,
+        anonymised information is displayed on the Atlas. Please do not
+        include confidential information or private contact details.
+      </p>
+
     </div>
 
   </section>
@@ -964,51 +814,23 @@ footer{
         <h2 id="profileTitle"></h2>
         <span class="profile-status" id="profileStatus"></span>
       </div>
-
       <button class="close-profile" onclick="closeProfile()" aria-label="Close country profile">×</button>
     </div>
 
     <p class="profile-summary" id="profileText"></p>
-
     <div id="profileCategories"></div>
 
-    <div class="profile-section individual-contributions">
+    <div class="profile-section">
       <h3>Individual researcher contributions</h3>
       <div id="profileExperiences"></div>
     </div>
   </section>
 
-  <!-- CONTRIBUTION FORM -->
-  <section class="form-section" id="contribute">
-    <div class="form-container">
-
-      <div class="form-heading">
-        <h2>Contribute to the Atlas</h2>
-        <button class="close-form" type="button" onclick="closeContributionForm()" aria-label="Close contribution form">×</button>
-      </div>
-
-      <div class="google-form-embed">
-        <iframe
-          id="contributionFormFrame"
-          data-src="https://docs.google.com/forms/d/e/1FAIpQLSckkKBpgWjLCr096cxS9sZxkzT1MWNqaH4i-_Gn3JgaaWZpUg/viewform?embedded=true"
-          title="Fieldwork Atlas contribution form"
-          loading="lazy">
-          Loading contribution form…
-        </iframe>
-      </div>
-
-      <p class="form-note">
-        Contributions are reviewed before publication. Only approved,
-        anonymised information is displayed on the Atlas. Please do not
-        include confidential information or private contact details.
-      </p>
-    </div>
-  </section>
-
   <footer>Fieldwork Atlas · A collaborative research resource</footer>
+
 </main>
 
-<!-- FULL CONTRIBUTION MODAL -->
+<!-- CONTRIBUTION DETAIL MODAL -->
 <div class="modal" id="experienceModal" onclick="closeModalOutside(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content">
     <button class="modal-close" onclick="closeExperience()" aria-label="Close contribution">×</button>
@@ -1020,629 +842,360 @@ footer{
 </div>
 
 <script>
-
-/* =========================================================
-   DATA CONNECTION
-   ========================================================= */
-
 const ATLAS_API_URL =
-  "https://script.google.com/macros/s/AKfycbzA6dHoFuk9T_5RWgQ-BnmCOFZ5H2LSgwHWXTVb8PGWz0xx9Mg2QbupJ3_2FeXFfqB7zQ/exec";
+"https://script.google.com/macros/s/AKfycbzA6dHoFuk9T_5RWgQ-BnmCOFZ5H2LSgwHWXTVb8PGWz0xx9Mg2QbupJ3_2FeXFfqB7zQ/exec";
 
-let atlasEntries = [];
-let countryProfiles = {};
-let globeInstance = null;
-let countryFeatures = [];
+let atlasEntries=[];
+let countryProfiles={};
+let globeInstance=null;
 
+/* HELPERS */
 
-/* =========================================================
-   CONTRIBUTION FORM BEHAVIOUR
-   ========================================================= */
-
-function isMobileLayout() {
-  return window.matchMedia("(max-width: 1000px)").matches;
+function valueOf(entry,key){
+  const value=entry && entry[key];
+  return value===null || value===undefined ? "" : String(value).trim();
 }
 
-function toggleContributionForm() {
-  if (isMobileLayout()) {
-    document.getElementById("contribute").scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-    return;
-  }
-
-  const section = document.getElementById("contribute");
-
-  if (section.classList.contains("open")) {
-    closeContributionForm();
-  } else {
-    openContributionForm();
-  }
-}
-
-function openContributionForm() {
-  const section = document.getElementById("contribute");
-  const button = document.getElementById("contributeButton");
-  const frame = document.getElementById("contributionFormFrame");
-
-  section.classList.add("open");
-  button.setAttribute("aria-expanded", "true");
-
-  if (!frame.getAttribute("src")) {
-    frame.setAttribute("src", frame.dataset.src);
-  }
-
-  section.scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
-}
-
-function closeContributionForm() {
-  const section = document.getElementById("contribute");
-  const button = document.getElementById("contributeButton");
-
-  section.classList.remove("open");
-  button.setAttribute("aria-expanded", "false");
-}
-
-
-/* =========================================================
-   COUNTRY NAME MATCHING
-   ========================================================= */
-
-const countryAliases = {
-  "united states of america":"united states",
-  "usa":"united states",
-  "uk":"united kingdom",
-  "russian federation":"russia",
-  "viet nam":"vietnam",
-  "turkey":"turkiye",
-  "türkiye":"turkiye",
-  "iran, islamic republic of":"iran",
-  "iran (islamic republic of)":"iran",
-  "syrian arab republic":"syria",
-  "lao people's democratic republic":"laos",
-  "laos (lao people's democratic republic)":"laos",
-  "republic of korea":"south korea",
-  "korea, republic of":"south korea",
-  "democratic people's republic of korea":"north korea",
-  "korea, democratic people's republic of":"north korea",
-  "congo, the democratic republic of the":"democratic republic of the congo",
-  "democratic republic of congo":"democratic republic of the congo",
-  "congo":"republic of the congo",
-  "czech republic":"czechia",
-  "swaziland":"eswatini",
-  "the gambia":"gambia",
-  "cape verde":"cabo verde",
-  "ivory coast":"cote d'ivoire",
-  "côte d’ivoire":"cote d'ivoire",
-  "côte d'ivoire":"cote d'ivoire",
-  "brunei darussalam":"brunei",
-  "moldova, republic of":"moldova",
-  "republic of moldova":"moldova",
-  "tanzania, united republic of":"tanzania",
-  "united republic of tanzania":"tanzania",
-  "bolivia, plurinational state of":"bolivia",
-  "venezuela, bolivarian republic of":"venezuela",
-  "palestine, state of":"palestine",
-  "state of palestine":"palestine",
-  "holy see":"vatican city",
-  "vatican city state":"vatican city"
-};
-
-function normaliseCountryName(name) {
-  const cleaned = String(name || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[’]/g, "'")
-    .replace(/\s+/g, " ");
-
-  return countryAliases[cleaned] || cleaned;
-}
-
-
-/* =========================================================
-   SAFE DISPLAY HELPERS
-   ========================================================= */
-
-function valueOf(entry, key) {
-  const value = entry && entry[key];
-
-  if (value === null || value === undefined) return "";
-
-  return String(value).trim();
-}
-
-function uniqueValues(values) {
-  const seen = new Set();
-
-  return values
-    .map(value => String(value || "").trim())
-    .filter(value => {
-      if (!value) return false;
-
-      const key = value.toLowerCase();
-
-      if (seen.has(key)) return false;
-
-      seen.add(key);
-      return true;
-    });
-}
-
-function makeElement(tag, className, text) {
-  const element = document.createElement(tag);
-
-  if (className) element.className = className;
-
-  if (text !== undefined && text !== null) {
-    element.textContent = text;
-  }
-
+function makeElement(tag,className,text){
+  const element=document.createElement(tag);
+  if(className) element.className=className;
+  if(text!==undefined && text!==null) element.textContent=text;
   return element;
 }
 
-function formatYear(year) {
+function formatYear(year){
   return year || "Year not specified";
 }
 
-function getEntryTitle(entry) {
-  return valueOf(entry, "title") ||
-    ("Research in " + valueOf(entry, "country"));
+function getEntryTitle(entry){
+  return valueOf(entry,"title") || ("Research in "+valueOf(entry,"country"));
 }
 
-function getEntryCategory(entry) {
-  return valueOf(entry, "researchCategory") ||
-    "Research area not specified";
+function getEntryCategory(entry){
+  return valueOf(entry,"researchCategory") || "Research area not specified";
 }
 
-function getSortedEntries(entries) {
-  return [...entries].sort((a, b) => {
-    const dateA = Date.parse(valueOf(a, "submittedAt")) || 0;
-    const dateB = Date.parse(valueOf(b, "submittedAt")) || 0;
-
-    if (dateA && dateB) return dateB - dateA;
-    if (dateA) return -1;
-    if (dateB) return 1;
-
-    return (Number(valueOf(b, "applicationYear")) || 0) -
-      (Number(valueOf(a, "applicationYear")) || 0);
+function getSortedEntries(entries){
+  return [...entries].sort((a,b)=>{
+    const da=Date.parse(valueOf(a,"submittedAt")) || 0;
+    const db=Date.parse(valueOf(b,"submittedAt")) || 0;
+    if(da && db) return db-da;
+    if(da) return -1;
+    if(db) return 1;
+    return (Number(valueOf(b,"applicationYear"))||0) -
+           (Number(valueOf(a,"applicationYear"))||0);
   });
 }
 
-function latestEntry(entries) {
+function latestEntry(entries){
   return getSortedEntries(entries)[0] || null;
 }
 
-
-/* =========================================================
-   BUILD COUNTRY PROFILES
-   ========================================================= */
-
-function buildCountryProfiles(entries) {
-  const grouped = {};
-
-  entries.forEach(entry => {
-    const country = valueOf(entry, "country");
-    if (!country) return;
-
-    const key = normaliseCountryName(country);
-
-    if (!grouped[key]) {
-      grouped[key] = {
-        country: country,
-        entries: []
-      };
-    }
-
-    grouped[key].entries.push(entry);
-  });
-
-  countryProfiles = grouped;
+function normaliseCountryName(name){
+  const aliases={
+    "united states of america":"united states",
+    "usa":"united states",
+    "uk":"united kingdom",
+    "russian federation":"russia",
+    "viet nam":"vietnam",
+    "turkey":"turkiye",
+    "türkiye":"turkiye",
+    "czech republic":"czechia",
+    "swaziland":"eswatini",
+    "the gambia":"gambia",
+    "cape verde":"cabo verde",
+    "ivory coast":"cote d'ivoire",
+    "brunei darussalam":"brunei",
+    "republic of moldova":"moldova",
+    "united republic of tanzania":"tanzania",
+    "state of palestine":"palestine"
+  };
+  const cleaned=String(name||"").trim().toLowerCase().replace(/[’]/g,"'").replace(/\s+/g," ");
+  return aliases[cleaned] || cleaned;
 }
 
+function buildCountryProfiles(entries){
+  const grouped={};
+  entries.forEach(entry=>{
+    const country=valueOf(entry,"country");
+    if(!country) return;
+    const key=normaliseCountryName(country);
+    if(!grouped[key]) grouped[key]={country,entries:[]};
+    grouped[key].entries.push(entry);
+  });
+  countryProfiles=grouped;
+}
 
-/* =========================================================
-   LOAD PUBLISHED ENTRIES
-   ========================================================= */
+/* HOMEPAGE TILE DISPLAY */
 
-function loadAtlasData() {
-  fetch(ATLAS_API_URL, {
-    method: "GET",
-    redirect: "follow",
-    cache: "no-store"
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Atlas feed returned an HTTP error");
-    }
+function createProtocolCard(entry){
+  const card=makeElement("button","protocol-card");
+  card.type="button";
 
+  const top=makeElement("div");
+  top.appendChild(makeElement("div","protocol-country",valueOf(entry,"country")));
+  top.appendChild(makeElement("h3","",getEntryTitle(entry)));
+
+  const meta=[
+    formatYear(valueOf(entry,"applicationYear")),
+    getEntryCategory(entry)
+  ].filter(Boolean).join(" · ");
+
+  card.append(top,makeElement("div","protocol-meta",meta));
+  card.addEventListener("click",()=>openExperience(entry));
+  return card;
+}
+
+function renderAllCountryProtocols(){
+  const container=document.getElementById("allCountryProtocols");
+  container.replaceChildren();
+
+  const entries=getSortedEntries(atlasEntries);
+
+  if(!entries.length){
+    container.appendChild(makeElement("div","empty-state",
+      "Published contributions will appear here as they are added to the Atlas."));
+    return;
+  }
+
+  const grid=makeElement("div","protocol-grid");
+
+  const mobile=window.matchMedia("(max-width:750px)").matches;
+  const visibleEntries=entries.slice(0,mobile?3:11);
+
+  visibleEntries.forEach(entry=>grid.appendChild(createProtocolCard(entry)));
+
+  if(!mobile){
+    const viewAll=makeElement("a","view-all-card");
+    viewAll.href="protocols.html";
+    viewAll.append(
+      makeElement("span","","→"),
+      makeElement("div","","View all research protocols")
+    );
+    grid.appendChild(viewAll);
+  }
+
+  container.appendChild(grid);
+}
+
+/* CONTRIBUTION PANEL */
+
+function toggleContributionPanel(){
+  const home=document.getElementById("homeContent");
+  const panel=document.getElementById("contributePanel");
+  const button=document.getElementById("contributeButton");
+  const isOpen=panel.classList.contains("visible");
+
+  if(isOpen){
+    closeContributionPanel();
+    return;
+  }
+
+  home.style.display="none";
+  panel.classList.add("visible");
+  button.textContent="Back to Atlas";
+
+  const frame=document.getElementById("contributionFormFrame");
+  if(!frame.getAttribute("src")) frame.src=frame.dataset.src;
+}
+
+function closeContributionPanel(){
+  document.getElementById("homeContent").style.display="grid";
+  document.getElementById("contributePanel").classList.remove("visible");
+  document.getElementById("contributeButton").textContent="Contribute";
+}
+
+/* LOAD DATA */
+
+function loadAtlasData(){
+  fetch(ATLAS_API_URL,{method:"GET",redirect:"follow",cache:"no-store"})
+  .then(response=>{
+    if(!response.ok) throw new Error("Atlas feed returned an HTTP error");
     return response.json();
   })
-  .then(data => {
-    if (Array.isArray(data)) return data;
-
-    if (data && Array.isArray(data.entries)) {
-      return data.entries;
-    }
-
-    if (data && data.success === false) {
-      throw new Error(data.message || "Atlas feed reported an error");
-    }
-
+  .then(data=>{
+    if(Array.isArray(data)) return data;
+    if(data && Array.isArray(data.entries)) return data.entries;
+    if(data && data.success===false) throw new Error(data.message || "Feed error");
     return [];
   })
-  .catch(error => {
-    console.warn("Standard feed request failed; trying JSONP.", error);
+  .catch(error=>{
+    console.warn("Standard feed failed; trying JSONP.",error);
     return loadAtlasDataJsonp();
   })
-  .then(entries => {
-    atlasEntries = Array.isArray(entries) ? entries : [];
-
+  .then(entries=>{
+    atlasEntries=Array.isArray(entries)?entries:[];
     buildCountryProfiles(atlasEntries);
     renderAllCountryProtocols();
     updateGlobeColours();
-
-    console.log(
-      "Fieldwork Atlas:",
-      atlasEntries.length,
-      "published contributions across",
-      Object.keys(countryProfiles).length,
-      "countries."
-    );
   })
-  .catch(error => {
-    console.error("Could not load Atlas contributions:", error);
-
-    atlasEntries = [];
-    countryProfiles = {};
-
+  .catch(error=>{
+    console.error("Could not load Atlas contributions:",error);
+    atlasEntries=[];
+    countryProfiles={};
     renderAllCountryProtocols();
-    updateGlobeColours();
   });
 }
 
-function loadAtlasDataJsonp() {
-  return new Promise((resolve, reject) => {
-    const callbackName =
-      "atlasJsonpCallback_" + Date.now() + "_" +
-      Math.floor(Math.random() * 100000);
-
-    const script = document.createElement("script");
-
-    const timeout = setTimeout(() => {
+function loadAtlasDataJsonp(){
+  return new Promise((resolve,reject)=>{
+    const callbackName="atlasJsonp_"+Date.now()+"_"+Math.floor(Math.random()*100000);
+    const script=document.createElement("script");
+    const timeout=setTimeout(()=>{
       cleanup();
-      reject(new Error("Atlas feed request timed out"));
-    }, 12000);
+      reject(new Error("Atlas feed timed out"));
+    },12000);
 
-    function cleanup() {
+    function cleanup(){
       clearTimeout(timeout);
       script.remove();
-
-      try {
-        delete window[callbackName];
-      } catch (error) {
-        window[callbackName] = undefined;
-      }
+      try{delete window[callbackName]}catch(e){window[callbackName]=undefined}
     }
 
-    window[callbackName] = data => {
+    window[callbackName]=data=>{
       cleanup();
-
-      if (Array.isArray(data)) {
-        resolve(data);
-      } else if (data && Array.isArray(data.entries)) {
-        resolve(data.entries);
-      } else {
-        resolve([]);
-      }
+      if(Array.isArray(data)) resolve(data);
+      else if(data && Array.isArray(data.entries)) resolve(data.entries);
+      else resolve([]);
     };
 
-    script.onerror = () => {
+    script.onerror=()=>{
       cleanup();
-      reject(new Error("Could not load Atlas JSONP feed"));
+      reject(new Error("Could not load JSONP feed"));
     };
 
-    script.src =
-      ATLAS_API_URL +
-      (ATLAS_API_URL.includes("?") ? "&" : "?") +
-      "callback=" + encodeURIComponent(callbackName);
+    script.src=ATLAS_API_URL+
+      (ATLAS_API_URL.includes("?")?"&":"?")+
+      "callback="+encodeURIComponent(callbackName);
 
     document.head.appendChild(script);
   });
 }
 
+/* COUNTRY PROFILES */
 
-/* =========================================================
-   HOMEPAGE CONTRIBUTIONS
-   Latest 11 plus a twelfth tile linking to the full list.
-   ========================================================= */
+function openProfile(countryName){
+  const panel=document.getElementById("countryProfile");
+  const profile=countryProfiles[normaliseCountryName(countryName)];
+  const entries=profile?getSortedEntries(profile.entries):[];
+  const displayName=profile?profile.country:countryName;
 
-function createProtocolCard(entry) {
-  const card = makeElement("button", "protocol-card");
-  card.type = "button";
+  document.getElementById("profileTitle").textContent=displayName;
 
-  const top = makeElement("div");
+  const status=document.getElementById("profileStatus");
+  status.textContent=entries.length+
+    (entries.length===1?" published contribution":" published contributions");
+  status.classList.toggle("empty",!entries.length);
 
-  top.appendChild(
-    makeElement("div", "protocol-country", valueOf(entry, "country"))
-  );
-
-  top.appendChild(
-    makeElement("h3", "", getEntryTitle(entry))
-  );
-
-  const meta = [
-    formatYear(valueOf(entry, "applicationYear")),
-    getEntryCategory(entry)
-  ].filter(Boolean).join(" · ");
-
-  card.append(
-    top,
-    makeElement("div", "protocol-meta", meta)
-  );
-
-  card.addEventListener("click", () => openExperience(entry));
-
-  return card;
-}
-
-function renderAllCountryProtocols() {
-  const container = document.getElementById("allCountryProtocols");
-
-  container.replaceChildren();
-
-  const entries = getSortedEntries(atlasEntries);
-
-  if (!entries.length) {
-    container.appendChild(
-      makeElement(
-        "div",
-        "empty-state",
-        "Published contributions will appear here as they are added to the Atlas."
-      )
-    );
-
-    return;
-  }
-
-  const grid = makeElement("div", "protocol-grid");
-
-  entries.slice(0, 11).forEach(entry => {
-    grid.appendChild(createProtocolCard(entry));
-  });
-
-  const viewAll = makeElement("a", "view-all-card");
-  viewAll.href = "protocols.html";
-
-  viewAll.append(
-    makeElement("span", "", "→"),
-    makeElement("div", "", "View all research protocols")
-  );
-
-  grid.appendChild(viewAll);
-  container.appendChild(grid);
-}
-
-
-/* =========================================================
-   COUNTRY PROFILE
-   ========================================================= */
-
-function openProfile(countryName) {
-  const panel = document.getElementById("countryProfile");
-  const key = normaliseCountryName(countryName);
-  const profile = countryProfiles[key];
-
-  const entries = profile && Array.isArray(profile.entries)
-    ? getSortedEntries(profile.entries)
-    : [];
-
-  const displayName = profile ? profile.country : countryName;
-
-  document.getElementById("profileTitle").textContent = displayName;
-
-  const status = document.getElementById("profileStatus");
-
-  status.textContent = entries.length
-    ? entries.length + (entries.length === 1
-      ? " published contribution"
-      : " published contributions")
-    : "No published contributions yet";
-
-  status.classList.toggle("empty", !entries.length);
-
-  document.getElementById("profileText").textContent = entries.length
-    ? "This profile brings together published researcher contributions about applying for research permission and conducting research in " +
-      displayName +
-      ". Each research area summarises the experiences shared by contributors. Timeframes and costs are based on the most recently submitted account in that area, and should not be taken as typical or guaranteed figures. Requirements may vary by institution, research type and year."
-    : "There is not yet a published profile for " +
-      displayName +
-      ". If you have applied for research permission or conducted research here, you can contribute your experience to help build this country profile.";
+  document.getElementById("profileText").textContent=entries.length
+    ? "This profile brings together published researcher contributions about applying for research permission and conducting research in "+displayName+". Timeframes and costs reflect individual accounts and should not be taken as typical or guaranteed figures. Requirements may vary by institution, research type and year."
+    : "There are not yet any published contributions for "+displayName+". If you have conducted research here, you can contribute your experience to help build this country profile.";
 
   renderResearchAreaCards(entries);
   renderProfileEntries(entries);
 
-  panel.style.display = "block";
+  panel.style.display="block";
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
+}
 
-  panel.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
+function closeProfile(){
+  document.getElementById("countryProfile").style.display="none";
+}
+
+function uniqueValues(values){
+  const seen=new Set();
+  return values.map(v=>String(v||"").trim()).filter(v=>{
+    if(!v) return false;
+    const key=v.toLowerCase();
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
   });
 }
 
-function closeProfile() {
-  document.getElementById("countryProfile").style.display = "none";
-}
+function addCategorySummaryBlock(container,heading,values){
+  const items=uniqueValues(values);
+  if(!items.length) return;
 
-
-/* =========================================================
-   RESEARCH AREA SUMMARY TILES
-   ========================================================= */
-
-function addCategorySummaryBlock(container, heading, values) {
-  const items = uniqueValues(values);
-
-  if (!items.length) return;
-
-  const block = makeElement("div", "category-summary-block");
-  block.appendChild(makeElement("h5", "", heading));
-
-  const list = makeElement("ul");
-
-  items.forEach(item => {
-    list.appendChild(makeElement("li", "", item));
-  });
-
+  const block=makeElement("div","category-summary-block");
+  block.appendChild(makeElement("h5","",heading));
+  const list=makeElement("ul");
+  items.forEach(item=>list.appendChild(makeElement("li","",item)));
   block.appendChild(list);
   container.appendChild(block);
 }
 
-function renderResearchAreaCards(entries) {
-  const container = document.getElementById("profileCategories");
+function renderResearchAreaCards(entries){
+  const container=document.getElementById("profileCategories");
   container.replaceChildren();
 
-  if (!entries.length) {
-    container.appendChild(
-      makeElement(
-        "div",
-        "profile-empty",
-        "There is no published research-area information for this country yet."
-      )
-    );
-
+  if(!entries.length){
+    container.appendChild(makeElement("div","profile-empty",
+      "There is no published research-area information for this country yet."));
     return;
   }
 
-  const grouped = {};
-
-  entries.forEach(entry => {
-    const category = getEntryCategory(entry);
-
-    if (!grouped[category]) {
-      grouped[category] = [];
-    }
-
+  const grouped={};
+  entries.forEach(entry=>{
+    const category=getEntryCategory(entry);
+    if(!grouped[category]) grouped[category]=[];
     grouped[category].push(entry);
   });
 
-  const section = makeElement("div", "profile-section");
-  section.appendChild(
-    makeElement("h3", "", "Research area profiles")
-  );
+  const section=makeElement("div","profile-section");
+  section.appendChild(makeElement("h3","","Research area profiles"));
+  const grid=makeElement("div","category-grid");
 
-  const grid = makeElement("div", "category-grid");
+  Object.keys(grouped).sort().forEach(category=>{
+    const areaEntries=getSortedEntries(grouped[category]);
+    const latest=latestEntry(areaEntries);
+    const card=makeElement("article","category-card");
 
-  Object.keys(grouped).sort().forEach(category => {
-    const areaEntries = getSortedEntries(grouped[category]);
-    const latest = latestEntry(areaEntries);
+    card.appendChild(makeElement("h4","",category));
+    card.appendChild(makeElement("div","category-count",
+      areaEntries.length+(areaEntries.length===1?" contribution":" contributions")));
 
-    const card = makeElement("article", "category-card");
+    const figures=makeElement("div","category-figures");
 
-    card.appendChild(makeElement("h4", "", category));
-
-    card.appendChild(
-      makeElement(
-        "div",
-        "category-count",
-        areaEntries.length +
-          (areaEntries.length === 1 ? " contribution" : " contributions")
-      )
-    );
-
-    const figures = makeElement("div", "category-figures");
-
-    const time = makeElement("div", "category-figure");
-
+    const time=makeElement("div","category-figure");
     time.append(
-      makeElement("span", "", "Time taken"),
-      makeElement(
-        "strong",
-        "",
-        valueOf(latest, "duration") || "Not reported"
-      )
+      makeElement("span","","Time taken"),
+      makeElement("strong","",valueOf(latest,"duration")||"Not reported")
     );
 
-    const cost = makeElement("div", "category-figure");
-
-    const costText = [
-      valueOf(latest, "costs"),
-      valueOf(latest, "costDetails")
-    ].filter(Boolean).join(" — ");
-
+    const cost=makeElement("div","category-figure");
+    const costText=[valueOf(latest,"costs"),valueOf(latest,"costDetails")].filter(Boolean).join(" — ");
     cost.append(
-      makeElement("span", "", "Fees / costs"),
-      makeElement("strong", "", costText || "Not reported")
+      makeElement("span","","Fees / costs"),
+      makeElement("strong","",costText||"Not reported")
     );
 
-    figures.append(time, cost);
+    figures.append(time,cost);
     card.appendChild(figures);
 
-    card.appendChild(
-      makeElement(
-        "div",
-        "category-latest-note",
-        "Time and cost figures are from the most recently submitted account in this research area. They are not necessarily typical or guaranteed."
-      )
-    );
+    card.appendChild(makeElement("div","category-latest-note",
+      "Time and cost figures are from the most recently submitted account in this research area. They are not necessarily typical or guaranteed."));
 
-    addCategorySummaryBlock(
-      card,
-      "Researcher classifications",
-      areaEntries.map(entry =>
-        valueOf(entry, "researcherClassification")
-      )
-    );
+    addCategorySummaryBlock(card,"Researcher classifications",
+      areaEntries.map(e=>valueOf(e,"researcherClassification")));
 
-    addCategorySummaryBlock(
-      card,
-      "Permission authorities and institutions",
-      areaEntries.map(entry =>
-        [
-          valueOf(entry, "authorities"),
-          valueOf(entry, "authorityNames")
-        ].filter(Boolean).join(": ")
-      )
-    );
+    addCategorySummaryBlock(card,"Permission authorities and institutions",
+      areaEntries.map(e=>[valueOf(e,"authorities"),valueOf(e,"authorityNames")].filter(Boolean).join(": ")));
 
-    addCategorySummaryBlock(
-      card,
-      "Local partners and affiliations",
-      areaEntries.map(entry =>
-        [
-          valueOf(entry, "localPartner"),
-          valueOf(entry, "localAffiliation")
-        ].filter(Boolean).join(" · ")
-      )
-    );
+    addCategorySummaryBlock(card,"Local partners and affiliations",
+      areaEntries.map(e=>[valueOf(e,"localPartner"),valueOf(e,"localAffiliation")].filter(Boolean).join(" · ")));
 
-    addCategorySummaryBlock(
-      card,
-      "Application outcomes",
-      areaEntries.map(entry => valueOf(entry, "outcome"))
-    );
+    addCategorySummaryBlock(card,"Application outcomes",
+      areaEntries.map(e=>valueOf(e,"outcome")));
 
-    addCategorySummaryBlock(
-      card,
-      "Challenges and delays",
-      areaEntries.map(entry => valueOf(entry, "challenges"))
-    );
+    addCategorySummaryBlock(card,"Challenges and delays",
+      areaEntries.map(e=>valueOf(e,"challenges")));
 
-    addCategorySummaryBlock(
-      card,
-      "Advice for future researchers",
-      areaEntries.flatMap(entry => [
-        valueOf(entry, "wishKnown"),
-        valueOf(entry, "advice")
-      ])
-    );
+    addCategorySummaryBlock(card,"Advice for future researchers",
+      areaEntries.flatMap(e=>[valueOf(e,"wishKnown"),valueOf(e,"advice")]));
 
-    addCategorySummaryBlock(
-      card,
-      "Useful resources",
-      areaEntries.map(entry => valueOf(entry, "resources"))
-    );
+    addCategorySummaryBlock(card,"Useful resources",
+      areaEntries.map(e=>valueOf(e,"resources")));
 
     grid.appendChild(card);
   });
@@ -1651,163 +1204,103 @@ function renderResearchAreaCards(entries) {
   container.appendChild(section);
 }
 
-
-/* =========================================================
-   INDIVIDUAL CONTRIBUTION TILES
-   ========================================================= */
-
-function createProfileEntry(entry) {
-  const card = makeElement("article", "profile-entry");
-
-  card.appendChild(
-    makeElement("h4", "", getEntryTitle(entry))
-  );
-
-  const meta = [
-    formatYear(valueOf(entry, "applicationYear")),
-    getEntryCategory(entry),
-    valueOf(entry, "researchStatus")
-  ].filter(Boolean).join(" · ");
-
-  card.appendChild(
-    makeElement("div", "profile-entry-meta", meta)
-  );
-
-  const duration = valueOf(entry, "duration");
-
-  const cost = [
-    valueOf(entry, "costs"),
-    valueOf(entry, "costDetails")
-  ].filter(Boolean).join(" — ");
-
-  const outcome = valueOf(entry, "outcome");
-
-  if (duration) {
-    card.appendChild(
-      makeElement("p", "", "Time taken: " + duration)
-    );
-  }
-
-  if (cost) {
-    card.appendChild(
-      makeElement("p", "", "Fees / costs: " + cost)
-    );
-  }
-
-  if (outcome) {
-    card.appendChild(
-      makeElement("p", "", "Outcome: " + outcome)
-    );
-  }
-
-  const button = makeElement(
-    "button",
-    "read-more",
-    "Read full contribution →"
-  );
-
-  button.type = "button";
-  button.addEventListener("click", () => openExperience(entry));
-
-  card.appendChild(button);
-
-  return card;
-}
-
-function renderProfileEntries(entries) {
-  const container = document.getElementById("profileExperiences");
+function renderProfileEntries(entries){
+  const container=document.getElementById("profileExperiences");
   container.replaceChildren();
 
-  if (!entries.length) {
-    container.appendChild(
-      makeElement(
-        "div",
-        "profile-empty",
-        "There are no published researcher contributions for this country yet."
-      )
-    );
-
+  if(!entries.length){
+    container.appendChild(makeElement("div","profile-empty",
+      "There are no published researcher contributions for this country yet."));
     return;
   }
 
-  getSortedEntries(entries).forEach(entry => {
-    container.appendChild(createProfileEntry(entry));
+  entries.forEach(entry=>{
+    const card=makeElement("article","profile-entry");
+    card.appendChild(makeElement("h4","",getEntryTitle(entry)));
+
+    const meta=[
+      formatYear(valueOf(entry,"applicationYear")),
+      getEntryCategory(entry),
+      valueOf(entry,"researchStatus")
+    ].filter(Boolean).join(" · ");
+
+    card.appendChild(makeElement("div","profile-entry-meta",meta));
+
+    const duration=valueOf(entry,"duration");
+    const cost=[valueOf(entry,"costs"),valueOf(entry,"costDetails")].filter(Boolean).join(" — ");
+    const outcome=valueOf(entry,"outcome");
+
+    if(duration) card.appendChild(makeElement("p","","Time taken: "+duration));
+    if(cost) card.appendChild(makeElement("p","","Fees / costs: "+cost));
+    if(outcome) card.appendChild(makeElement("p","","Outcome: "+outcome));
+
+    const button=makeElement("button","read-more","Read full contribution →");
+    button.type="button";
+    button.addEventListener("click",()=>openExperience(entry));
+    card.appendChild(button);
+    container.appendChild(card);
   });
 }
 
+/* FULL CONTRIBUTION MODAL */
 
-/* =========================================================
-   FULL CONTRIBUTION MODAL
-   ========================================================= */
+function openExperience(entry){
+  if(!entry) return;
 
-function openExperience(entry) {
-  if (!entry) return;
-
-  document.getElementById("modalCountry").textContent =
-    valueOf(entry, "country");
-
-  document.getElementById("modalTitle").textContent =
-    getEntryTitle(entry);
-
-  document.getElementById("modalMeta").textContent = [
-    formatYear(valueOf(entry, "applicationYear")),
+  document.getElementById("modalCountry").textContent=valueOf(entry,"country");
+  document.getElementById("modalTitle").textContent=getEntryTitle(entry);
+  document.getElementById("modalMeta").textContent=[
+    formatYear(valueOf(entry,"applicationYear")),
     getEntryCategory(entry),
-    valueOf(entry, "researchStatus")
+    valueOf(entry,"researchStatus")
   ].filter(Boolean).join(" · ");
 
-  const body = document.getElementById("modalBody");
+  const body=document.getElementById("modalBody");
   body.replaceChildren();
 
-  const sections = [
-    ["Research background", [
-      ["Research category", "researchCategory"],
-      ["Specific discipline", "discipline"],
-      ["Type of research", "researchType"],
-      ["Research status", "researchStatus"],
-      ["Researcher classification", "researcherClassification"],
-      ["Local institutional affiliation", "localAffiliation"]
+  const sections=[
+    ["Research background",[
+      ["Research category","researchCategory"],
+      ["Specific discipline","discipline"],
+      ["Type of research","researchType"],
+      ["Research status","researchStatus"],
+      ["Researcher classification","researcherClassification"],
+      ["Local institutional affiliation","localAffiliation"]
     ]],
-    ["Permission process", [
-      ["Authorities involved", "authorities"],
-      ["Institutions named", "authorityNames"],
-      ["Local partner or sponsor", "localPartner"]
+    ["Permission process",[
+      ["Authorities involved","authorities"],
+      ["Institutions named","authorityNames"],
+      ["Local partner or sponsor","localPartner"]
     ]],
-    ["Time and costs", [
-      ["Time taken", "duration"],
-      ["Stages of the process", "stageTimings"],
-      ["Fees or costs", "costs"],
-      ["Cost details", "costDetails"]
+    ["Time and costs",[
+      ["Time taken","duration"],
+      ["Stages of the process","stageTimings"],
+      ["Fees or costs","costs"],
+      ["Cost details","costDetails"]
     ]],
-    ["Outcome and experience", [
-      ["Application outcome", "outcome"],
-      ["Biggest challenge or delay", "challenges"]
+    ["Outcome and experience",[
+      ["Application outcome","outcome"],
+      ["Biggest challenge or delay","challenges"]
     ]],
-    ["Advice for future researchers", [
-      ["What I wish I had known", "wishKnown"],
-      ["Advice", "advice"],
-      ["Useful resources", "resources"]
+    ["Advice for future researchers",[
+      ["What I wish I had known","wishKnown"],
+      ["Advice","advice"],
+      ["Useful resources","resources"]
     ]]
   ];
 
-  sections.forEach(([heading, fields]) => {
-    const populated = fields.filter(([, key]) => valueOf(entry, key));
+  sections.forEach(([heading,fields])=>{
+    const populated=fields.filter(([,key])=>valueOf(entry,key));
+    if(!populated.length) return;
 
-    if (!populated.length) return;
+    const section=makeElement("div","profile-section");
+    section.appendChild(makeElement("h3","",heading));
 
-    const section = makeElement("div", "profile-section");
-
-    section.appendChild(makeElement("h3", "", heading));
-
-    populated.forEach(([label, key]) => {
-      const paragraph = makeElement("p");
-      const strong = makeElement("strong", "", label + ": ");
-
-      paragraph.append(
-        strong,
-        document.createTextNode(valueOf(entry, key))
-      );
-
-      section.appendChild(paragraph);
+    populated.forEach(([label,key])=>{
+      const p=makeElement("p");
+      const strong=makeElement("strong","",label+": ");
+      p.append(strong,document.createTextNode(valueOf(entry,key)));
+      section.appendChild(p);
     });
 
     body.appendChild(section);
@@ -1816,210 +1309,127 @@ function openExperience(entry) {
   document.getElementById("experienceModal").classList.add("visible");
 }
 
-function closeExperience() {
+function closeExperience(){
   document.getElementById("experienceModal").classList.remove("visible");
 }
 
-function closeModalOutside(event) {
-  if (event.target.id === "experienceModal") {
-    closeExperience();
-  }
+function closeModalOutside(event){
+  if(event.target.id==="experienceModal") closeExperience();
 }
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") {
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
     closeExperience();
     closeProfile();
-
-    if (!isMobileLayout()) {
-      closeContributionForm();
-    }
   }
 });
 
+/* GLOBE */
 
-/* =========================================================
-   GLOBE COLOURS
-   ========================================================= */
+function updateGlobeColours(){
+  if(!globeInstance) return;
 
-function updateGlobeColours() {
-  if (!globeInstance) return;
-
-  globeInstance.polygonCapColor(feature => {
-    const name = feature.properties && feature.properties.name;
-
-    return countryProfiles[normaliseCountryName(name)]
-      ? "#4285f4"
-      : "#e8eaed";
+  globeInstance.polygonCapColor(feature=>{
+    const name=feature.properties && feature.properties.name;
+    return countryProfiles[normaliseCountryName(name)]?"#4285f4":"#e8eaed";
   });
 
-  globeInstance.polygonAltitude(feature => {
-    const name = feature.properties && feature.properties.name;
-
-    return countryProfiles[normaliseCountryName(name)]
-      ? 0.014
-      : 0.008;
+  globeInstance.polygonAltitude(feature=>{
+    const name=feature.properties && feature.properties.name;
+    return countryProfiles[normaliseCountryName(name)]?0.014:0.008;
   });
 }
 
-
-/* =========================================================
-   LOAD GLOBE LIBRARIES
-   ========================================================= */
-
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-
-    script.src = src;
-    script.async = true;
-
-    script.onload = resolve;
-
-    script.onerror = () => {
-      reject(new Error("Could not load " + src));
-    };
-
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    const script=document.createElement("script");
+    script.src=src;
+    script.async=true;
+    script.onload=resolve;
+    script.onerror=()=>reject(new Error("Could not load "+src));
     document.head.appendChild(script);
   });
 }
 
-async function initialiseGlobe() {
-  if (globeInstance) return;
+async function initialiseGlobe(){
+  if(globeInstance) return;
 
-  const globeElement = document.getElementById("globeViz");
-  const placeholder = document.getElementById("globePlaceholder");
+  const globeElement=document.getElementById("globeViz");
+  const placeholder=document.getElementById("globePlaceholder");
 
-  try {
-    await loadScript(
-      "https://unpkg.com/three@0.160.0/build/three.min.js"
-    );
+  try{
+    await loadScript("https://unpkg.com/three@0.160.0/build/three.min.js");
+    await loadScript("https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js");
+    await loadScript("https://unpkg.com/topojson-client@3");
 
-    await loadScript(
-      "https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"
-    );
-
-    await loadScript(
-      "https://unpkg.com/topojson-client@3"
-    );
-
-    if (
-      typeof Globe === "undefined" ||
-      typeof THREE === "undefined" ||
-      typeof topojson === "undefined"
-    ) {
+    if(typeof Globe==="undefined" || typeof THREE==="undefined" || typeof topojson==="undefined"){
       throw new Error("Globe libraries are unavailable.");
     }
 
-    const world = Globe()(globeElement)
+    const world=Globe()(globeElement)
       .width(globeElement.clientWidth)
       .height(globeElement.clientHeight)
       .backgroundColor("rgba(255,255,255,0)")
       .showGlobe(true)
-      .globeMaterial(
-        new THREE.MeshPhongMaterial({
-          color:0xeaf2ff,
-          shininess:0
-        })
-      )
+      .globeMaterial(new THREE.MeshPhongMaterial({color:0xeaf2ff,shininess:0}))
       .showAtmosphere(false)
       .showGraticules(false)
       .polygonAltitude(0.008)
       .polygonCapColor(() => "#e8eaed")
       .polygonSideColor(() => "rgba(0,0,0,0)")
       .polygonStrokeColor(() => "#FFFFFF")
-      .polygonLabel(feature => feature.properties.name)
-      .onPolygonClick(feature => {
-        const countryName =
-          feature.properties && feature.properties.name;
-
-        if (countryName) {
-          openProfile(countryName);
-        }
+      .polygonLabel(feature=>feature.properties.name)
+      .onPolygonClick(feature=>{
+        const name=feature.properties && feature.properties.name;
+        if(name) openProfile(name);
       });
 
-    globeInstance = world;
+    globeInstance=world;
 
-    if (world.renderer) {
-      const renderer = world.renderer();
-
-      renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio || 1, 1.1)
-      );
+    if(world.renderer){
+      world.renderer().setPixelRatio(Math.min(window.devicePixelRatio||1,1.1));
     }
 
-    world.controls().enableDamping = true;
-    world.controls().dampingFactor = 0.08;
+    world.controls().enableDamping=true;
+    world.controls().dampingFactor=0.08;
 
-    const response = await fetch(
-      "https://unpkg.com/world-atlas@2/countries-110m.json"
-    );
+    const response=await fetch("https://unpkg.com/world-atlas@2/countries-110m.json");
+    if(!response.ok) throw new Error("Could not load country map data.");
 
-    if (!response.ok) {
-      throw new Error("Could not load country map data.");
-    }
+    const worldData=await response.json();
+    world.polygonsData(topojson.feature(worldData,worldData.objects.countries).features);
 
-    const worldData = await response.json();
-
-    countryFeatures = topojson.feature(
-      worldData,
-      worldData.objects.countries
-    ).features;
-
-    world.polygonsData(countryFeatures);
-
-    world.pointOfView({
-      lat:-3,
-      lng:20,
-      altitude:2.2
-    });
-
+    world.pointOfView({lat:-3,lng:20,altitude:2.2});
     updateGlobeColours();
 
-    if (placeholder) {
-      placeholder.style.display = "none";
-    }
+    if(placeholder) placeholder.style.display="none";
 
-  } catch (error) {
-    console.error("Globe could not be initialised:", error);
+    window.addEventListener("resize",()=>{
+      if(globeInstance){
+        globeInstance.width(globeElement.clientWidth).height(globeElement.clientHeight);
+      }
+      renderAllCountryProtocols();
+    });
 
-    if (placeholder) {
-      placeholder.textContent =
-        "The interactive globe could not load. Contributions are still available below.";
+  }catch(error){
+    console.error("Globe could not be initialised:",error);
+    if(placeholder){
+      placeholder.textContent="The interactive globe could not load. Contributions are still available.";
     }
   }
-
-  window.addEventListener("resize", () => {
-    if (globeInstance) {
-      globeInstance
-        .width(globeElement.clientWidth)
-        .height(globeElement.clientHeight);
-    }
-  });
 }
 
+/* START */
 
-/* =========================================================
-   START THE PAGE
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",()=>{
   loadAtlasData();
 
-  if (isMobileLayout()) {
-    const frame = document.getElementById("contributionFormFrame");
-    frame.setAttribute("src", frame.dataset.src);
-  }
-
-  const startGlobe = () => initialiseGlobe();
-
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(startGlobe, {timeout:2500});
-  } else {
-    setTimeout(startGlobe, 900);
+  if("requestIdleCallback" in window){
+    requestIdleCallback(()=>initialiseGlobe(),{timeout:2500});
+  }else{
+    setTimeout(initialiseGlobe,900);
   }
 });
-
 </script>
 </body>
 </html>
