@@ -636,336 +636,119 @@ footer{
   text-align:left;
 }
 
-/* DESKTOP: GLOBE LEFT, CONTENT RIGHT */
+
+/* DESKTOP: FIT THE HOMEPAGE TO THE VIEWPORT */
 
 @media(min-width:1001px){
+
+  .page{
+    min-height:100vh;
+    height:100vh;
+    max-width:1600px;
+    padding:12px 38px 18px;
+    display:grid;
+    grid-template-columns:minmax(0,55%) minmax(0,45%);
+    grid-template-rows:minmax(0,1fr) auto auto;
+    grid-template-areas:
+      "hero main"
+      "nav nav"
+      "footer footer";
+    align-items:center;
+    overflow:visible;
+  }
+
   .hero{
-    height:620px;
+    grid-area:hero;
+    height:100%;
+    min-height:0;
     width:100%;
   }
 
   .globe-frame{
     width:100%;
-    height:620px;
+    height:100%;
+    min-height:0;
+  }
+
+  #globeViz{
+    width:100%;
+    height:100%;
   }
 
   .main-content{
-    max-width:none;
+    grid-area:main;
     width:100%;
+    max-width:none;
+    height:100%;
+    min-height:0;
     margin:0;
-    padding:30px 10px 30px 25px;
-    grid-template-columns:1fr;
-    gap:25px;
-    align-self:center;
+    padding:20px 10px 20px 25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:clamp(12px,2vh,25px);
+  }
+
+  .about-column,
+  .latest-column{
+    width:100%;
+    min-width:0;
   }
 
   .about-copy{
-    font-size:15px;
-    line-height:1.75;
+    font-size:clamp(13px,1.05vw,15px);
+    line-height:1.55;
   }
 
-  .latest-column{
-    width:100%;
-  }
-
-  .protocol-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .protocol-card{
-    min-height:105px;
+  .about-copy p{
+    margin-bottom:clamp(8px,1.2vh,14px);
   }
 
   #allCountryProtocols{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  #allCountryProtocols .empty-state{
-    grid-column:1/-1;
-  }
-
-  .view-all-button{
-    width:100%;
-  }
-
-  .navigation{
-    margin-top:5px;
-    margin-bottom:55px;
-  }
-}
-
-@media(max-width:1000px){
-  .page{
-    padding-left:28px;
-    padding-right:28px;
-  }
-
-  .main-content{gap:35px}
-}
-
-@media(max-width:750px){
-  .page{padding:8px 14px 35px}
-
-  .hero,.globe-frame{height:430px}
-
-  .navigation{
-    margin-bottom:38px;
-    gap:6px;
-  }
-
-  .navigation a,
-  .navigation button{
-    padding:7px 11px;
-    font-size:12px;
-  }
-
-  .main-content{
-    grid-template-columns:2fr 1fr;
-    gap:15px;
-    margin-bottom:50px;
-  }
-
-  .about-copy{
-    font-size:13px;
-    line-height:1.7;
-  }
-
-  .about-copy p{margin-bottom:13px}
-
-  .protocol-grid{
-    grid-template-columns:1fr;
     gap:8px;
   }
 
   .protocol-card{
-    min-height:103px;
+    min-height:clamp(75px,11vh,105px);
     padding:10px;
   }
 
   .protocol-card h3{
-    font-size:16px;
-    margin-bottom:8px;
-  }
-
-  .protocol-country{
-    font-size:11px;
+    font-size:clamp(15px,1.3vw,18px);
     margin-bottom:6px;
   }
 
-  .protocol-meta{font-size:11px}
-
-  #countryProfile{padding:22px}
-
-  .category-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;
-  }
-
-  .category-card{padding:12px}
-
-  .category-card h4{font-size:18px}
-
-  .category-count{font-size:12px}
-
-  .category-figures{
-    grid-template-columns:1fr 1fr;
-    gap:6px;
-  }
-
-  .category-figure{padding:7px}
-
-  .category-figure span{font-size:10px}
-
-  .category-figure strong{font-size:12px}
-
-  .category-summary-block h5{font-size:12px}
-
-  .category-summary-block li{font-size:11px}
-
-  .category-latest-note{font-size:10px}
-
-  .modal-content{padding:28px 22px}
-
-  .google-form-embed{height:1600px}
-
-  .google-form-embed iframe{height:2133px}
-
-  .form-heading h2{font-size:25px}
-}
-
-@media(max-width:430px){
-  .hero,.globe-frame{height:360px}
-
-  .main-content{
-    grid-template-columns:2fr 1fr;
-    gap:10px;
-  }
-
-  .about-copy{font-size:12px}
-
-  .protocol-card{
-    min-height:98px;
-    padding:8px;
-  }
-
-  .protocol-card h3{font-size:14px}
-
-  .protocol-meta{font-size:10px}
-
-  .navigation a,
-  .navigation button{
-    padding:6px 9px;
+  .protocol-country,
+  .protocol-meta{
     font-size:11px;
   }
 
-  #countryProfile{padding:15px}
-
-  .category-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:7px;
+  .view-all-button{
+    margin-top:8px;
+    padding:8px 12px;
   }
 
-  .category-card{padding:9px}
+  .navigation{
+    grid-area:nav;
+    margin:8px auto 12px;
+  }
 
-  .category-card h4{font-size:16px}
+  #countryProfile{
+    grid-area:profile;
+  }
 
-  .category-figure{padding:6px}
+  .form-section{
+    grid-area:form;
+  }
 
-  .category-figure strong{font-size:11px}
-
-  .category-summary-block li{font-size:10px}
-
-  .category-summary-block h5{font-size:11px}
-
-  .google-form-embed{height:1650px}
-
-  .google-form-embed iframe{height:2200px}
+  footer{
+    grid-area:footer;
+    padding-top:10px;
+  }
 }
 
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{transition:none!important}
-}
-</style>
-</head>
-
-<body>
-<main class="page">
-
-  <div class="hero">
-    <div class="globe-frame">
-      <div id="globeViz" aria-label="Interactive globe showing countries with published contributions"></div>
-    </div>
-    <div class="globe-placeholder" id="globePlaceholder">Loading the Atlas globe…</div>
-  </div>
-
-  <nav class="navigation" aria-label="Main navigation">
-    <button
-      type="button"
-      id="contributeButton"
-      aria-expanded="false"
-      onclick="toggleContributionForm()">
-      Contribute
-    </button>
-    <a href="#protocols">Explore experiences</a>
-    <a href="#about">About the Atlas</a>
-  </nav>
-
-  <div id="countryProfile">
-    <div class="profile-heading">
-      <div>
-        <div class="profile-eyebrow">FIELDWORK ATLAS / COUNTRY PROFILE</div>
-        <h2 id="profileTitle"></h2>
-        <span class="profile-status" id="profileStatus"></span>
-      </div>
-      <button class="close-profile" onclick="closeProfile()" aria-label="Close country profile">×</button>
-    </div>
-
-    <p class="profile-summary" id="profileText"></p>
-
-    <div id="profileCategories"></div>
-
-    <div class="profile-section individual-contributions">
-      <h3>Individual researcher contributions</h3>
-      <div id="profileExperiences"></div>
-    </div>
-  </div>
-
-  <section class="main-content" id="protocols">
-    <div class="about-column" id="about">
-      <div class="about-copy">
-        <p>The Fieldwork Atlas is a collaborative resource bringing together information and experiences about conducting research around the world.</p>
-
-        <p>It aims to make research processes more transparent by sharing knowledge about permissions, institutions, practical experiences and the realities of fieldwork.</p>
-
-        <p>The Atlas combines structured information about research requirements with first-hand accounts from people who have undertaken research. Because knowing what the rules say is not always the same as knowing what happens in practice.</p>
-
-        <p>The information shared here reflects individual researchers' experiences at particular points in time. Requirements and procedures can change, so visitors should always confirm current requirements with the relevant authorities.</p>
-      </div>
-    </div>
-
-    <div class="latest-column">
-      <div id="allCountryProtocols">
-        <div class="empty-state">Published contributions will appear here as they are added to the Atlas.</div>
-      </div>
-
-      <button
-        class="view-all-button"
-        id="viewAllProtocols"
-        type="button"
-        onclick="toggleAllProtocols()"
-        hidden>
-        View all research protocols →
-      </button>
-    </div>
-  </section>
-
-  <section class="form-section" id="contribute">
-    <div class="form-heading">
-      <h2>Contribute to the Atlas</h2>
-      <button
-        class="close-form"
-        type="button"
-        onclick="closeContributionForm()">
-        Close form ×
-      </button>
-    </div>
-
-    <div class="form-container">
-      <div class="google-form-embed">
-        <iframe
-          id="contributionFormFrame"
-          data-src="https://docs.google.com/forms/d/e/1FAIpQLSckkKBpgWjLCr096cxS9sZxkzT1MWNqaH4i-_Gn3JgaaWZpUg/viewform?embedded=true"
-          title="Fieldwork Atlas contribution form"
-          loading="lazy">
-          Loading contribution form…
-        </iframe>
-      </div>
-
-      <p class="form-note">
-        Contributions are reviewed before publication. Only approved,
-        anonymised information is displayed on the Atlas. Please do not
-        include confidential information or private contact details.
-      </p>
-    </div>
-  </section>
-
-  <footer>Fieldwork Atlas · A collaborative research resource</footer>
-</main>
-
-<div class="modal" id="experienceModal" onclick="closeModalOutside(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeExperience()" aria-label="Close contribution">×</button>
-    <div class="modal-country" id="modalCountry"></div>
-    <h2 id="modalTitle"></h2>
-    <div class="modal-meta" id="modalMeta"></div>
-    <div id="modalBody"></div>
-  </div>
-</div>
-
-<script>
 
 /* =========================================================
    DATA CONNECTION
