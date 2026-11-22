@@ -43,9 +43,6 @@ button{font:inherit}
 
 /* =========================================================
    DESKTOP HOMEPAGE
-   The homepage fits into one viewport.
-   Country profiles and the contribution form can extend
-   the page when opened.
    ========================================================= */
 
 .page{
@@ -105,7 +102,9 @@ button{font:inherit}
   text-align:center;
 }
 
-/* Homepage content */
+/* =========================================================
+   HOMEPAGE CONTENT
+   ========================================================= */
 
 .main-content{
   grid-area:main;
@@ -144,17 +143,22 @@ button{font:inherit}
   min-height:0;
 }
 
+/* Desktop: exactly four columns and three rows */
+
 .protocol-grid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-rows:repeat(3,minmax(0,1fr));
   gap:8px;
+  width:100%;
 }
 
-.protocol-card{
+.protocol-card,
+.view-all-card{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  min-height:clamp(76px,11vh,108px);
+  min-height:clamp(72px,10vh,100px);
   padding:10px;
   border:1px solid var(--line);
   background:white;
@@ -165,7 +169,8 @@ button{font:inherit}
   min-width:0;
 }
 
-.protocol-card:hover{
+.protocol-card:hover,
+.view-all-card:hover{
   border-color:var(--blue);
   background:#f8faff;
   transform:translateY(-2px);
@@ -181,7 +186,7 @@ button{font:inherit}
 
 .protocol-card h3{
   color:var(--ink);
-  font-size:clamp(14px,1.25vw,18px);
+  font-size:clamp(13px,1.05vw,17px);
   font-weight:normal;
   line-height:1.25;
   margin:0 0 6px;
@@ -190,7 +195,7 @@ button{font:inherit}
 
 .protocol-meta{
   color:var(--muted);
-  font-size:11px;
+  font-size:10px;
   line-height:1.4;
   margin-top:auto;
 }
@@ -205,28 +210,31 @@ button{font:inherit}
   line-height:1.6;
 }
 
-.view-all-button{
-  display:block;
-  width:100%;
-  margin-top:8px;
-  padding:8px 12px;
-  border:1px solid var(--blue);
-  background:white;
-  color:var(--blue);
-  font-size:12px;
+.view-all-card{
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  cursor:pointer;
-  transition:.2s;
+  color:var(--blue);
+  font-size:14px;
+  line-height:1.5;
+  text-decoration:none;
+  border-color:var(--blue);
 }
 
-.view-all-button:hover{
+.view-all-card:hover{
   background:var(--blue);
   color:white;
 }
 
-.view-all-button[hidden]{display:none}
+.view-all-card span{
+  display:block;
+  font-size:25px;
+  margin-bottom:5px;
+}
 
-/* Navigation */
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 .navigation{
   grid-area:nav;
@@ -261,7 +269,9 @@ button{font:inherit}
   color:white;
 }
 
-/* Footer */
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 footer{
   grid-area:footer;
@@ -511,7 +521,7 @@ footer{
 
 /* =========================================================
    CONTRIBUTION FORM
-   Desktop: hidden until the Contribute button is clicked.
+   Desktop: hidden until Contribute is clicked.
    Mobile: always visible.
    ========================================================= */
 
@@ -676,12 +686,13 @@ footer{
     gap:clamp(10px,1.5vh,20px);
   }
 
-  .protocol-card{
+  .protocol-card,
+  .view-all-card{
     min-height:clamp(72px,10vh,100px);
   }
 
   .protocol-card h3{
-    font-size:clamp(13px,1.15vw,17px);
+    font-size:clamp(13px,1.05vw,17px);
   }
 
   .protocol-country,.protocol-meta{
@@ -771,11 +782,13 @@ footer{
   .about-copy p{margin-bottom:13px}
 
   .protocol-grid{
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:auto;
     gap:8px;
   }
 
-  .protocol-card{
+  .protocol-card,
+  .view-all-card{
     min-height:103px;
     padding:10px;
   }
@@ -831,7 +844,8 @@ footer{
 
   .about-copy{font-size:12px}
 
-  .protocol-card{
+  .protocol-card,
+  .view-all-card{
     min-height:98px;
     padding:8px;
   }
@@ -904,15 +918,6 @@ footer{
       <div id="allCountryProtocols">
         <div class="empty-state">Published contributions will appear here as they are added to the Atlas.</div>
       </div>
-
-      <button
-        class="view-all-button"
-        id="viewAllProtocols"
-        type="button"
-        onclick="toggleAllProtocols()"
-        hidden>
-        View all research protocols →
-      </button>
     </div>
 
   </section>
@@ -1008,13 +1013,10 @@ let atlasEntries = [];
 let countryProfiles = {};
 let globeInstance = null;
 let countryFeatures = [];
-let allProtocolsExpanded = false;
 
 
 /* =========================================================
    CONTRIBUTION FORM BEHAVIOUR
-   Desktop: button opens/closes the form.
-   Mobile: form is already visible; button scrolls to it.
    ========================================================= */
 
 function isMobileLayout() {
@@ -1335,7 +1337,7 @@ function loadAtlasDataJsonp() {
 
 /* =========================================================
    HOMEPAGE CONTRIBUTIONS
-   Latest four shown first; button reveals the full list.
+   Latest 11 plus a twelfth tile linking to the full list.
    ========================================================= */
 
 function createProtocolCard(entry) {
@@ -1369,7 +1371,6 @@ function createProtocolCard(entry) {
 
 function renderAllCountryProtocols() {
   const container = document.getElementById("allCountryProtocols");
-  const viewButton = document.getElementById("viewAllProtocols");
 
   container.replaceChildren();
 
@@ -1384,46 +1385,25 @@ function renderAllCountryProtocols() {
       )
     );
 
-    viewButton.hidden = true;
     return;
   }
 
-  entries.forEach((entry, index) => {
-    const card = createProtocolCard(entry);
+  const grid = makeElement("div", "protocol-grid");
 
-    if (!allProtocolsExpanded && index >= 4) {
-      card.hidden = true;
-    }
-
-    container.appendChild(card);
+  entries.slice(0, 11).forEach(entry => {
+    grid.appendChild(createProtocolCard(entry));
   });
 
-  viewButton.hidden = entries.length <= 4;
-  updateViewAllButton();
-}
+  const viewAll = makeElement("a", "view-all-card");
+  viewAll.href = "protocols.html";
 
-function toggleAllProtocols() {
-  allProtocolsExpanded = !allProtocolsExpanded;
-
-  const cards = document.querySelectorAll(
-    "#allCountryProtocols .protocol-card"
+  viewAll.append(
+    makeElement("span", "", "→"),
+    makeElement("div", "", "View all research protocols")
   );
 
-  cards.forEach((card, index) => {
-    card.hidden = !allProtocolsExpanded && index >= 4;
-  });
-
-  updateViewAllButton();
-}
-
-function updateViewAllButton() {
-  const button = document.getElementById("viewAllProtocols");
-
-  if (button.hidden) return;
-
-  button.textContent = allProtocolsExpanded
-    ? "Show fewer research protocols ↑"
-    : "View all research protocols →";
+  grid.appendChild(viewAll);
+  container.appendChild(grid);
 }
 
 
