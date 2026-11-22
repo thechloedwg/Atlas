@@ -21,7 +21,7 @@
   --soft:#f8fafd;
   --sea:#eaf2ff;
   --land:#e8eaed;
-  --white:#FFFFFF;
+  --white:#fff;
   --body-text:#5f6368;
 }
 
@@ -41,52 +41,48 @@ body{
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 
+/* =========================================================
+   DESKTOP HOMEPAGE
+   The homepage fits into one viewport.
+   Country profiles and the contribution form can extend
+   the page when opened.
+   ========================================================= */
+
 .page{
+  width:100%;
   max-width:1600px;
+  min-height:100vh;
+  height:100vh;
   margin:0 auto;
-  padding:12px 48px 45px;
+  padding:12px 38px 16px;
+  display:grid;
+  grid-template-columns:minmax(0,55%) minmax(0,45%);
+  grid-template-rows:minmax(0,1fr) auto auto;
+  grid-template-areas:
+    "hero main"
+    "nav nav"
+    "footer footer";
+  align-items:center;
+  overflow:visible;
 }
-
-/* DESKTOP PAGE LAYOUT */
-
-@media(min-width:1001px){
-  .page{
-    display:grid;
-    grid-template-columns:minmax(0,55%) minmax(0,45%);
-    grid-template-areas:
-      "hero main"
-      "nav nav"
-      "profile profile"
-      "form form"
-      "footer footer";
-    align-items:center;
-  }
-
-  .hero{grid-area:hero}
-  .main-content{grid-area:main}
-  .navigation{grid-area:nav}
-  #countryProfile{grid-area:profile}
-  .form-section{grid-area:form}
-  footer{grid-area:footer}
-}
-
-/* Globe */
 
 .hero{
+  grid-area:hero;
   position:relative;
   width:100%;
-  height:620px;
+  height:100%;
+  min-height:0;
   display:flex;
   justify-content:center;
   align-items:center;
   overflow:hidden;
   background:var(--white);
-  min-width:0;
 }
 
 .globe-frame{
-  width:min(100%,780px);
-  height:620px;
+  width:100%;
+  height:100%;
+  min-height:0;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -109,74 +105,57 @@ button{font:inherit}
   text-align:center;
 }
 
-/* Navigation */
-
-.navigation{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:0 auto 55px;
-}
-
-.navigation a,
-.navigation button{
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:9px 19px;
-  font-size:13px;
-  color:var(--ink);
-  background:white;
-  transition:.2s;
-  text-align:center;
-  cursor:pointer;
-}
-
-.navigation a:hover,
-.navigation button:hover{
-  background:var(--blue);
-  border-color:var(--blue);
-  color:white;
-}
-
-/* Homepage */
+/* Homepage content */
 
 .main-content{
+  grid-area:main;
   width:100%;
-  max-width:1180px;
-  margin:0 auto 80px;
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:65px;
-  align-items:start;
+  max-width:none;
+  height:100%;
+  min-height:0;
+  margin:0;
+  padding:20px 10px 20px 25px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:clamp(12px,2vh,25px);
+  overflow:hidden;
+}
+
+.about-column,.latest-column{
+  width:100%;
   min-width:0;
 }
 
-.about-column,.latest-column{min-width:0}
-
 .about-copy{
   color:var(--body-text);
-  font-size:15px;
-  line-height:1.8;
+  font-size:clamp(13px,1.05vw,15px);
+  line-height:1.55;
   text-align:justify;
 }
 
-.about-copy p{margin:0 0 17px}
+.about-copy p{
+  margin:0 0 clamp(7px,1.1vh,13px);
+}
+
 .about-copy p:last-child{margin-bottom:0}
+
+.latest-column{
+  min-height:0;
+}
 
 .protocol-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
+  gap:8px;
 }
 
 .protocol-card{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  min-height:125px;
-  padding:14px;
+  min-height:clamp(76px,11vh,108px);
+  padding:10px;
   border:1px solid var(--line);
   background:white;
   cursor:pointer;
@@ -196,45 +175,45 @@ button{font:inherit}
 
 .protocol-country{
   color:var(--blue);
-  font-size:12px;
-  margin-bottom:8px;
+  font-size:11px;
+  margin-bottom:5px;
 }
 
 .protocol-card h3{
   color:var(--ink);
-  font-size:19px;
+  font-size:clamp(14px,1.25vw,18px);
   font-weight:normal;
-  line-height:1.3;
-  margin:0 0 10px;
+  line-height:1.25;
+  margin:0 0 6px;
   overflow-wrap:anywhere;
 }
 
 .protocol-meta{
   color:var(--muted);
-  font-size:12px;
-  line-height:1.5;
+  font-size:11px;
+  line-height:1.4;
   margin-top:auto;
 }
 
 .empty-state{
   grid-column:1/-1;
   border:1px dashed var(--line);
-  padding:22px 14px;
+  padding:18px 12px;
   text-align:center;
   color:var(--muted);
-  font-size:14px;
-  line-height:1.7;
+  font-size:13px;
+  line-height:1.6;
 }
 
 .view-all-button{
   display:block;
   width:100%;
-  margin-top:12px;
-  padding:10px 15px;
+  margin-top:8px;
+  padding:8px 12px;
   border:1px solid var(--blue);
   background:white;
   color:var(--blue);
-  font-size:13px;
+  font-size:12px;
   text-align:center;
   cursor:pointer;
   transition:.2s;
@@ -247,17 +226,66 @@ button{font:inherit}
 
 .view-all-button[hidden]{display:none}
 
-/* Country profile */
+/* Navigation */
+
+.navigation{
+  grid-area:nav;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin:7px auto 12px;
+}
+
+.navigation a,
+.navigation button{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:7px 17px;
+  font-size:12px;
+  color:var(--ink);
+  background:white;
+  cursor:pointer;
+  transition:.2s;
+  text-align:center;
+}
+
+.navigation a:hover,
+.navigation button:hover{
+  background:var(--blue);
+  border-color:var(--blue);
+  color:white;
+}
+
+/* Footer */
+
+footer{
+  grid-area:footer;
+  border-top:1px solid var(--line);
+  padding-top:10px;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+}
+
+/* =========================================================
+   COUNTRY PROFILE
+   ========================================================= */
 
 #countryProfile{
   display:none;
+  grid-column:1/-1;
   background:var(--soft);
   border:1px solid var(--line);
   padding:30px;
-  margin:0 auto 65px;
-  max-width:1100px;
+  margin:15px auto 35px;
   width:100%;
-  scroll-margin-top:30px;
+  max-width:1100px;
+  scroll-margin-top:20px;
 }
 
 .profile-heading{
@@ -425,7 +453,7 @@ button{font:inherit}
   text-align:justify;
 }
 
-.category-summary-block li + li{
+.category-summary-block li+li{
   border-top:1px solid #f1f3f4;
 }
 
@@ -481,14 +509,19 @@ button{font:inherit}
 
 .individual-contributions{margin-top:28px}
 
-/* Contribution form: hidden until requested */
+/* =========================================================
+   CONTRIBUTION FORM
+   Desktop: hidden until the Contribute button is clicked.
+   Mobile: always visible.
+   ========================================================= */
 
 .form-section{
   display:none;
-  max-width:1180px;
+  grid-column:1/-1;
   width:100%;
-  margin:0 auto 45px;
-  scroll-margin-top:30px;
+  max-width:1180px;
+  margin:20px auto 35px;
+  scroll-margin-top:20px;
 }
 
 .form-section.open{display:block}
@@ -500,33 +533,26 @@ button{font:inherit}
 
 .form-heading{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:20px;
+  justify-content:space-between;
+  gap:15px;
   margin:0 auto 12px;
   max-width:850px;
 }
 
 .form-heading h2{
-  margin:0;
-  font-size:30px;
   font-weight:normal;
+  font-size:28px;
+  margin:0;
   text-align:left;
 }
 
 .close-form{
-  border:1px solid var(--line);
-  background:white;
+  border:0;
+  background:transparent;
   color:var(--ink);
-  padding:7px 15px;
-  border-radius:25px;
+  font-size:26px;
   cursor:pointer;
-  font-size:13px;
-}
-
-.close-form:hover{
-  border-color:var(--blue);
-  color:var(--blue);
 }
 
 .google-form-embed{
@@ -561,15 +587,9 @@ button{font:inherit}
   text-align:justify;
 }
 
-/* Footer and modal */
-
-footer{
-  border-top:1px solid var(--line);
-  padding-top:22px;
-  color:var(--muted);
-  font-size:13px;
-  text-align:center;
-}
+/* =========================================================
+   MODAL
+   ========================================================= */
 
 .modal{
   display:none;
@@ -636,119 +656,346 @@ footer{
   text-align:left;
 }
 
-
-/* DESKTOP: FIT THE HOMEPAGE TO THE VIEWPORT */
+/* =========================================================
+   DESKTOP HEIGHT ADJUSTMENTS
+   ========================================================= */
 
 @media(min-width:1001px){
-
-  .page{
-    min-height:100vh;
-    height:100vh;
-    max-width:1600px;
-    padding:12px 38px 18px;
-    display:grid;
-    grid-template-columns:minmax(0,55%) minmax(0,45%);
-    grid-template-rows:minmax(0,1fr) auto auto;
-    grid-template-areas:
-      "hero main"
-      "nav nav"
-      "footer footer";
-    align-items:center;
-    overflow:visible;
-  }
-
-  .hero{
-    grid-area:hero;
-    height:100%;
-    min-height:0;
-    width:100%;
-  }
-
-  .globe-frame{
-    width:100%;
-    height:100%;
-    min-height:0;
-  }
-
-  #globeViz{
-    width:100%;
-    height:100%;
-  }
-
-  .main-content{
-    grid-area:main;
-    width:100%;
-    max-width:none;
-    height:100%;
-    min-height:0;
-    margin:0;
-    padding:20px 10px 20px 25px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap:clamp(12px,2vh,25px);
-  }
-
-  .about-column,
-  .latest-column{
-    width:100%;
-    min-width:0;
-  }
+  .hero{min-height:0}
 
   .about-copy{
-    font-size:clamp(13px,1.05vw,15px);
-    line-height:1.55;
+    font-size:clamp(12px,1vw,15px);
+    line-height:1.5;
   }
 
   .about-copy p{
-    margin-bottom:clamp(8px,1.2vh,14px);
+    margin-bottom:clamp(6px,1vh,12px);
   }
 
-  #allCountryProtocols{
+  .main-content{
+    gap:clamp(10px,1.5vh,20px);
+  }
+
+  .protocol-card{
+    min-height:clamp(72px,10vh,100px);
+  }
+
+  .protocol-card h3{
+    font-size:clamp(13px,1.15vw,17px);
+  }
+
+  .protocol-country,.protocol-meta{
+    font-size:10px;
+  }
+}
+
+/* =========================================================
+   TABLET AND MOBILE
+   ========================================================= */
+
+@media(max-width:1000px){
+  .page{
+    height:auto;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    padding:12px 28px 30px;
+  }
+
+  .hero{
+    width:100%;
+    height:480px;
+    min-height:0;
+    flex:none;
+  }
+
+  .globe-frame{height:100%}
+
+  .main-content{
+    width:100%;
+    height:auto;
+    min-height:0;
+    margin:0 auto 35px;
+    padding:15px 0;
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+    overflow:visible;
+  }
+
+  .navigation{
+    order:0;
+    margin:0 auto 30px;
+  }
+
+  .hero{order:1}
+  .main-content{order:2}
+  #countryProfile{order:3}
+  .form-section{order:4}
+  footer{order:5;width:100%}
+
+  .form-section{
+    display:block;
+    margin:25px auto 35px;
+  }
+
+  .form-heading{display:none}
+}
+
+@media(max-width:750px){
+  .page{padding:8px 14px 35px}
+
+  .hero{height:430px}
+
+  .navigation{
+    margin-bottom:22px;
+    gap:6px;
+  }
+
+  .navigation a,.navigation button{
+    padding:7px 11px;
+    font-size:12px;
+  }
+
+  .main-content{
+    grid-template-columns:2fr 1fr;
+    gap:15px;
+    margin-bottom:35px;
+  }
+
+  .about-copy{
+    font-size:13px;
+    line-height:1.7;
+  }
+
+  .about-copy p{margin-bottom:13px}
+
+  .protocol-grid{
+    grid-template-columns:1fr;
     gap:8px;
   }
 
   .protocol-card{
-    min-height:clamp(75px,11vh,105px);
+    min-height:103px;
     padding:10px;
   }
 
   .protocol-card h3{
-    font-size:clamp(15px,1.3vw,18px);
+    font-size:16px;
+    margin-bottom:8px;
+  }
+
+  .protocol-country{
+    font-size:11px;
     margin-bottom:6px;
   }
 
-  .protocol-country,
-  .protocol-meta{
+  .protocol-meta{font-size:11px}
+
+  #countryProfile{padding:22px}
+
+  .category-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+  }
+
+  .category-card{padding:12px}
+  .category-card h4{font-size:18px}
+  .category-count{font-size:12px}
+
+  .category-figures{
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+  }
+
+  .category-figure{padding:7px}
+  .category-figure span{font-size:10px}
+  .category-figure strong{font-size:12px}
+  .category-summary-block h5{font-size:12px}
+  .category-summary-block li{font-size:11px}
+  .category-latest-note{font-size:10px}
+
+  .modal-content{padding:28px 22px}
+
+  .google-form-embed{height:1600px}
+  .google-form-embed iframe{height:2133px}
+}
+
+@media(max-width:430px){
+  .hero{height:360px}
+
+  .main-content{
+    grid-template-columns:2fr 1fr;
+    gap:10px;
+  }
+
+  .about-copy{font-size:12px}
+
+  .protocol-card{
+    min-height:98px;
+    padding:8px;
+  }
+
+  .protocol-card h3{font-size:14px}
+  .protocol-meta{font-size:10px}
+
+  .navigation a,.navigation button{
+    padding:6px 9px;
     font-size:11px;
   }
 
-  .view-all-button{
-    margin-top:8px;
-    padding:8px 12px;
+  #countryProfile{padding:15px}
+
+  .category-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
   }
 
-  .navigation{
-    grid-area:nav;
-    margin:8px auto 12px;
-  }
+  .category-card{padding:9px}
+  .category-card h4{font-size:16px}
+  .category-figure{padding:6px}
+  .category-figure strong{font-size:11px}
+  .category-summary-block li{font-size:10px}
+  .category-summary-block h5{font-size:11px}
 
-  #countryProfile{
-    grid-area:profile;
-  }
-
-  .form-section{
-    grid-area:form;
-  }
-
-  footer{
-    grid-area:footer;
-    padding-top:10px;
-  }
+  .google-form-embed{height:1650px}
+  .google-form-embed iframe{height:2200px}
 }
 
+@media(max-width:360px){
+  .main-content{grid-template-columns:1fr}
+  .protocol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important}
+}
+</style>
+</head>
+
+<body>
+<main class="page">
+
+  <!-- GLOBE -->
+  <div class="hero">
+    <div class="globe-frame">
+      <div id="globeViz" aria-label="Interactive globe showing countries with published contributions"></div>
+    </div>
+    <div class="globe-placeholder" id="globePlaceholder">Loading the Atlas globe…</div>
+  </div>
+
+  <!-- HOMEPAGE CONTENT -->
+  <section class="main-content" id="protocols">
+
+    <div class="about-column" id="about">
+      <div class="about-copy">
+        <p>The Fieldwork Atlas is a collaborative resource bringing together information and experiences about conducting research around the world.</p>
+
+        <p>It aims to make research processes more transparent by sharing knowledge about permissions, institutions, practical experiences and the realities of fieldwork.</p>
+
+        <p>The Atlas combines structured information about research requirements with first-hand accounts from people who have undertaken research. Because knowing what the rules say is not always the same as knowing what happens in practice.</p>
+
+        <p>The information shared here reflects individual researchers' experiences at particular points in time. Requirements and procedures can change, so visitors should always confirm current requirements with the relevant authorities.</p>
+      </div>
+    </div>
+
+    <div class="latest-column">
+      <div id="allCountryProtocols">
+        <div class="empty-state">Published contributions will appear here as they are added to the Atlas.</div>
+      </div>
+
+      <button
+        class="view-all-button"
+        id="viewAllProtocols"
+        type="button"
+        onclick="toggleAllProtocols()"
+        hidden>
+        View all research protocols →
+      </button>
+    </div>
+
+  </section>
+
+  <!-- NAVIGATION -->
+  <nav class="navigation" aria-label="Main navigation">
+    <button
+      id="contributeButton"
+      type="button"
+      aria-expanded="false"
+      aria-controls="contribute"
+      onclick="toggleContributionForm()">
+      Contribute
+    </button>
+
+    <a href="#protocols">Explore experiences</a>
+    <a href="#about">About the Atlas</a>
+  </nav>
+
+  <!-- COUNTRY PROFILE -->
+  <section id="countryProfile">
+    <div class="profile-heading">
+      <div>
+        <div class="profile-eyebrow">FIELDWORK ATLAS / COUNTRY PROFILE</div>
+        <h2 id="profileTitle"></h2>
+        <span class="profile-status" id="profileStatus"></span>
+      </div>
+
+      <button class="close-profile" onclick="closeProfile()" aria-label="Close country profile">×</button>
+    </div>
+
+    <p class="profile-summary" id="profileText"></p>
+
+    <div id="profileCategories"></div>
+
+    <div class="profile-section individual-contributions">
+      <h3>Individual researcher contributions</h3>
+      <div id="profileExperiences"></div>
+    </div>
+  </section>
+
+  <!-- CONTRIBUTION FORM -->
+  <section class="form-section" id="contribute">
+    <div class="form-container">
+
+      <div class="form-heading">
+        <h2>Contribute to the Atlas</h2>
+        <button class="close-form" type="button" onclick="closeContributionForm()" aria-label="Close contribution form">×</button>
+      </div>
+
+      <div class="google-form-embed">
+        <iframe
+          id="contributionFormFrame"
+          data-src="https://docs.google.com/forms/d/e/1FAIpQLSckkKBpgWjLCr096cxS9sZxkzT1MWNqaH4i-_Gn3JgaaWZpUg/viewform?embedded=true"
+          title="Fieldwork Atlas contribution form"
+          loading="lazy">
+          Loading contribution form…
+        </iframe>
+      </div>
+
+      <p class="form-note">
+        Contributions are reviewed before publication. Only approved,
+        anonymised information is displayed on the Atlas. Please do not
+        include confidential information or private contact details.
+      </p>
+    </div>
+  </section>
+
+  <footer>Fieldwork Atlas · A collaborative research resource</footer>
+</main>
+
+<!-- FULL CONTRIBUTION MODAL -->
+<div class="modal" id="experienceModal" onclick="closeModalOutside(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeExperience()" aria-label="Close contribution">×</button>
+    <div class="modal-country" id="modalCountry"></div>
+    <h2 id="modalTitle"></h2>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
 
 /* =========================================================
    DATA CONNECTION
@@ -765,10 +1012,24 @@ let allProtocolsExpanded = false;
 
 
 /* =========================================================
-   CONTRIBUTION FORM OPEN / CLOSE
+   CONTRIBUTION FORM BEHAVIOUR
+   Desktop: button opens/closes the form.
+   Mobile: form is already visible; button scrolls to it.
    ========================================================= */
 
+function isMobileLayout() {
+  return window.matchMedia("(max-width: 1000px)").matches;
+}
+
 function toggleContributionForm() {
+  if (isMobileLayout()) {
+    document.getElementById("contribute").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+    return;
+  }
+
   const section = document.getElementById("contribute");
 
   if (section.classList.contains("open")) {
@@ -786,7 +1047,6 @@ function openContributionForm() {
   section.classList.add("open");
   button.setAttribute("aria-expanded", "true");
 
-  /* Load the Google Form only when someone opens it. */
   if (!frame.getAttribute("src")) {
     frame.setAttribute("src", frame.dataset.src);
   }
@@ -1292,8 +1552,6 @@ function renderResearchAreaCards(entries) {
       )
     );
 
-    /* Time and cost figures */
-
     const figures = makeElement("div", "category-figures");
 
     const time = makeElement("div", "category-figure");
@@ -1543,7 +1801,6 @@ function openExperience(entry) {
 
     populated.forEach(([label, key]) => {
       const paragraph = makeElement("p");
-
       const strong = makeElement("strong", "", label + ": ");
 
       paragraph.append(
@@ -1575,8 +1832,7 @@ document.addEventListener("keydown", event => {
     closeExperience();
     closeProfile();
 
-    const form = document.getElementById("contribute");
-    if (form.classList.contains("open")) {
+    if (!isMobileLayout()) {
       closeContributionForm();
     }
   }
@@ -1750,6 +2006,13 @@ async function initialiseGlobe() {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadAtlasData();
+
+  // Load the contribution form immediately on mobile.
+  // Desktop loads it only when the user opens the form.
+  if (isMobileLayout()) {
+    const frame = document.getElementById("contributionFormFrame");
+    frame.setAttribute("src", frame.dataset.src);
+  }
 
   const startGlobe = () => initialiseGlobe();
 
