@@ -7,9 +7,10 @@
 <title>Fieldwork Atlas</title>
 <meta name="description" content="A collaborative resource sharing research permission information and fieldwork experiences around the world.">
 
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
-<script src="https://unpkg.com/topojson-client@3"></script>
+<!-- Load libraries without blocking the page. Order is important. -->
+<script defer src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script defer src="https://unpkg.com/globe.gl@2.45.0/dist/globe.gl.min.js"></script>
+<script defer src="https://unpkg.com/topojson-client@3"></script>
 
 <style>
 :root {
@@ -55,9 +56,7 @@ button {
   padding: 12px 48px 75px;
 }
 
-/* =====================================================
-   HERO GLOBE
-   ===================================================== */
+/* HERO GLOBE */
 
 .hero {
   position: relative;
@@ -88,9 +87,7 @@ button {
   cursor: grabbing;
 }
 
-/* =====================================================
-   NAVIGATION
-   ===================================================== */
+/* NAVIGATION */
 
 .navigation {
   display: flex;
@@ -117,34 +114,23 @@ button {
   color: white;
 }
 
-/* =====================================================
-   MAIN ABOUT + LATEST PROTOCOLS SECTION
-   ===================================================== */
+/* HOMEPAGE CONTENT */
 
 .main-content {
   max-width: 1180px;
   margin: 0 auto 100px;
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 75px;
+  grid-template-columns: 2fr 1fr;
+  gap: 65px;
   align-items: start;
 }
 
-.column-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 15px;
-  padding-bottom: 14px;
-  margin-bottom: 23px;
-  border-bottom: 1px solid var(--line);
+.about-column {
+  min-width: 0;
 }
 
-.column-heading h2 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 25px;
-  font-weight: normal;
-  margin: 0;
+.latest-column {
+  min-width: 0;
 }
 
 .about-copy {
@@ -161,23 +147,26 @@ button {
   margin-bottom: 0;
 }
 
-.about-link {
-  display: inline-block;
+.contribute-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 25px;
-  color: var(--blue);
+  padding: 12px 20px;
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  color: white;
   font-size: 11px;
-  border-bottom: 1px solid #B9C8F0;
-  padding-bottom: 4px;
-  transition: color 0.2s ease;
+  letter-spacing: 0.035em;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.about-link:hover {
-  color: var(--blue-dark);
+.contribute-link:hover {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
 }
 
-/* =====================================================
-   RECENT PROTOCOL TILES
-   ===================================================== */
+/* RECENT PROTOCOL TILES */
 
 .protocol-grid {
   display: grid;
@@ -197,6 +186,7 @@ button {
   text-align: left;
   color: var(--ink);
   transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  min-width: 0;
 }
 
 .protocol-card:hover {
@@ -220,6 +210,7 @@ button {
   font-weight: normal;
   line-height: 1.35;
   margin: 0 0 13px;
+  overflow-wrap: anywhere;
 }
 
 .protocol-meta {
@@ -249,9 +240,7 @@ button {
   background: #EEF3FF;
 }
 
-/* =====================================================
-   FULL PROTOCOL LIST
-   ===================================================== */
+/* FULL PROTOCOL LIST */
 
 .all-protocols {
   display: none;
@@ -325,7 +314,7 @@ button {
 .empty-state {
   grid-column: 1 / -1;
   border: 1px dashed var(--line);
-  padding: 35px;
+  padding: 25px 15px;
   text-align: center;
   color: var(--muted);
   font-size: 12px;
@@ -349,9 +338,7 @@ button {
   color: var(--blue);
 }
 
-/* =====================================================
-   COUNTRY PROFILE
-   ===================================================== */
+/* COUNTRY PROFILE */
 
 #countryProfile {
   display: none;
@@ -412,6 +399,7 @@ button {
 }
 
 .close-profile {
+  float: right;
   border: none;
   background: transparent;
   color: var(--ink);
@@ -525,44 +513,21 @@ button {
   line-height: 1.7;
 }
 
-/* =====================================================
-   CONTRIBUTION FORM
-   ===================================================== */
+.read-more {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--blue);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* CONTRIBUTION FORM */
 
 .form-section {
   max-width: 1180px;
   margin: 0 auto 90px;
   scroll-margin-top: 30px;
-}
-
-.form-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 20px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 14px;
-  margin-bottom: 22px;
-}
-
-.form-heading h2 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 25px;
-  font-weight: normal;
-  margin: 0;
-}
-
-.form-heading span {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.form-intro {
-  max-width: 720px;
-  color: #606B83;
-  font-size: 13px;
-  line-height: 1.85;
-  margin: 0 0 22px;
 }
 
 .form-container {
@@ -594,9 +559,7 @@ button {
   margin-top: 10px;
 }
 
-/* =====================================================
-   FOOTER
-   ===================================================== */
+/* FOOTER */
 
 footer {
   border-top: 1px solid var(--line);
@@ -606,9 +569,7 @@ footer {
   text-align: center;
 }
 
-/* =====================================================
-   EXPERIENCE READING WINDOW
-   ===================================================== */
+/* EXPERIENCE READING WINDOW */
 
 .modal {
   display: none;
@@ -669,13 +630,16 @@ footer {
   margin-bottom: 20px;
 }
 
-/* =====================================================
-   RESPONSIVE
-   ===================================================== */
+/* TABLET */
 
 @media (max-width: 1000px) {
+  .page {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
   .main-content {
-    gap: 40px;
+    gap: 35px;
   }
 
   .all-protocol-grid {
@@ -683,44 +647,90 @@ footer {
   }
 }
 
+/* MOBILE: KEEP THE TWO-COLUMN LAYOUT */
+
 @media (max-width: 750px) {
   .page {
-    padding: 8px 20px 50px;
+    padding: 8px 14px 45px;
   }
 
   .hero {
-    height: 460px;
+    height: 430px;
   }
 
   .globe-frame {
-    height: 460px;
+    height: 430px;
   }
 
   .navigation {
-    margin-bottom: 48px;
-    gap: 7px;
+    margin-bottom: 38px;
+    gap: 6px;
   }
 
   .navigation a {
-    padding: 8px 13px;
-    font-size: 10px;
+    padding: 8px 11px;
+    font-size: 9px;
   }
 
   .main-content {
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+    margin-bottom: 65px;
+  }
+
+  .about-copy {
+    font-size: 11px;
+    line-height: 1.75;
+  }
+
+  .about-copy p {
+    margin-bottom: 13px;
+  }
+
+  .contribute-link {
+    font-size: 9px;
+    padding: 10px 12px;
+    margin-top: 18px;
+  }
+
+  .protocol-grid {
     grid-template-columns: 1fr;
-    gap: 45px;
-    margin-bottom: 80px;
+    gap: 8px;
+  }
+
+  .protocol-card {
+    min-height: 105px;
+    padding: 10px;
+  }
+
+  .protocol-card h3 {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .protocol-country {
+    font-size: 8px;
+    margin-bottom: 6px;
+  }
+
+  .protocol-meta {
+    font-size: 9px;
+  }
+
+  .view-all-card {
+    min-height: 80px;
+    padding: 10px;
+    font-size: 10px;
   }
 
   .all-protocols {
-    margin-top: -25px;
+    margin-top: -20px;
   }
 
   .all-protocol-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .form-heading,
   .all-protocols-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -743,23 +753,46 @@ footer {
   }
 }
 
+/* VERY NARROW PHONES */
+
 @media (max-width: 430px) {
-  .protocol-grid,
+  .hero {
+    height: 360px;
+  }
+
+  .globe-frame {
+    height: 360px;
+  }
+
+  .main-content {
+    grid-template-columns: 2fr 1fr;
+    gap: 10px;
+  }
+
+  .about-copy {
+    font-size: 10px;
+  }
+
+  .protocol-card {
+    min-height: 100px;
+    padding: 8px;
+  }
+
+  .protocol-card h3 {
+    font-size: 12px;
+  }
+
+  .protocol-meta {
+    font-size: 8px;
+  }
+
   .all-protocol-grid {
     grid-template-columns: 1fr;
   }
 
-  .protocol-card,
-  .view-all-card {
-    min-height: 115px;
-  }
-
-  .hero {
-    height: 390px;
-  }
-
-  .globe-frame {
-    height: 390px;
+  .navigation a {
+    padding: 7px 9px;
+    font-size: 8px;
   }
 }
 </style>
@@ -777,7 +810,7 @@ footer {
     </div>
   </div>
 
-  <!-- THREE NAVIGATION BUTTONS -->
+  <!-- NAVIGATION -->
 
   <nav class="navigation">
     <a href="#contribute">Contribute</a>
@@ -809,15 +842,11 @@ footer {
     </div>
   </div>
 
-  <!-- ABOUT + LATEST PROTOCOLS -->
+  <!-- ABOUT + CONTRIBUTE + RECENT CONTRIBUTIONS -->
 
   <section class="main-content" id="protocols">
 
     <div class="about-column" id="about">
-
-      <div class="column-heading">
-        <h2>About the Atlas</h2>
-      </div>
 
       <div class="about-copy">
         <p>
@@ -846,15 +875,13 @@ footer {
         </p>
       </div>
 
-      <a class="about-link" href="#contribute">Add your experience →</a>
+      <a class="contribute-link" href="#contribute">
+        Contribute to the Atlas →
+      </a>
 
     </div>
 
     <div class="latest-column">
-
-      <div class="column-heading">
-        <h2>Research protocols</h2>
-      </div>
 
       <div class="protocol-grid" id="recentProtocolGrid">
         <div class="empty-state">
@@ -866,7 +893,7 @@ footer {
 
   </section>
 
-  <!-- FULL LIST: OPENS WHEN VIEW ALL IS CLICKED -->
+  <!-- FULL PROTOCOL LIST -->
 
   <section class="all-protocols" id="allProtocols">
 
@@ -895,21 +922,9 @@ footer {
 
   </section>
 
-  <!-- CONTRIBUTION FORM -->
+  <!-- CONTRIBUTION FORM: NO DUPLICATED INTRODUCTION -->
 
   <section class="form-section" id="contribute">
-
-    <div class="form-heading">
-      <h2>Contribute to the Atlas</h2>
-      <span>Share what you have learned</span>
-    </div>
-
-    <p class="form-intro">
-      Have you applied for research permission in another country?
-      Share what you learned about the process, the institutions involved,
-      the time and costs, and what you wish you had known beforehand.
-      Your contribution can help the next researcher prepare.
-    </p>
 
     <div class="form-container">
 
@@ -1266,7 +1281,7 @@ function loadAtlasDataJsonp() {
    PROTOCOL CARD CREATION
    ========================================================= */
 
-function createProtocolCard(entry, compact = false) {
+function createProtocolCard(entry) {
   const card = makeElement("button", "protocol-card");
   card.type = "button";
 
@@ -1299,7 +1314,7 @@ function createProtocolCard(entry, compact = false) {
 
 
 /* =========================================================
-   RECENT NINE + FULL LIST
+   RECENT CONTRIBUTIONS + FULL LIST
    ========================================================= */
 
 function renderProtocolGrids() {
@@ -1311,7 +1326,7 @@ function renderRecentProtocols() {
   const grid = document.getElementById("recentProtocolGrid");
   grid.replaceChildren();
 
-  const recentEntries = getSortedEntries().slice(0, 9);
+  const recentEntries = getSortedEntries().slice(0, 8);
 
   if (!recentEntries.length) {
     grid.appendChild(
@@ -1326,7 +1341,7 @@ function renderRecentProtocols() {
   }
 
   recentEntries.forEach(entry => {
-    grid.appendChild(createProtocolCard(entry, true));
+    grid.appendChild(createProtocolCard(entry));
   });
 
   const viewAll = makeElement(
@@ -1842,46 +1857,60 @@ function updateGlobeColours() {
    GLOBE INITIALISATION
    ========================================================= */
 
-window.addEventListener("load", async () => {
-
+async function initialiseGlobe() {
   const globeElement = document.getElementById("globeViz");
 
-  if (!globeElement || typeof Globe === "undefined") {
-    console.error("The globe could not be initialised.");
-    loadAtlasData();
+  if (!globeElement || typeof Globe === "undefined" || typeof THREE === "undefined") {
+    console.error("The globe libraries could not be loaded.");
     return;
   }
 
-  const world = Globe()(globeElement)
-    .width(globeElement.clientWidth)
-    .height(globeElement.clientHeight)
-    .backgroundColor("rgba(255,255,255,0)")
-    .showGlobe(true)
-    .globeMaterial(
-      new THREE.MeshPhongMaterial({
-        color: 0xE7EFF9,
-        shininess: 0
-      })
-    )
-    .showAtmosphere(false)
-    .showGraticules(false)
-    .polygonAltitude(0.008)
-    .polygonCapColor(() => "#E9ECF2")
-    .polygonSideColor(() => "rgba(0,0,0,0)")
-    .polygonStrokeColor(() => "#FFFFFF")
-    .polygonLabel(feature => feature.properties.name)
-    .onPolygonClick(feature => {
-      const countryName =
-        feature.properties && feature.properties.name;
-
-      if (countryName) {
-        openProfile(countryName);
-      }
-    });
-
-  globeInstance = world;
-
   try {
+    const world = Globe()(globeElement)
+      .width(globeElement.clientWidth)
+      .height(globeElement.clientHeight)
+      .backgroundColor("rgba(255,255,255,0)")
+      .showGlobe(true)
+      .globeMaterial(
+        new THREE.MeshPhongMaterial({
+          color: 0xE7EFF9,
+          shininess: 0
+        })
+      )
+      .showAtmosphere(false)
+      .showGraticules(false)
+      .polygonAltitude(0.008)
+      .polygonCapColor(() => "#E9ECF2")
+      .polygonSideColor(() => "rgba(0,0,0,0)")
+      .polygonStrokeColor(() => "#FFFFFF")
+      .polygonLabel(feature => feature.properties.name)
+      .onPolygonClick(feature => {
+        const countryName =
+          feature.properties && feature.properties.name;
+
+        if (countryName) {
+          openProfile(countryName);
+        }
+      });
+
+    globeInstance = world;
+
+    /*
+      Reduce GPU workload, especially on phones.
+      The globe remains detailed, but is rendered at a
+      lower pixel density to reduce memory use.
+    */
+    if (world.renderer) {
+      const renderer = world.renderer();
+
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio || 1, 1.25)
+      );
+    }
+
+    world.controls().enableDamping = true;
+    world.controls().dampingFactor = 0.08;
+
     const response = await fetch(
       "https://unpkg.com/world-atlas@2/countries-50m.json"
     );
@@ -1905,19 +1934,35 @@ window.addEventListener("load", async () => {
       altitude: 2.2
     });
 
-    await loadAtlasData();
+    updateGlobeColours();
 
   } catch (error) {
     console.error("Globe country data could not be loaded:", error);
-    await loadAtlasData();
   }
 
   window.addEventListener("resize", () => {
-    world
+    if (!globeInstance) return;
+
+    globeInstance
       .width(globeElement.clientWidth)
       .height(globeElement.clientHeight);
   });
+}
 
+
+/* =========================================================
+   START THE PAGE
+   ========================================================= */
+
+/*
+  Load the contribution data independently of the globe.
+  This means the protocol cards can appear even if the
+  map takes longer to initialise or fails.
+*/
+
+window.addEventListener("load", () => {
+  loadAtlasData();
+  initialiseGlobe();
 });
 
 </script>
