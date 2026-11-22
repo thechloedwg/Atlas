@@ -26,9 +26,7 @@
 }
 
 *{box-sizing:border-box}
-
 html{scroll-behavior:smooth}
-
 body{
   margin:0;
   background:var(--white);
@@ -37,12 +35,12 @@ body{
   -webkit-font-smoothing:antialiased;
   text-align:justify;
 }
-
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 
 /* =========================================================
-   DESKTOP HOMEPAGE
+   DESKTOP LAYOUT
+   Globe | Navigation | About and profiles
    ========================================================= */
 
 .page{
@@ -53,12 +51,11 @@ button{font:inherit}
   margin:0 auto;
   padding:12px 38px 16px;
   display:grid;
-  grid-template-columns:minmax(0,55%) minmax(0,45%);
-  grid-template-rows:minmax(0,1fr) auto auto;
+  grid-template-columns:minmax(0,52%) minmax(90px,10%) minmax(0,38%);
+  grid-template-rows:minmax(0,1fr) auto;
   grid-template-areas:
-    "hero main"
-    "nav nav"
-    "footer footer";
+    "hero nav main"
+    "footer footer footer";
   align-items:center;
   overflow:visible;
 }
@@ -90,7 +87,6 @@ button{font:inherit}
   height:100%;
   cursor:grab;
 }
-
 #globeViz:active{cursor:grabbing}
 
 .globe-placeholder{
@@ -100,6 +96,47 @@ button{font:inherit}
   letter-spacing:.04em;
   pointer-events:none;
   text-align:center;
+}
+
+/* =========================================================
+   DESKTOP NAVIGATION
+   ========================================================= */
+
+.navigation{
+  grid-area:nav;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:10px 5px;
+  margin:0;
+}
+
+.navigation a,
+.navigation button{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:9px 8px;
+  font-size:12px;
+  line-height:1.35;
+  color:var(--ink);
+  background:white;
+  cursor:pointer;
+  transition:.2s;
+  text-align:center;
+}
+
+.navigation a:hover,
+.navigation button:hover{
+  background:var(--blue);
+  border-color:var(--blue);
+  color:white;
 }
 
 /* =========================================================
@@ -113,7 +150,7 @@ button{font:inherit}
   height:100%;
   min-height:0;
   margin:0;
-  padding:20px 10px 20px 25px;
+  padding:20px 5px 20px 12px;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -126,6 +163,15 @@ button{font:inherit}
   min-width:0;
 }
 
+.about-heading{
+  font-size:clamp(20px,1.8vw,27px);
+  font-weight:normal;
+  line-height:1.3;
+  color:var(--ink);
+  margin:0 0 10px;
+  text-align:left;
+}
+
 .about-copy{
   color:var(--body-text);
   font-size:clamp(13px,1.05vw,15px);
@@ -136,14 +182,11 @@ button{font:inherit}
 .about-copy p{
   margin:0 0 clamp(7px,1.1vh,13px);
 }
-
 .about-copy p:last-child{margin-bottom:0}
 
-.latest-column{
-  min-height:0;
-}
+.latest-column{min-height:0}
 
-/* Desktop: exactly four columns and three rows */
+/* Desktop: four columns and three rows */
 
 .protocol-grid{
   display:grid;
@@ -230,43 +273,6 @@ button{font:inherit}
   display:block;
   font-size:25px;
   margin-bottom:5px;
-}
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-.navigation{
-  grid-area:nav;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:9px;
-  flex-wrap:wrap;
-  margin:7px auto 12px;
-}
-
-.navigation a,
-.navigation button{
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:7px 17px;
-  font-size:12px;
-  color:var(--ink);
-  background:white;
-  cursor:pointer;
-  transition:.2s;
-  text-align:center;
-}
-
-.navigation a:hover,
-.navigation button:hover{
-  background:var(--blue);
-  border-color:var(--blue);
-  color:white;
 }
 
 /* =========================================================
@@ -521,8 +527,6 @@ footer{
 
 /* =========================================================
    CONTRIBUTION FORM
-   Desktop: hidden until Contribute is clicked.
-   Mobile: always visible.
    ========================================================= */
 
 .form-section{
@@ -671,8 +675,6 @@ footer{
    ========================================================= */
 
 @media(min-width:1001px){
-  .hero{min-height:0}
-
   .about-copy{
     font-size:clamp(12px,1vw,15px);
     line-height:1.5;
@@ -718,11 +720,31 @@ footer{
     height:480px;
     min-height:0;
     flex:none;
+    order:1;
   }
 
   .globe-frame{height:100%}
 
+  .navigation{
+    order:0;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:9px;
+    width:100%;
+    margin:0 auto 20px;
+    padding:0;
+  }
+
+  .navigation a,
+  .navigation button{
+    width:auto;
+    padding:7px 17px;
+  }
+
   .main-content{
+    order:2;
     width:100%;
     height:auto;
     min-height:0;
@@ -734,23 +756,20 @@ footer{
     overflow:visible;
   }
 
-  .navigation{
-    order:0;
-    margin:0 auto 30px;
-  }
-
-  .hero{order:1}
-  .main-content{order:2}
   #countryProfile{order:3}
-  .form-section{order:4}
-  footer{order:5;width:100%}
 
   .form-section{
+    order:4;
     display:block;
     margin:25px auto 35px;
   }
 
   .form-heading{display:none}
+
+  footer{
+    order:5;
+    width:100%;
+  }
 }
 
 @media(max-width:750px){
@@ -759,19 +778,26 @@ footer{
   .hero{height:430px}
 
   .navigation{
-    margin-bottom:22px;
+    margin-bottom:12px;
     gap:6px;
   }
 
-  .navigation a,.navigation button{
+  .navigation a,
+  .navigation button{
     padding:7px 11px;
     font-size:12px;
   }
 
   .main-content{
-    grid-template-columns:2fr 1fr;
-    gap:15px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
     margin-bottom:35px;
+  }
+
+  .about-heading{
+    font-size:23px;
+    margin-bottom:9px;
   }
 
   .about-copy{
@@ -781,25 +807,27 @@ footer{
 
   .about-copy p{margin-bottom:13px}
 
+  /* Mobile homepage profiles: ONE full-width column */
+
   .protocol-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-columns:1fr;
     grid-template-rows:auto;
-    gap:8px;
+    gap:9px;
   }
 
   .protocol-card,
   .view-all-card{
-    min-height:103px;
-    padding:10px;
+    min-height:90px;
+    padding:12px 14px;
   }
 
   .protocol-card h3{
-    font-size:16px;
+    font-size:17px;
     margin-bottom:8px;
   }
 
   .protocol-country{
-    font-size:11px;
+    font-size:12px;
     margin-bottom:6px;
   }
 
@@ -807,26 +835,28 @@ footer{
 
   #countryProfile{padding:22px}
 
+  /* Country research-area profiles: ONE full-width column */
+
   .category-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;
+    grid-template-columns:1fr;
+    gap:10px;
   }
 
-  .category-card{padding:12px}
-  .category-card h4{font-size:18px}
+  .category-card{padding:15px}
+  .category-card h4{font-size:20px}
   .category-count{font-size:12px}
 
   .category-figures{
     grid-template-columns:1fr 1fr;
-    gap:6px;
+    gap:8px;
   }
 
-  .category-figure{padding:7px}
-  .category-figure span{font-size:10px}
-  .category-figure strong{font-size:12px}
-  .category-summary-block h5{font-size:12px}
-  .category-summary-block li{font-size:11px}
-  .category-latest-note{font-size:10px}
+  .category-figure{padding:9px}
+  .category-figure span{font-size:11px}
+  .category-figure strong{font-size:13px}
+  .category-summary-block h5{font-size:13px}
+  .category-summary-block li{font-size:12px}
+  .category-latest-note{font-size:11px}
 
   .modal-content{padding:28px 22px}
 
@@ -837,48 +867,35 @@ footer{
 @media(max-width:430px){
   .hero{height:360px}
 
-  .main-content{
-    grid-template-columns:2fr 1fr;
-    gap:10px;
-  }
-
-  .about-copy{font-size:12px}
+  .about-copy{font-size:13px}
 
   .protocol-card,
   .view-all-card{
-    min-height:98px;
-    padding:8px;
+    min-height:90px;
+    padding:11px 13px;
   }
 
-  .protocol-card h3{font-size:14px}
-  .protocol-meta{font-size:10px}
+  .protocol-card h3{font-size:16px}
+  .protocol-meta{font-size:11px}
 
-  .navigation a,.navigation button{
+  .navigation a,
+  .navigation button{
     padding:6px 9px;
     font-size:11px;
   }
 
   #countryProfile{padding:15px}
 
-  .category-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:7px;
-  }
-
-  .category-card{padding:9px}
-  .category-card h4{font-size:16px}
-  .category-figure{padding:6px}
-  .category-figure strong{font-size:11px}
-  .category-summary-block li{font-size:10px}
-  .category-summary-block h5{font-size:11px}
+  .category-grid{grid-template-columns:1fr}
+  .category-card{padding:12px}
+  .category-card h4{font-size:18px}
+  .category-figure{padding:8px}
+  .category-figure strong{font-size:12px}
+  .category-summary-block li{font-size:11px}
+  .category-summary-block h5{font-size:12px}
 
   .google-form-embed{height:1650px}
   .google-form-embed iframe{height:2200px}
-}
-
-@media(max-width:360px){
-  .main-content{grid-template-columns:1fr}
-  .protocol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -899,10 +916,27 @@ footer{
     <div class="globe-placeholder" id="globePlaceholder">Loading the Atlas globe…</div>
   </div>
 
-  <!-- HOMEPAGE CONTENT -->
+  <!-- NAVIGATION: BETWEEN GLOBE AND CONTENT ON DESKTOP -->
+  <nav class="navigation" aria-label="Main navigation">
+    <button
+      id="contributeButton"
+      type="button"
+      aria-expanded="false"
+      aria-controls="contribute"
+      onclick="toggleContributionForm()">
+      Contribute
+    </button>
+
+    <a href="#protocols">Explore experiences</a>
+    <a href="#about">About the Atlas</a>
+  </nav>
+
+  <!-- ABOUT AND HOMEPAGE PROFILES -->
   <section class="main-content" id="protocols">
 
     <div class="about-column" id="about">
+      <h2 class="about-heading">About the Atlas</h2>
+
       <div class="about-copy">
         <p>The Fieldwork Atlas is a collaborative resource bringing together information and experiences about conducting research around the world.</p>
 
@@ -921,21 +955,6 @@ footer{
     </div>
 
   </section>
-
-  <!-- NAVIGATION -->
-  <nav class="navigation" aria-label="Main navigation">
-    <button
-      id="contributeButton"
-      type="button"
-      aria-expanded="false"
-      aria-controls="contribute"
-      onclick="toggleContributionForm()">
-      Contribute
-    </button>
-
-    <a href="#protocols">Explore experiences</a>
-    <a href="#about">About the Atlas</a>
-  </nav>
 
   <!-- COUNTRY PROFILE -->
   <section id="countryProfile">
@@ -1845,7 +1864,7 @@ function updateGlobeColours() {
 
 
 /* =========================================================
-   LOAD GLOBE LIBRARIES AFTER THE MAIN PAGE HAS RENDERED
+   LOAD GLOBE LIBRARIES
    ========================================================= */
 
 function loadScript(src) {
@@ -1987,8 +2006,6 @@ async function initialiseGlobe() {
 document.addEventListener("DOMContentLoaded", () => {
   loadAtlasData();
 
-  // Load the contribution form immediately on mobile.
-  // Desktop loads it only when the user opens the form.
   if (isMobileLayout()) {
     const frame = document.getElementById("contributionFormFrame");
     frame.setAttribute("src", frame.dataset.src);
